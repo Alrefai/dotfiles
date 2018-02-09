@@ -1,0 +1,19 @@
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[user]
+	name = Mohammed Alrefai
+	email = 5350216+Alrefai@users.noreply.github.com
+[core]
+	editor = atom --wait
+	excludesfile = /Users/Mohammed/.gitignore_global
+[color]
+	ui = auto
+[merge]
+	conflictstyle = diff3
+[alias]
+	st = status
+	co = checkout
+	br = branch
+	ci = commit
