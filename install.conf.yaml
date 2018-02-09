@@ -10,6 +10,7 @@
     ~/.gitconfig:
     ~/.zshrc:
     ~/.tvnamer.json:
+    ~/.gitignore_global:
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
