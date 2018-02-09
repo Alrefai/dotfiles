@@ -1,8 +1,7 @@
 - clean: ['~']
 
 - link:
-    ~/.bash_profile: bash_profile
-    ~/.gitconfig: gitconfig
-    ~/.zshrc: zshrc
-
-
+    ~/.bash_profile:
+    ~/.gitconfig:
+    ~/.zshrc:
+    ~/.tvnamer.json:
