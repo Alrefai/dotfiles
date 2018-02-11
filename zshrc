@@ -34,6 +34,52 @@ SPACESHIP_DIR_TRUNC="0"
 SPACESHIP_GIT_BRANCH_COLOR="cyan"
 # SPACESHIP_PROMPT_SEPARATE_LINE="false"
 
+### [keiththomps/dotfiles](https://github.com/keiththomps/dotfiles/blob/master/.zshrc)
+# Tmux auto title
+export DISABLE_AUTO_TITLE="true"
+
+# ALIASES #
+###########
+
+# Standard Shell
+alias c='clear'
+# alias l='ls -l'
+# alias la='ls -al'
+# alias bloat='du -k | sort -nr | more'
+
+# Alias Vim to Neovim
+# alias vim='nvim'
+
+# Bundle Exec
+# alias be="bundle exec"
+
+# Git
+alias g='git status -s'
+alias ga='git add'
+alias gb='git branch'
+alias gc='git commit -m'
+alias gca='git commit -am'
+alias gco='git checkout'
+alias gcob='git checkout -b'
+alias grpr='git remote prune origin'
+alias gl='git log --oneline --graph'
+alias gla='git log --oneline --graph --all'
+
+# tmux
+alias attach='tmux attach-session -t'
+alias switch='tmux switch-session -t'
+alias tmk='tmux kill-session -t'
+alias tls='tmux ls'
+alias load='tmuxp load'
+
+# Flush DNS Cache
+alias dnsflush='dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
+
+# Reload SHELL
+alias r='exec $SHELL'
+
+### End of section
+
 # Appended commands (always keep a new at the end of this code):
 export PATH="/usr/local/opt/curl/bin:$PATH" # brew curl
 export PATH="/usr/local/opt/unzip/bin:$PATH" # brew unzip
