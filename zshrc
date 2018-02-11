@@ -80,7 +80,7 @@ alias r='exec $SHELL'
 
 ### End of section
 
-# Appended commands (always keep a new at the end of this code):
+# Appended commands (always keep a new line at the end of this code):
 export PATH="/usr/local/opt/curl/bin:$PATH" # brew curl
 export PATH="/usr/local/opt/unzip/bin:$PATH" # brew unzip
 export PATH="/usr/local/opt/sqlite/bin:$PATH" # brew sqlite
