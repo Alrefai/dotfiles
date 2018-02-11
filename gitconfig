@@ -17,3 +17,11 @@
 	co = checkout
 	br = branch
 	ci = commit
+[tig "color"]
+	cursor          = black green
+	# UI colors
+	title-blur      = black blue
+	title-focus     = black blue    bold
+# View specific color
+[tig "color.tree"]
+	date            = cyan  default bold
