@@ -1,4 +1,4 @@
- source /usr/local/share/antigen/antigen.zsh
+source /usr/local/share/antigen/antigen.zsh
 
 # Load the oh-my-zsh's library.
 antigen use oh-my-zsh
@@ -78,7 +78,10 @@ alias dnsflush='dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
 # Reload SHELL
 alias r='exec $SHELL'
 
-### End of section
+### End of [keiththomps/dotfiles] section
+
+# My custom aliases
+alias loadp='tmuxp load projects'
 
 # Appended commands (always keep a new line at the end of this code):
 export PATH="/usr/local/opt/curl/bin:$PATH" # brew curl
