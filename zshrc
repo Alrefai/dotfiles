@@ -84,6 +84,9 @@ alias r='exec $SHELL'
 alias loadp='tmuxp load projects'
 
 # Appended commands (always keep a new line at the end of this code):
+export FPP_EDITOR="atom -nw"
+export EDITOR="atom -nw"
+export VISUAL="atom -nw"
 export PATH="/usr/local/opt/curl/bin:$PATH" # brew curl
 export PATH="/usr/local/opt/unzip/bin:$PATH" # brew unzip
 export PATH="/usr/local/opt/sqlite/bin:$PATH" # brew sqlite
