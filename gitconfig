@@ -8,6 +8,7 @@
 	email = 5350216+Alrefai@users.noreply.github.com
 [core]
 	editor = atom --wait
+	excludesfile = ~/.gitignore_global
 [color]
 	ui = auto
 [merge]
@@ -25,3 +26,5 @@
 # View specific color
 [tig "color.tree"]
 	date            = cyan  default bold
+[diff]
+	submodule = log
