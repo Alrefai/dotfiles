@@ -1,13 +1,13 @@
 [filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
+	process = git-lfs filter-process
 	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
 [user]
 	name = Mohammed Alrefai
 	email = 5350216+Alrefai@users.noreply.github.com
 [core]
 	editor = atom --wait
-	excludesfile = /Users/Mohammed/.gitignore_global
 [color]
 	ui = auto
 [merge]
@@ -18,7 +18,7 @@
 	br = branch
 	ci = commit
 [tig "color"]
-	cursor          = black green
+	cursor          = black yellow
 	# UI colors
 	title-blur      = black blue
 	title-focus     = black blue    bold
