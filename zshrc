@@ -10,7 +10,7 @@ antigen bundle pip
 antigen bundle command-not-found
 
 ## Bundles from different sources.
-antigen bundle unixorn/autoupdate-antigen.zshplugin
+# antigen bundle unixorn/autoupdate-antigen.zshplugin
 
 ## Bundles from zsh-users.
 antigen bundle zsh-users/zsh-completions
