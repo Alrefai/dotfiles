@@ -61,6 +61,9 @@ alias grpr='git remote prune origin'
 alias gl='git log --oneline --graph'
 alias gla='git log --oneline --graph --all'
 
+# gitignore.io API
+function gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
+
 # tmux
 alias attach='tmux attach-session -t'
 alias switch='tmux switch-client -t'
