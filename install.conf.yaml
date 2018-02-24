@@ -7,6 +7,7 @@
 
 - link:
     ~/.dotfiles: ""
+    ~/.Brewfile:
     ~/.bash_profile:
     ~/.gitconfig:
     ~/.zshrc:
@@ -15,4 +16,27 @@
     ~/.tmux.conf:
 
 - shell:
+  # Initialize submodule in .dotfiles (dotbot and pyyaml)
   - [git submodule update --init --recursive, Installing submodules]
+
+  # ---- Homebrew -------------------------------------------------------------
+  # 1. Install Homebrew package manager for macOS, if not installed
+  # 2. Evaluate dependencies of `.Brewfile` in `$HOME` root, if file exist
+  # 3. Install dependencies, if needed
+  # 4. If Brewfile doesn't exist, create a Brewfile in `.dotfiles` root with
+  #    existing dependencies
+  # 5. Log installation process in:
+  #    `~/dotbot-install-brew-{process date and time}.log`
+  #
+  # Tips:
+  # - Always read the log created in `$HOME` root to check for errors
+  # - Review the Brewfile and delete the Apps that you don't need first
+  # - If you uninstall any dependency listed in Brewfile, you should consider
+  #   updating the Brewfile with following command to remove it from the list:
+  #   `brew bundle dump -f --global`
+  - ['(test -f /usr/local/bin/brew || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && brew bundle check --global || brew bundle --global || (brew bundle dump && brew bundle) && brew upgrade) &> $HOME/dotbot-install-brew-$(date +%Y-%m-%d-%H:%M:%S).log', Installing Homebrews and Apps]
+
+  # Homebrew option: Update `.Brewfile` with existing Homebrews and macOS Apps
+  # (uncomment below line to enable it)
+  # - [brew bundle dump -f --global, Updating Brewfile]
+
