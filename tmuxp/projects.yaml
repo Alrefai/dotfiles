@@ -1,0 +1,37 @@
+session_name:      Projects
+suppress_history:  false
+windows:
+- window_name:     Home
+  focus:           true
+  layout:          tiled
+  start_directory: ~/
+  panes:
+    - shell_command:
+      - clear && tree -LCF 1 && brew update && brew upgrade  # Update all Homebrew packages
+
+- window_name:     Codecademy
+  layout:          tiled
+  start_directory: ~/Dropbox/dev/projects/codecademy
+  panes:
+    - clear && tree -LCF 2
+
+- window_name:     Udacity
+  layout:          tiled
+  start_directory: ~/Dropbox/dev/projects/udacity
+  panes:
+    - clear && tree -LCF 2
+
+- window_name:     dotfiles
+  layout:          tiled
+  start_directory: ~/.dotfiles
+  focus:           true
+  panes:
+    - clear && tree -LCF 2
+    - clear && git-foresta --all --style=15 | less -RSX
+    - clear && tig
+
+- window_name:     git-clones
+  layout:          tiled
+  start_directory: ~/Dropbox/dev/git-clones
+  panes:
+    - clear && tree -LCF 2 && git submodule update --init --recursive && git submodule update --recursive --remote
