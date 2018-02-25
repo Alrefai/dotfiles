@@ -40,3 +40,6 @@
   # Homebrew option: Update `.Brewfile` with existing Homebrews and macOS Apps
   # (uncomment below line to enable it)
   # - [brew bundle dump -f --global, Updating Brewfile]
+
+  # ---- Install tmux session manager (tmuxp) ---------------------------------
+  - [test -f /usr/local/bin/tmuxp || pip3 install tmuxp, Installing tmuxp]
