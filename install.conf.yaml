@@ -11,6 +11,7 @@
     ~/.bash_profile:
     ~/.gitconfig:
     ~/.zshrc:
+    ~/.antigenrc:
     ~/.tvnamer.json:
     ~/.gitignore_global:
     ~/.tmux.conf:
