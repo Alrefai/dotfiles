@@ -3,9 +3,6 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-[user]
-	name = Mohammed Alrefai
-	email = 5350216+Alrefai@users.noreply.github.com
 [core]
 	editor = atom --wait
 	excludesfile = ~/.gitignore_global
@@ -28,3 +25,5 @@
 	date            = cyan  default bold
 [diff]
 	submodule = log
+[user]
+	useConfigOnly = true
