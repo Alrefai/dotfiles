@@ -1,5 +1,5 @@
 ## Activate Antigen plugin manager
-[ -f /usr/local/share/antigen/antigen.zsh ] && source ~/.antigenrc
+[ -f /usr/local/share/antigen/antigen.zsh ] && source ~/.zsh/antigenrc.zsh
 
 # Tmux auto title
 export DISABLE_AUTO_TITLE="true"

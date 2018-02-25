@@ -11,7 +11,7 @@
     ~/.bash_profile:
     ~/.gitconfig:
     ~/.zshrc:
-    ~/.antigenrc:
+    ~/.zsh:
     ~/.tvnamer.json:
     ~/.gitignore_global:
     ~/.tmux.conf:
@@ -40,4 +40,3 @@
   # Homebrew option: Update `.Brewfile` with existing Homebrews and macOS Apps
   # (uncomment below line to enable it)
   # - [brew bundle dump -f --global, Updating Brewfile]
-
