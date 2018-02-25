@@ -14,6 +14,7 @@
     ~/.tvnamer.json:
     ~/.gitignore_global:
     ~/.tmux.conf:
+    ~/.config/powerline: config/powerline
 
 - shell:
   # Initialize submodule in .dotfiles (dotbot and pyyaml)
@@ -42,3 +43,6 @@
 
   # ---- Install tmux session manager (tmuxp) ---------------------------------
   - [test -f /usr/local/bin/tmuxp || pip3 install tmuxp, Installing tmuxp]
+
+  # ---- Install Powerline statusline plugin ----------------------------------
+  - [ test -f /usr/local/bin/powerline || pip3 install powerline-status, Installing Powerline]

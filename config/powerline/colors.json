@@ -1,0 +1,16 @@
+{
+    "colors": {
+        "dracula:background": [0, "44475A"],
+        "dracula:current_line": [8, "656B84"],
+        "dracula:selection": [11, "F1FA8C"],
+        "dracula:foreground": [15, "f8f8f2"],
+        "dracula:comment": [61, "6272a4"],
+        "dracula:cyan": [6, "6AC5D3"],
+        "dracula:green": [2, "2FD651"],
+        "dracula:orange": [215, "ffb86c"],
+        "dracula:pink": [5, "DE559C"],
+        "dracula:purple": [4, "9C6FCF"],
+        "dracula:red": [1, "DE9442"],
+        "dracula:yellow": [3, "D0D662"]
+    }
+}
