@@ -8,7 +8,6 @@
 - link:
     ~/.dotfiles: ""
     ~/.Brewfile:
-    ~/.bash_profile:
     ~/.gitconfig:
     ~/.zshrc:
     ~/.zsh:
