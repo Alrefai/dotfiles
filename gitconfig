@@ -10,11 +10,6 @@
 	ui = auto
 [merge]
 	conflictstyle = diff3
-[alias]
-	st = status
-	co = checkout
-	br = branch
-	ci = commit
 [tig "color"]
 	cursor          = black yellow
 	# UI colors
@@ -25,5 +20,20 @@
 	date            = cyan  default bold
 [diff]
 	submodule = log
+	tool = icdiff
 [user]
 	useConfigOnly = true
+
+# Github style diff in terminal with icdiff
+[alias]
+	showtool = "!f() { git difftool $1^ $1; }; f"
+	added = difftool --cached
+[difftool]
+	prompt = false
+[difftool "icdiff"]
+	cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
+[pager]
+	difftool = true
+
+# References:
+# icdiff -> http://owen.cymru/github-style-diff-in-terminal-with-icdiff
