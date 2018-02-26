@@ -10,14 +10,6 @@
 	ui = auto
 [merge]
 	conflictstyle = diff3
-[tig "color"]
-	cursor          = black yellow
-	# UI colors
-	title-blur      = black blue
-	title-focus     = black blue    bold
-# View specific color
-[tig "color.tree"]
-	date            = cyan  default bold
 [diff]
 	submodule = log
 	tool = icdiff

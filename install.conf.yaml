@@ -16,6 +16,7 @@
     ~/.tmuxp:
     ~/.config/powerline: config/powerline
     ~/.mackup.cfg:
+    ~/.tigrc:
 
 - shell:
   # Initialize submodule in .dotfiles (dotbot and pyyaml)
