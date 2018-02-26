@@ -12,3 +12,34 @@ cd "${BASEDIR}"
 git submodule update --init --recursive "${DOTBOT_DIR}"
 
 "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
+
+# ---- Homebrew -------------------------------------------------------------
+# 1. Install Homebrew package manager for macOS, if not installed
+# 2. Evaluate dependencies of `.Brewfile` in `$HOME` root, if file exist
+# 3. Install dependencies, if needed
+# 4. If Brewfile doesn't exist, create a Brewfile in `.dotfiles` root with
+#    existing dependencies
+#
+# Tips:
+# - Review the Brewfile and delete the Apps that you don't need first
+# - If you uninstall any dependency listed in Brewfile, you should consider
+#   updating the Brewfile with following command to remove it from the list:
+#   `brew bundle dump -f --global`
+echo '' && printf '\033[34m==> Installing Homebrew package manager for macOS\033[0m\n'
+test -f $(which brew) && echo 'Homebrew already installed' || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+echo '' && printf '\033[34m==> Installing dependencies of `.Brewfile` in `$HOME` root\033[0m\n'
+brew bundle check --global || brew bundle --global || (brew bundle dump && brew bundle) && brew upgrade
+
+# Homebrew option: Update `.Brewfile` with existing Homebrews and macOS Apps
+# (uncomment below two lines to enable it)
+# echo '' && echo '==> Updating `.Brewfile` with existing dependencies'
+# brew bundle dump -f --global
+
+# ---- Install tmux session manager (tmuxp) ---------------------------------
+echo '' && printf '\033[34m==> Installing tmuxp with pip3\033[0m\n'
+test -f $(which tmuxp) && echo 'tmuxp already installed'|| pip3 install tmuxp
+
+# ---- Install Powerline statusline plugin ----------------------------------
+echo '' && printf '\033[34m==> Installing Powerline with pip3\033[0m\n'
+test -f $(which powerline) && echo 'Powerline already installed'|| pip3 install powerline-status
