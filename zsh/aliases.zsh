@@ -1,5 +1,10 @@
 # ---- My aliases ------------------------------------------------------
 
+## Aliases to protect against deletion
+alias rm='rm -i'
+alias rmd='rm -ri'
+alias rmdf='rm -rf'
+
 ## tmux
 alias loadp='tmuxp load projects'
 
