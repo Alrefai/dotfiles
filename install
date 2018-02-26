@@ -29,7 +29,7 @@ printf '\n\033[34m==> Installing Homebrew package manager for macOS\033[0m\n'
 test -f $(which brew) && echo 'Homebrew already installed' || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 printf '\n\033[34m==> Installing dependencies of `.Brewfile` in `$HOME` root\033[0m\n'
-brew bundle check --global || brew bundle --global || (brew bundle dump && brew bundle) && brew upgrade
+brew bundle check --global || brew bundle --global && brew upgrade
 
 # Homebrew option: Update `.Brewfile` with existing Homebrews and macOS Apps
 # (uncomment below two lines to enable it)
