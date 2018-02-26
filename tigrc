@@ -342,14 +342,14 @@ color "stash@{"			magenta	default
 color "commit "			green	default
 color "parent "			blue	default
 color "tree "			blue	default
-color "author "			green	default
+color "author "			yellow	default
 color "committer "		magenta	default
 color "    Signed-off-by"	yellow	default
 color "    Acked-by"		yellow	default
 color "    Tested-by"		yellow	default
 color "    Reviewed-by"		yellow	default
 color default			default	default	normal
-color cursor			white	green	bold
+color cursor			black	green	bold
 color status			green	default
 color delimiter			magenta	default
 color date			blue	default
@@ -363,8 +363,8 @@ color file			default	default
 color grep.file			blue	default
 color file-size			default	default
 color line-number		cyan	default
-color title-blur		white	blue
-color title-focus		white	blue	bold
+color title-blur		black	blue
+color title-focus		black	blue	bold
 color main-commit		default	default
 color main-tag			magenta	default	bold
 color main-local-tag		magenta	default
