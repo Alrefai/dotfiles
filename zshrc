@@ -1,3 +1,6 @@
+# Enable Shell Integration in iTerm2
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
 # Activate Antigen plugin manager
 [ -f /usr/local/share/antigen/antigen.zsh ] && source ~/.zsh/antigenrc.zsh
 
