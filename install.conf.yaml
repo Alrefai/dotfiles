@@ -15,9 +15,13 @@
     ~/.tmux.conf:
     ~/.tmuxp:
     ~/.config/powerline: config/powerline
+    ~/.config/iterm2: config/iterm2
+    ~/.config/nvim/init.vim: config/nvim/init.vim
+    ~/.config/yarn/global/package.json: config/yarn/package.json
     ~/.mackup.cfg:
     ~/.tigrc:
+    ~/.editorconfig:
 
 - shell:
   # Initialize submodule in .dotfiles (dotbot and pyyaml)
-  - [git submodule update --recursive --remote, Updating submodules]
+  - [git submodule update --recursive --remote --merge, Updating submodules]

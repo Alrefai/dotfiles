@@ -7,10 +7,10 @@
         "dracula:comment": [61, "6272a4"],
         "dracula:cyan": [6, "6AC5D3"],
         "dracula:green": [2, "2FD651"],
-        "dracula:orange": [215, "ffb86c"],
+        "dracula:orange": [215, "FF5555"],
         "dracula:pink": [5, "DE559C"],
-        "dracula:purple": [4, "9C6FCF"],
-        "dracula:red": [1, "DE9442"],
+        "dracula:purple": [4, "9876aa"],
+        "dracula:red": [1, "DE312B"],
         "dracula:yellow": [3, "D0D662"]
     }
 }

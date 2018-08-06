@@ -17,8 +17,13 @@ antigen theme https://github.com/denysdovhan/spaceship-prompt spaceship
 # SPACESHIP_TIME_COLOR="8"
 # SPACESHIP_TIME_FORMAT="%D{%F} %*"
 SPACESHIP_DIR_COLOR="blue"
-SPACESHIP_DIR_TRUNC="0"
+# SPACESHIP_DIR_TRUNC="0"
 SPACESHIP_GIT_BRANCH_COLOR="cyan"
+SPACESHIP_VI_MODE_COLOR="magenta"
+SPACESHIP_CHAR_SYMBOL="❯ "
+SPACESHIP_VI_MODE_SUFFIX="❯"
+SPACESHIP_VI_MODE_INSERT="❯"
+SPACESHIP_VI_MODE_NORMAL="❮"
 
 # Tell Antigen that you're done.
 antigen apply

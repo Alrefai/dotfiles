@@ -157,7 +157,7 @@
             "attrs": ["bold"]
         },
         "active_window_status": {
-            "fg": "dracula:cyan",
+            "fg": "dracula:foreground",
             "bg": "dracula:current_line",
             "attrs": []
         },
@@ -167,7 +167,7 @@
             "attrs": []
         },
         "activity_status": {
-            "fg": "dracula:orange",
+            "fg": "dracula:foreground",
             "bg": "dracula:current_line",
             "attrs": []
         },

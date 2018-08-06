@@ -9,11 +9,11 @@ DOTBOT_BIN="bin/dotbot"
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 cd "${BASEDIR}"
-git submodule update --init --recursive "${DOTBOT_DIR}"
+# git submodule update --init --recursive "${DOTBOT_DIR}"
 
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
+"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}";\
 
-# ---- Homebrew -------------------------------------------------------------
+# ---- Homebrew ---------------------------------------------------------------
 # 1. Install Homebrew package manager for macOS, if not installed
 # 2. Evaluate dependencies of `.Brewfile` in `$HOME` root, if file exist
 # 3. Install dependencies, if needed
@@ -26,9 +26,12 @@ git submodule update --init --recursive "${DOTBOT_DIR}"
 #   updating the Brewfile with following command to remove it from the list:
 #   `brew bundle dump -f --global`
 printf '\n\033[34m==> Installing Homebrew package manager for macOS\033[0m\n'
-test -f $(which brew) && echo 'Homebrew already installed' || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+test -f $(which brew) && echo 'Homebrew already installed' || /usr/bin/ruby -e \
+'$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install\
+)'
 
-printf '\n\033[34m==> Installing dependencies of `.Brewfile` in `$HOME` root\033[0m\n'
+printf \
+'\n\033[34m==> Installing dependencies of `.Brewfile` in `$HOME` root\033[0m\n'
 brew bundle check --global || brew bundle --global && brew upgrade
 
 # Homebrew option: Update `.Brewfile` with existing Homebrews and macOS Apps
@@ -36,10 +39,33 @@ brew bundle check --global || brew bundle --global && brew upgrade
 # echo '' && echo '==> Updating `.Brewfile` with existing dependencies'
 # brew bundle dump -f --global
 
-# ---- Install tmux session manager (tmuxp) ---------------------------------
+# ---- Install NeoVim optional dependencies -----------------------------------
+printf '\n\033[34m==> Installing NeoVim Providers: Python3, Ruby, Node\033[0m\n'
+test -f $(which nvim) && (test -f $HOME/.config/nvim || mkdir -p \
+$HOME/.config/nvim) || echo 'NeoVim not installed! Install NeoVim with
+Homebrew first' && pip3 install --upgrade neovim && gem install neovim && yarn \
+global add neovim && \
+echo 'You may need to log out and log back in to see changes'
+
+# ---- Set ZSH as Default Shell -----------------------------------------------
+printf '\n\033[34m==> Setting Homebrew ZSH as Default Shell\033[0m\n'
+[ $(which $SHELL) != /usr/local/bin/zsh ] && \
+sudo chsh -s /usr/local/bin/zsh $USER && echo 'Done' || \
+echo 'Homebrew Zsh is the default shell'
+
+# ---- Install tmux session manager (tmuxp) -----------------------------------
 printf '\n\033[34m==> Installing tmuxp with pip3\033[0m\n'
 test -f $(which tmuxp) && echo 'tmuxp already installed'|| pip3 install tmuxp
 
-# ---- Install Powerline statusline plugin ----------------------------------
+# ---- Install Powerline statusline plugin ------------------------------------
 printf '\n\033[34m==> Installing Powerline with pip3\033[0m\n'
-test -f $(which powerline) && echo 'Powerline already installed'|| pip3 install powerline-status
+test -f $(which powerline) && echo 'Powerline already installed'|| \
+pip3 install powerline-status
+
+# ---- Install useful keybindings and fuzzy completion for FZF -------------
+printf \
+'\n\033[34m==> Installing keybindings and fuzzy completion for FZF\033[0m\n'
+test -f $(which fzf) && test -f ~/.fzf.zsh && \
+echo 'Keybindings and fuzzy completion already installed' || \
+/usr/local/opt/fzf/install || \
+echo 'FZF not installed. You must `brew install fzf` first'

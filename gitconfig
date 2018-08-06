@@ -4,7 +4,7 @@
 	process = git-lfs filter-process
 	required = true
 [core]
-	editor = atom --wait
+	editor = nvim
 	excludesfile = ~/.gitignore_global
 [color]
 	ui = auto
@@ -29,3 +29,7 @@
 
 # References:
 # icdiff -> http://owen.cymru/github-style-diff-in-terminal-with-icdiff
+[commit]
+	template = ~/.git-commit-template
+[credential]
+	helper = osxkeychain
