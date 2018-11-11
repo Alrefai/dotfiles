@@ -4,20 +4,20 @@ windows:
 - window_name:     Home
   focus:           true
   layout:          tiled
-  start_directory: ~/
+  start_directory: ~/code/projects
   panes:
     - shell_command:
       - clear && tree -LCF 1 && brew update && brew upgrade  # Update all Homebrew packages
 
 - window_name:     Codecademy
   layout:          tiled
-  start_directory: ~/Dropbox/dev/projects/codecademy
+  start_directory: ~/code/projects/codecademy
   panes:
     - clear && tree -LCF 2
 
 - window_name:     Udacity
   layout:          tiled
-  start_directory: ~/Dropbox/dev/projects/udacity
+  start_directory: ~/code/projects/udacity
   panes:
     - clear && tree -LCF 2
 
@@ -26,12 +26,12 @@ windows:
   start_directory: ~/.dotfiles
   focus:           true
   panes:
-    - clear && tree -LCF 2
+    - clear && tree -LCF 3 -I dotbot
     - clear && git-foresta --all --style=15 | less -RSX
     - clear && tig
 
 - window_name:     git-clones
   layout:          tiled
-  start_directory: ~/Dropbox/dev/git-clones
+  start_directory: ~/code/git-clones
   panes:
     - clear && tree -LCF 2 && git submodule update --init --recursive && git submodule update --recursive --remote
