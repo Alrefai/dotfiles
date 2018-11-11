@@ -3,6 +3,10 @@
 alias vi='nvim'
 alias gla='git-foresta --all --style=15 | less -RSX'
 alias jn='jupyter notebook'
+alias jnn='jupyter nteract'
+alias treee='tree -CI node_modules'
+alias nowjam='now -A now-prod.json && now alias -A now-prod.json'
+alias upgradeZsh='antigen update && antigen reset && exec $SHELL'
 ## Aliases to protect against deletion
 alias rm='rm -i'
 alias rmd='rm -ri'
