@@ -18,6 +18,7 @@
     ~/.config/iterm2: config/iterm2
     ~/.config/nvim/init.vim: config/nvim/init.vim
     ~/.config/yarn/global/package.json: config/yarn/package.json
+    ~/.config/yarn/link: config/yarn/link
     ~/.mackup.cfg:
     ~/.tigrc:
     ~/.editorconfig:
