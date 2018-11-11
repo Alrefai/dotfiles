@@ -4,9 +4,9 @@ let mapleader = "\<Space>"
 filetype plugin indent on
 syntax on
 
-" set hidden                      " Allow buffer change w/o saving
-" set lazyredraw                  " Don't update while executing macros
-" set backspace=indent,eol,start  " Sane backspace behavior
+set hidden                      " Allow buffer change w/o saving
+set lazyredraw                  " Don't update while executing macros
+set backspace=indent,eol,start  " Sane backspace behavior
 
 " Fix background color
 set termguicolors
@@ -20,12 +20,8 @@ set expandtab
 " Don't let Vim hide characters or make loud dings
 set conceallevel=1
 set noerrorbells
-" Space above/beside cursor from screen edges
-set scrolloff=1
-set sidescrolloff=5
 " Disable mouse support
 set mouse=r
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 set autoindent
 
@@ -35,7 +31,7 @@ set splitright
 set cursorcolumn              " highlight current column
 set cursorline                " highlight current line
 
-set number relativenumber
+set number
 set inccommand=split
 set noshowmode                " hide default mode indicator
 set ignorecase
@@ -50,6 +46,10 @@ augroup END
 
 " Set colorscheme
 colorscheme dracula
+" Cursor line number color
+highlight CursorLineNr ctermfg=215 guifg=#FFB86C
+" Autocomplete background color
+highlight Pmenu ctermbg=234 guibg=#191A21
 
 " ---- Minpac plugin manager ---------------------------------------------------
 " For a paranoia.
@@ -67,162 +67,179 @@ if exists('*minpac#init')
   call minpac#add('k-takata/minpac', {'type': 'opt'})
 
   " Additional plugins here.
-  " call minpac#add('vim-jp/syntax-vim-ex')
   call minpac#add('tpope/vim-surround')
-  " call minpac#add('kassio/neoterm')
-  " call minpac#add('janko-m/vim-test')
   call minpac#add('itchyny/lightline.vim')
-  call minpac#add('tpope/vim-fugitive')
-  call minpac#add('airblade/vim-gitgutter')
+  call minpac#add('mhinz/vim-signify')
   call minpac#add('editorconfig/editorconfig-vim')
   call minpac#add('scrooloose/nerdtree')
-  call minpac#add('dracula/vim')
+  call minpac#add('dracula/vim', { 'as': 'dracula' })
   call minpac#add('machakann/vim-highlightedyank')
   call minpac#add('christoomey/vim-tmux-navigator')
   call minpac#add('Yggdroot/indentLine')
-  " call minpac#add('w0rp/ale')
-  " call minpac#add('danro/rename.vim')
+  call minpac#add('ervandew/supertab')
   call minpac#add('tpope/vim-repeat')
-  " call minpac#add('SirVer/ultisnips')
-  " call minpac#add('honza/vim-snippets')
   call minpac#add('vim-scripts/tComment')
-  call minpac#add('wikitopian/hardmode')
+  call minpac#add('justinmk/vim-sneak')
+  call minpac#add('alvan/vim-closetag')
+  call minpac#add('mhinz/vim-startify')
+  call minpac#add('Valloric/MatchTagAlways')
+  call minpac#add('lambdalisue/gina.vim')
+  call minpac#add('rizzatti/dash.vim')
+  call minpac#add('w0rp/ale')
+  call minpac#add('danro/rename.vim')
+  call minpac#add('SirVer/ultisnips')
+  call minpac#add('honza/vim-snippets')
+  " call minpac#add('wikitopian/hardmode')
   call minpac#add('ncm2/ncm2')
   call minpac#add('roxma/nvim-yarp')
-  call minpac#add('roxma/vim-hug-neovim-rpc')
-  call minpac#add('roxma/ncm-flow')
+  " call minpac#add('roxma/ncm-flow')
   call minpac#add('luochen1990/rainbow')
-  call minpac#add('junegunn/vim-easy-align')
-  call minpac#add('sbdchd/neoformat')
-  call minpac#add('ervandew/supertab')
   call minpac#add('AndrewRadev/splitjoin.vim')
-  call minpac#add('dkarter/bullets.vim')
+  " call minpac#add('dkarter/bullets.vim')
   call minpac#add('jiangmiao/auto-pairs')
-  call minpac#add('tpope/vim-endwise')
-  call minpac#add('rstacruz/vim-closer')
-  call minpac#add('metakirby5/codi.vim')
-  call minpac#add('pangloss/vim-javascript')
-  call minpac#add('mxw/vim-jsx')
-  call minpac#add('skywind3000/asyncrun.vim')
+  " call minpac#add('metakirby5/codi.vim')
+  " call minpac#add('skywind3000/asyncrun.vim')
   call minpac#add('ncm2/ncm2-bufword')
   call minpac#add('ncm2/ncm2-path')
   call minpac#add('ncm2/ncm2-tmux')
-  call minpac#add('ncm2/ncm2-tern', {'do': 'silent! !npm install'})
-  " call minpac#add('rstacruz/vim-hyperstyle')
+  call minpac#add('ncm2/ncm2-syntax')
+  call minpac#add('Shougo/neco-syntax')
+  call minpac#add('wellle/tmux-complete.vim')
+  call minpac#add('ncm2/ncm2-cssomni')
   " call minpac#add('chrisbra/Colorizer')
-  " call minpac#add('Shougo/denite.nvim')
-  " call minpac#add('edkolev/tmuxline.vim')
-  call minpac#add('justinmk/vim-sneak')
-  call minpac#add('autozimu/LanguageClient-neovim', {
-        \ 'branch': 'next',
-        \ 'do': 'silent! !bash install.sh'
-        \})
+  call minpac#add('sheerun/vim-polyglot')
+  " call minpac#add('autozimu/LanguageClient-neovim', {
+  "       \ 'branch': 'next',
+  "       \ 'do': 'silent! !bash install.sh'
+  "       \})
 endif
 
 " Plugin settings here.
 "
+" Always highlights the enclosing html/xml tags
+let g:mta_filetypes = {
+      \ 'html' : 1,
+      \ 'javascript.jsx' : 1,
+      \ 'jinja' : 1,
+      \ 'liquid' : 1,
+      \ 'markdown' : 1,
+      \ 'xhtml' : 1,
+      \ 'xml' : 1,
+      \}
+
+" Auto close (X)HTML tags
+let g:closetag_filenames = '*.html,*.js,*.jsx'
+"" This will make the list of non-closing tags case-sensitive
+"" (e.g. `<Link>` will be closed while `<link>` won't.)
+"" integer value [0|1]
+let g:closetag_emptyTags_caseSensitive = 1
+"" Add > at current position without closing the current tag, default is ''
+let g:closetag_close_shortcut = '<leader>>'
+
+" NCM2
+"" enable ncm2 for all buffers
+autocmd BufEnter * call ncm2#enable_for_buffer()
+"" IMPORTANTE: :help Ncm2PopupOpen for more information
+set completeopt=noinsert,menuone,noselect
+" suppress the annoying 'match x of y', 'The only match' and 'Pattern not
+" found' messages
+set shortmess+=c
+" CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
+inoremap <c-c> <ESC>
+"" tmux-complete
+let g:tmuxcomplete#trigger = ''
+
+" LanguageClient
+" let g:LanguageClient_autoStart = 1
+" let g:LanguageClient_serverCommands = {
+"   \ 'javascript': ['javascript-typescript-stdio'],
+"   \ 'javascript.jsx': ['javascript-typescript-stdio']
+"   \ }
+
 " HardMode plugin settings
 "" Enable HardMode plugin by default and map it
 "" autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
 "" :call EasyMode() <== to disable it
-nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
-let g:HardMode_level='wannabe'
+" nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
+" let g:HardMode_level='wannabe'
 
 " Lightline config
 let g:lightline = {
       \ 'colorscheme': 'Dracula',
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+      \   'left': [ [ 'mode', 'paste' ], [
+      \     'gitbranch', 'readonly', 'relativepath', 'modified', 'LinterStatus'
+      \   ] ],
       \ },
       \ 'component_function': {
-      \   'gitbranch': 'fugitive#head',
+      \   'gitbranch': 'gina#component#repo#branch',
       \   'LinterStatus': 'LinterStatus',
       \ },
       \ }
 
 " Asynchronous Lint Engine (ALE)
 "" Configure linter status for  lightline
-" function! LinterStatus() abort
-"     let l:counts = ale#statusline#Count(bufnr(''))
-"
-"     let l:all_errors = l:counts.error + l:counts.style_error
-"     let l:all_non_errors = l:counts.total - l:all_errors
-"
-"     return l:counts.total == 0 ? '' : printf(
-"     \   'ALE: %dW %dE',
-"     \   all_non_errors,
-"     \   all_errors
-"     \)
-" endfunction
-" let g:ale_echo_msg_error_str = 'E'
-" let g:ale_echo_msg_warning_str = 'W'
-" let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-"
-" "" Set this if you want to.
-" let g:ale_open_list = 1
-" "" This can be useful if you are combining ALE with
-" "" some other plugin which sets quickfix errors, etc.
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+    return l:counts.total == 0 ? '' : printf(
+    \   'ALE: %dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+"" Set this if you want to.
+let g:ale_open_list = 1
+"" This can be useful if you are combining ALE with
+"" some other plugin which sets quickfix errors, etc.
 " let g:ale_keep_list_window_open = 1
 
 "" Limit linters used for JavaScript.
-" let g:ale_linters = {
-"     \  'javascript': ['flow']
-"     \}
+let g:ale_linters = {
+    \  'javascript': ['tsserver']
+    \}
 
 "" Setup fixers
 " let g:ale_fixers = {}
 " let g:ale_fixers['javascript'] = ['prettier']
 " let g:ale_fix_on_save = 1
 
-"" Extran settings for ALE
-" highlight clear ALEErrorSign   " otherwise uses error bg color (typically red)
-" highlight clear ALEWarningSign " otherwise uses error bg color (typically red)
+"" Extra settings for ALE
+highlight clear ALEErrorSign   " otherwise uses error bg color (typically red)
+highlight clear ALEWarningSign " otherwise uses error bg color (typically red)
 " let g:ale_sign_column_always = 2
-" let g:ale_sign_error = '✖︎'     " could use emoji
-" let g:ale_sign_warning = '!'    " could use emoji
-" " let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
-" let g:ale_statusline_format = ['✖︎ %d', '! %d', '']
-" "" %linter% is the name of the linter that provided the message
-" "" %s is the error or warning message
-" let g:ale_echo_msg_format = '%linter% says %s'
-" "" Map keys to navigate between lines with errors and warnings.
-" nnoremap <leader>an :ALENextWrap<cr>
-" nnoremap <leader>ap :ALEPreviousWrap<cr>
+let g:ale_sign_error = 'X'     " could use emoji
+let g:ale_sign_warning = '!'   " could use emoji
+let g:ale_lint_on_enter = 0    " Less distracting when opening a new file
+let g:ale_statusline_format = ['X %d', '! %d', '']
+"" %linter% is the name of the linter that provided the message
+"" %s is the error or warning message
+let g:ale_echo_msg_format = '%linter% says %s'
+"" Map keys to navigate between lines with errors and warnings.
+nnoremap <leader>an :ALENextWrap<cr>
+nnoremap <leader>ap :ALEPreviousWrap<cr>
 "" Enable completion where available.
-" let g:ale_completion_enabled = 1
-
-" nvim-completion-manager optional configuration
-"" Supress the annoying completion messages
-"" don't give |ins-completion-menu| messages.  For example,
-"" '-- XXX completion (YYY)', 'match 1 of 2', 'The only match',
-set shortmess+=c
-"" When the <Enter> key is pressed while the popup menu is visible, it only
-" hides the menu. Use this mapping to hide the menu and also start a new line.
+let g:ale_completion_enabled = 1
 
 " AsyncRun settings
-  autocmd BufWritePost *.js AsyncRun -post=checktime eslint --fix %
+" autocmd BufWritePost *.js AsyncRun -post=checktime eslint --fix %
 
 " IndentLine settings
 let g:indentLine_enabled = 1
 let g:indentLine_char = "▏"
 " let g:indentLine_leadingSpaceEnabled = 1
 
-" Gitgutter settings
-"" Set ripgrep as default grep for gitgutter
-"" Default:
-let g:gitgutter_grep = 'rg'
-"" To turn off signs by default
-let g:gitgutter_signs = 0
-"" To turn on line highlighting by default
-" let g:gitgutter_highlight_lines = 1
-
 " Editorconfig
 let g:EditorConfig_exec_path = '/usr/local/bin/editorconfig'
 let g:EditorConfig_core_mode = 'external_command'
 "" To ensure that this plugin works well with Tim Pope's fugitive,
 "" use the following patterns array:
-let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+" let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 "" You might want to override some project-specific EditorConfig rules in global
 "" or local vimrc in some cases to resolve coflicts of trailing whitespace
 "" trimming and buffer autosaving.
@@ -296,12 +313,6 @@ let g:rainbow_conf = {
 \    }
 \}
 
-" Easy align config
-"" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-"" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
 " ---- EOF plugin settings -----------------------------------------------------
 
 " Force the cursor onto a new line after 80 characters
@@ -372,7 +383,7 @@ nnoremap <leader>; :
 nmap <leader>bi :PackUpdate<cr>
 nmap <leader>bd :PackClean<cr>
 "" General settings
-set backspace=2      " Backspace deletes like most programs in insert mode
+" set backspace=2      " Backspace deletes like most programs in insert mode
 set nobackup
 set nowritebackup
 set noswapfile
@@ -384,11 +395,11 @@ set formatoptions-=t " Don't auto-break long lines (re-enable this for prose)
 set list listchars=tab:»·,trail:·,nbsp:·
 
 " via https://github.com/colbycheeze/dotfiles/blob/master/vimrc
-""" Use enter to create new lines w/o entering insert mode
-"nnoremap <CR> o<Esc>
-""" Below is to fix issues with the ABOVE mappings in quickfix window
-"autocmd CmdwinEnter * nnoremap <CR> <CR>
-"autocmd BufReadPost quickfix nnoremap <CR> <CR>
+"" Use enter to create new lines w/o entering insert mode
+nnoremap <CR> o<Esc>
+"" Below is to fix issues with the ABOVE mappings in quickfix window
+autocmd CmdwinEnter * nnoremap <CR> <CR>
+autocmd BufReadPost quickfix nnoremap <CR> <CR>
 "" Reload files changed outside vim
 set autoread
 "" Trigger autoread when changing buffers or coming back to vim in terminal.
@@ -397,3 +408,13 @@ au FocusGained,BufEnter * :silent! !
 set scrolloff=8         "Start scrolling when we're 8 lines away from margins
 set sidescrolloff=15
 set sidescroll=1
+
+" via https://github.com/semanser/dotfiles/blob/master/.vimrc
+set diffopt+=vertical       " split diffopt in vertical mode
+set encoding=utf-8          " set the character encoding to UTF-8
+set signcolumn=yes          " always show signcolumns
+set nowrap                  " wrap lines
+set smartcase               " unless the query has capital letters
+set ttyfast                 " always assume a fast terminal
+set updatetime=250          " reduce update time in Vim
+set wildmenu                " visual autocomplete for command menu
