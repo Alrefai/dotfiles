@@ -16,7 +16,7 @@ source "${HOME}/.iterm2_shell_integration.zsh"
 [ -f ~/.fzf.zsh ] && source ~/.zsh/fzfrc.zsh
 
 # awesome-terminal-fonts maps
-[ -f ~/.fonts ] && source ~/.fonts/*.sh
+# [ -f ~/.fonts ] && source ~/.fonts/*.sh
 
 # Conda fix
 [ -f /usr/local/miniconda3/etc/profile.d/conda.sh ] && \
@@ -39,3 +39,17 @@ export VISUAL="$EDITOR"
 
 # PATH
 [ -f ~/.zsh/path.zsh ] && source ~/.zsh/path.zsh
+
+# Set Spaceship ZSH as a prompt
+autoload -U promptinit; promptinit
+prompt spaceship                  # Managed by yarn global
+SPACESHIP_DIR_COLOR="blue"
+SPACESHIP_GIT_BRANCH_COLOR="cyan"
+SPACESHIP_VI_MODE_COLOR="magenta"
+SPACESHIP_CHAR_SYMBOL="❯ "
+SPACESHIP_VI_MODE_SUFFIX="❯"
+SPACESHIP_VI_MODE_INSERT="❯"
+SPACESHIP_VI_MODE_NORMAL="❮"
+
+# added by travis gem
+[ -f /Users/mohammed/.travis/travis.sh ] && source /Users/mohammed/.travis/travis.sh
