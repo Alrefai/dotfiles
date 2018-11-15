@@ -52,4 +52,5 @@ SPACESHIP_VI_MODE_INSERT="❯"
 SPACESHIP_VI_MODE_NORMAL="❮"
 
 # added by travis gem
-[ -f /Users/mohammed/.travis/travis.sh ] && source /Users/mohammed/.travis/travis.sh
+[ -f /Users/mohammed/.travis/travis.sh ] && \
+  source /Users/mohammed/.travis/travis.sh || true
