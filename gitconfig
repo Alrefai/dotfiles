@@ -1,35 +1,36 @@
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
 [core]
-	editor = nvim
-	excludesfile = ~/.gitignore_global
+    editor = nvim
+    excludesfile = ~/.gitignore_global
 [color]
-	ui = auto
+    ui = auto
 [merge]
-	conflictstyle = diff3
+    conflictstyle = diff3
 [diff]
-	submodule = log
-	tool = icdiff
+    submodule = log
+    tool = icdiff
 [user]
-	useConfigOnly = true
+    useConfigOnly = true
 
 # Github style diff in terminal with icdiff
 [alias]
-	showtool = "!f() { git difftool $1^ $1; }; f"
-	added = difftool --cached
+    showtool = "!f() { git difftool $1^ $1; }; f"
+    added = difftool --cached
 [difftool]
-	prompt = false
+    prompt = false
 [difftool "icdiff"]
-	cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
+    cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE \
+      --color-map=change:magenta
 [pager]
-	difftool = true
+    difftool = true
 
 # References:
 # icdiff -> http://owen.cymru/github-style-diff-in-terminal-with-icdiff
 [commit]
-	template = ~/.git-commit-template
+    template = ~/.git-commit-template
 [credential]
-	helper = osxkeychain
+    helper = osxkeychain
