@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+sudo -v
 set -e
 
 CONFIG="install.conf.yaml"
@@ -14,7 +15,7 @@ git submodule update --init --recursive "${DOTBOT_DIR}"
 
 "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}";\
 
-# ---- Homebrew ---------------------------------------------------------------
+# ---- Homebrew ----------------------------------------------------------------
 # 1. Install Homebrew package manager for macOS, if not installed
 # 2. Evaluate dependencies of '.Brewfile' in '$HOME' root, if file exist
 # 3. Install dependencies, if needed
@@ -27,49 +28,75 @@ git submodule update --init --recursive "${DOTBOT_DIR}"
 #   updating the Brewfile with following command to remove it from the list:
 #   'brew bundle dump -f --global'
 printf "\n\033[34m==> Installing Homebrew package manager for macOS\033[0m\n"
-test -f $(which brew) && echo "Homebrew already installed" || /usr/bin/ruby -e \
+[ -f /usr/local/bin/brew ] && \
+echo "Homebrew already installed" || /usr/bin/ruby -e \
 "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew update; brew upgrade
 
 printf \
 "\n\033[34m==> Installing dependencies of '.Brewfile' in $HOME root\033[0m\n"
-brew bundle check --global || brew bundle --global && brew upgrade
+brew bundle check --global || brew bundle --global -v
 
 # Homebrew option: Update '.Brewfile' with existing Homebrews and macOS Apps
 # (uncomment below two lines to enable it)
 # echo "" && echo "==> Updating '.Brewfile' with existing dependencies"
 # brew bundle dump -f --global
 
-# ---- Install NeoVim -----------------------------------
+# --- Install Node packages ----------------------------------------------------
+printf "\n\033[34m==> Installing Node global packages\033[0m\n"
+[ ! -d ~/.config/yarn/global/node_modules ] && \
+yarn --cwd ~/.config/yarn/global/ || \
+yarn global upgrade-interactive --latest
+
+# --- Restore apps settings with Mackup ----------------------------------------
+printf "\n\033[34m==> Restoring Apps settings\033[0m\n"
+mackup -vf restore # refer to .dotfiles/mackup.cfg
+
+# --- Install Tmux plugins -----------------------------------------------------
+printf "\n\033[34m==> Installing Tmux plugins\033[0m\n"
+[ ! -d ~/.tmux/plugins/tpm ] && \
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && \
+~/.tmux/plugins/tpm/bin/install_plugins || \
+~/.tmux/plugins/tpm/bin/update_plugins all
+
+# ---- Install NeoVim ----------------------------------------------------------
 printf "\n\033[34m==> Installing NeoVim\033[0m\n"
-[ -f ~/.config/nvim/pack/minpac/opt/minpac ] && \
+[ -d ~/.config/nvim/pack/minpac/opt/minpac ] && \
+echo "NeoVim repo already cloned" || \
 git clone https://github.com/k-takata/minpac.git \
-~/.config/nvim/pack/minpac/opt/minpac || \
-echo "NeoVim repo already cloned"
+~/.config/nvim/pack/minpac/opt/minpac
+[ -f /usr/local/bin/nvim ] && nvim --headless +PackUpdate +q || \
+echo "NeoVim is not installed! Install NeoVim with Homebrew first"
 printf "\n\033[34m==> Installing NeoVim Providers: Python3, Ruby, Node\033[0m\n"
-test -f $(which nvim) && (test -f $HOME/.config/nvim || mkdir -p \
-$HOME/.config/nvim) || echo "NeoVim not installed! Install NeoVim with
-Homebrew first" && pip3 install --upgrade neovim && gem install neovim && yarn \
+pip3 install --upgrade neovim && gem install neovim && yarn \
 global add neovim && \
 echo "You may need to log out and log back in to see changes"
 
-# ---- Set ZSH as Default Shell -----------------------------------------------
+# ---- Set ZSH as Default Shell ------------------------------------------------
 printf "\n\033[34m==> Setting Homebrew ZSH as Default Shell\033[0m\n"
 [ $(which $SHELL) != /usr/local/bin/zsh ] && \
-sudo chsh -s /usr/local/bin/zsh $USER && echo "Done" || \
+chsh -s /usr/local/bin/zsh $USER && echo "Done" || \
 echo "Homebrew Zsh is the default shell"
 
-# ---- Install tmux session manager (tmuxp) -----------------------------------
+# ---- Install tmux session manager (tmuxp) ------------------------------------
 printf "\n\033[34m==> Installing tmuxp with pip3\033[0m\n"
 pip3 install --upgrade tmuxp
 
-# ---- Install Powerline statusline plugin ------------------------------------
+# ---- Install Powerline statusline plugin -------------------------------------
 printf "\n\033[34m==> Installing Powerline with pip3\033[0m\n"
 pip3 install --upgrade powerline-status
 
-# ---- Install useful keybindings and fuzzy completion for FZF -------------
+# ---- Install useful keybindings and fuzzy completion for FZF -----------------
 printf \
 "\n\033[34m==> Installing keybindings and fuzzy completion for FZF\033[0m\n"
-test -f $(which fzf) && test -f ~/.fzf.zsh && \
+[ -f /usr/local/bin/fzf ] && [ -f ~/.fzf.zsh ] && \
 echo "Keybindings and fuzzy completion already installed" || \
 /usr/local/opt/fzf/install || \
 echo "FZF not installed. You must 'brew install fzf' first"
+
+# ---- Enable iTerm shell integration ------------------------------------------
+printf "\n\033[34m==> Enable iTerm shell integration\033[0m\n"
+[ -f ~/.iterm2_shell_integration.zsh ] && \
+curl -L https://iterm2.com/shell_integration/zsh \
+-o ~/.iterm2_shell_integration.zsh && echo "Done" || \
+echo "Already enabled"
