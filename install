@@ -44,8 +44,7 @@ brew bundle check --global || brew bundle --global -v
 
 # --- Install Node packages ----------------------------------------------------
 printf "\n\033[34m==> Installing Node global packages\033[0m\n"
-[ ! -d ~/.config/yarn/global/node_modules ] && \
-yarn --cwd ~/.config/yarn/global/ || \
+yarn --cwd ~/.config/yarn/global/
 yarn global upgrade-interactive --latest
 
 # --- Restore apps settings with Mackup ----------------------------------------
