@@ -7,11 +7,11 @@ alias jnn='jupyter nteract'
 alias treee='tree -CI node_modules'
 alias nowjam='now -A now-prod.json && now alias -A now-prod.json'
 alias upgradeZsh='antigen update && antigen reset && exec $SHELL'
+alias viHistory='nvim ~/.zsh_history'
 ## Aliases to protect against deletion
 alias rm='rm -i'
-alias rmd='rm -ri'
-alias rmdf='rm -rf'
-alias cat=ccat
+alias rd='rm -ri'
+alias cat='ccat'
 
 ## tmux
 alias loadp='tmuxp load projects'
@@ -75,9 +75,7 @@ alias mv='mv -i'
 
 ## Update dotfiles
 dfu() {
-    (
-        cd ~/.dotfiles && git pull --ff-only && ./install -q
-    )
+  cd ~/.dotfiles && git pull --ff-only && ./install -q
 }
 
 ## cd to git root directory
@@ -85,7 +83,7 @@ alias cdgr='cd "$(git root)"'
 
 ## Create a directory and cd into it
 mcd() {
-    mkdir "${1}" && cd "${1}"
+  mkdir "${1}" && cd "${1}"
 }
 
 # ---- webpro/dotfiles/system/.alias && ../.function.macos --------------------
