@@ -15,7 +15,6 @@
     ~/.tmux.conf:
     ~/.tmuxp:
     ~/.config/powerline: config/powerline
-    ~/.config/iterm2: config/iterm2
     ~/.config/nvim/init.vim: config/nvim/init.vim
     ~/.config/yarn/global/package.json: config/yarn/package.json
     ~/.mackup.cfg:
