@@ -18,7 +18,7 @@
     "prettier-eslint": "^8.8.1",
     "prisma": "^1.20.7",
     "serve": "^10.1.1",
-    "snyk": "^1.108.2",
+    "snyk": "^1.110.0",
     "spaceship-prompt": "^3.7.1",
     "typescript": "^3.1.6"
   }
