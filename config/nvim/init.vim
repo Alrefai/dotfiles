@@ -44,8 +44,6 @@ augroup numbertoggle
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
 
-" Set colorscheme
-colorscheme dracula
 " Cursor line number color
 highlight CursorLineNr ctermfg=215 guifg=#FFB86C
 " Autocomplete background color
@@ -72,7 +70,7 @@ if exists('*minpac#init')
   call minpac#add('mhinz/vim-signify')
   call minpac#add('editorconfig/editorconfig-vim')
   call minpac#add('scrooloose/nerdtree')
-  call minpac#add('dracula/vim', { 'as': 'dracula' })
+  call minpac#add('dracula/vim', {'name': 'dracula'})
   call minpac#add('machakann/vim-highlightedyank')
   call minpac#add('christoomey/vim-tmux-navigator')
   call minpac#add('Yggdroot/indentLine')
@@ -116,6 +114,10 @@ endif
 
 " Plugin settings here.
 "
+" Set colorscheme
+packadd! dracula
+colorscheme dracula
+
 " Always highlights the enclosing html/xml tags
 let g:mta_filetypes = {
       \ 'html' : 1,
@@ -165,7 +167,7 @@ let g:tmuxcomplete#trigger = ''
 
 " Lightline config
 let g:lightline = {
-      \ 'colorscheme': 'Dracula',
+      \ 'colorscheme': 'dracula',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [
       \     'gitbranch', 'readonly', 'relativepath', 'modified', 'LinterStatus'
