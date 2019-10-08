@@ -8,10 +8,47 @@ alias treee='tree -CI node_modules'
 alias nowjam='now -A now-prod.json && now alias -A now-prod.json'
 alias upgradeZsh='antigen update && antigen reset && exec $SHELL'
 alias viHistory='nvim ~/.zsh_history'
+alias cat='ccat'
+alias tarx='tar -xzvf'
+alias k='kubectl'
+alias gc='git commit'
+
+# gRenameComp() {
+#   for file in $(git ls-files | rg 'components/\w+?.js');
+#   git mv $file $(echo $file | sed -e 's/\(components\/[^/]*\).js/\1.tsx/')
+# }
+
+## Using FZF to Enhance Git
+### Rename multiple files' extension in a git repo
+### 1. Pass desired new file extension as an argument (e.g. `fgm tsx`)
+### 2. Selelct files from fzf list
+fgm() {
+  if [ -z "$1" ]; then
+    echo "Pass new file extension as an argument"
+  else
+    for file in $(git ls-files | fzf); git mv ${file} ${file/%.*/.$1}
+  fi
+}
+
+alias fgl="git ls-files -m -o --exclude-standard | fzf"
+alias fgla="git ls-files | fzf"
+alias fga='git add -p `fgl`'
+# * https://spin.atomicobject.com/2018/04/05/fuzzy-find-git-add/
+# alias fza="git ls-files -m -o --exclude-standard | fzf -m --print0 | xargs -0 -o -t git add -p"
+
+
+## Force Plex to scan media
+alias pms='"/Applications/Plex Media Server.app/Contents/MacOS/Plex Media Scanner"'
+
+## Clear k8s current context
+alias kubeclr='sed -i"" -e"s/^current-context:.*$/current-context:/" ~/.kube/config'
+
+## open nnn file browswer in detail view mode
+alias n='nnn -d'
+
 ## Aliases to protect against deletion
 alias rm='rm -i'
 alias rd='rm -ri'
-alias cat='ccat'
 
 ## tmux
 alias loadp='tmuxp load projects'
@@ -22,7 +59,7 @@ alias loadp='tmuxp load projects'
 ## gitignore.io API
 function gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
 
-# ---- http://brettterpstra.com
+# ---- http://brettterpstra.com ------------------------------------------------
 
 function ql { qlmanage -p &>/dev/null $1 & }
 
@@ -50,10 +87,10 @@ alias r='exec $SHELL'  # Reload SHELL
 
 ## Git
 alias g='git status -s'
-alias ga='git add'
+# alias ga='git add'
 alias gb='git branch'
-alias gc='git commit -m'
-alias gca='git commit -am'
+# alias gc='git commit -m'
+# alias gca='git commit -am'
 alias gco='git checkout'
 alias gcob='git checkout -b'
 alias grpr='git remote prune origin'
