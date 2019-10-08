@@ -30,7 +30,5 @@
 
 # References:
 # icdiff -> http://owen.cymru/github-style-diff-in-terminal-with-icdiff
-[commit]
-    template = ~/.git-commit-template
 [credential]
     helper = osxkeychain
