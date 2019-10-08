@@ -7,7 +7,7 @@ export FZF_TMUX=1
 export FZF_ALT_C_OPTS="--preview 'tree -C {} -I node_modules | head -200'"
 
 # Run fzf in full screen mode with more options
-export FZF_DEFAULT_OPTS='--bind J:down,K:up --reverse --ansi --multi --no-height --no-reverse --select-1 --exit-0'
+export FZF_DEFAULT_OPTS='--bind J:down,K:up,ctrl-a:select-all,ctrl-d:deselect-all,ctrl-t:toggle-all --reverse --ansi --multi --no-height --no-reverse --select-1 --exit-0'
 
 # Full command on preview window
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
