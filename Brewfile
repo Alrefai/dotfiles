@@ -43,6 +43,7 @@ brew "watch"
 brew "wget"
 brew "zsh"
 brew "tavianator/tap/bfs"
+brew "extract_url"
 
 ## Other brew packages
 # brew "httpstat"
@@ -51,7 +52,6 @@ brew "tavianator/tap/bfs"
 # brew "sqlite"
 # brew "b2-tools"
 # brew "fontconfig"
-# brew "extract_url"
 # brew "gnu-sed"
 # brew "hyperkit", link: false
 # brew "jupyter"
