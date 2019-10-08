@@ -102,8 +102,8 @@ if exists('*minpac#init')
   call minpac#add('ncm2/ncm2-tmux')
   call minpac#add('ncm2/ncm2-syntax')
   call minpac#add('Shougo/neco-syntax')
-  call minpac#add('wellle/tmux-complete.vim')
-  call minpac#add('ncm2/ncm2-cssomni')
+  " call minpac#add('wellle/tmux-complete.vim')
+  " call minpac#add('ncm2/ncm2-cssomni')
   " call minpac#add('chrisbra/Colorizer')
   call minpac#add('sheerun/vim-polyglot')
   " call minpac#add('autozimu/LanguageClient-neovim', {
@@ -140,7 +140,7 @@ let g:closetag_close_shortcut = '<leader>>'
 
 " NCM2
 "" enable ncm2 for all buffers
-autocmd BufEnter * call ncm2#enable_for_buffer()
+" autocmd BufEnter * call ncm2#enable_for_buffer()
 "" IMPORTANTE: :help Ncm2PopupOpen for more information
 set completeopt=noinsert,menuone,noselect
 " suppress the annoying 'match x of y', 'The only match' and 'Pattern not
@@ -148,6 +148,13 @@ set completeopt=noinsert,menuone,noselect
 set shortmess+=c
 " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
 inoremap <c-c> <ESC>
+
+inoremap <expr> <CR> (pumvisible() ? "\<c-y>" : "\<CR>")
+
+augroup vimrc
+  autocmd BufEnter * call ncm2#enable_for_buffer()
+  autocmd TextChangedI * call ncm2#auto_trigger()
+augroup END
 "" tmux-complete
 let g:tmuxcomplete#trigger = ''
 
@@ -202,14 +209,14 @@ let g:ale_open_list = 1
 " let g:ale_keep_list_window_open = 1
 
 "" Limit linters used for JavaScript.
-let g:ale_linters = {
-    \  'javascript': ['tsserver']
-    \}
+" let g:ale_linters = {
+"     \  'javascript': ['tsserver']
+"     \}
 
 "" Setup fixers
-" let g:ale_fixers = {}
-" let g:ale_fixers['javascript'] = ['prettier']
-" let g:ale_fix_on_save = 1
+let b:ale_fixers = ['prettier', 'eslint']
+let g:ale_fix_on_save = 1
+" let g:ale_linters_explicit = 1
 
 "" Extra settings for ALE
 highlight clear ALEErrorSign   " otherwise uses error bg color (typically red)
@@ -226,7 +233,7 @@ let g:ale_echo_msg_format = '%linter% says %s'
 nnoremap <leader>an :ALENextWrap<cr>
 nnoremap <leader>ap :ALEPreviousWrap<cr>
 "" Enable completion where available.
-let g:ale_completion_enabled = 1
+" let g:ale_completion_enabled = 1
 
 " AsyncRun settings
 " autocmd BufWritePost *.js AsyncRun -post=checktime eslint --fix %
