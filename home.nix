@@ -239,7 +239,6 @@ in {
         # don't use global env as it will slow us down
         skip_global_compinit=1
       '';
-      profileExtra = "eval \"$(/opt/homebrew/bin/brew shellenv)\"";
       initExtraBeforeCompInit = ''
         # add devbox bits to zsh
         if command -v devbox >/dev/null; then
