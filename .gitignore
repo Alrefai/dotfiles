@@ -1,3 +1,14 @@
-*.zwc
-errors.log
+# Devbox
+.devbox
+
+# MacOS filesystem
+.DS_Store
+
+# Editors
+.idea
+.vscode
+.zed
+
+# devcontainer
+*.devcontainer
 
