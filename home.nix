@@ -283,7 +283,7 @@ in {
         if command -v op >/dev/null; then
           eval "$(op completion zsh)"
           # compdef _op op
-          source "$HOME"/.config/op/plugins.sh
+          source "${config.xdg.configHome}"/op/plugins.sh
         fi
       '';
       defaultKeymap = "viins";
