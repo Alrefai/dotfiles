@@ -73,7 +73,11 @@ in {
     # Home Manager needs a bit of information about you and the paths it should
     # manage.
     username = "mohammed";
-    homeDirectory = "/Users/mohammed";
+    homeDirectory =
+      if pkgs.stdenv.isDarwin
+      then "/Users/mohammed"
+      else "/home/mohammed";
+
     preferXdgDirectories = true;
 
     # This value determines the Home Manager release that your configuration is

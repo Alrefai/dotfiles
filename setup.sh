@@ -10,7 +10,6 @@ sh -s -- install --extra-conf "trusted-users = $(whoami)" < <(
 # run nix daemon
 . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
-
 # setup devbox
 nix profile install nixpkgs#devbox
 eval "$(devbox global shellenv --recompute)"

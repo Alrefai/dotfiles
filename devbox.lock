@@ -171,6 +171,7 @@
     },
     "python3Full@latest": {
       "last_modified": "2024-07-31T08:48:38Z",
+      "plugin_version": "0.0.3",
       "resolved": "github:NixOS/nixpkgs/c3392ad349a5227f4a3464dce87bcc5046692fce#python312Full",
       "source": "devbox-search",
       "version": "3.12.4",
