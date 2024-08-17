@@ -54,8 +54,10 @@ fi
 export SHELL_SESSIONS_DISABLE=1    # Make Apple Terminal behave
 export DISABLE_AUTO_TITLE='true'   # Tmux auto title
 
-# SSH agent
-export SSH_AUTH_SOCK=${HOME}/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+# 1Password SSH agent
+if [[ ${OSTYPE} == 'darwin'* && ! ${SSH_TTY} ]]; then
+  export SSH_AUTH_SOCK=${HOME}/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+fi
 
 # PATH
 export PATH=${XDG_DATA_HOME}/npm-global/bin:${PATH}
