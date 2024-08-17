@@ -10,9 +10,14 @@ sh -s -- install --extra-conf "trusted-users = $(whoami)" < <(
 # run nix daemon
 . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
-# setup devbox
+# install git if necessary
+command -v git >/dev/null || nix profile install nixpkgs#git
+
+# setup global devbox
 nix profile install nixpkgs#devbox
+devbox global pull https://github.com/Alrefai/dotfiles.git
 eval "$(devbox global shellenv --recompute)"
 eval "$(devbox global shellenv --preserve-path-stack -r)" && hash -r
-devbox global run switch-home
 
+# activate home-manager home profile
+devbox global run switch-home
