@@ -15,7 +15,12 @@
   },
   "shell": {
     "scripts": {
-      "switch-home": "home-manager switch -b bak --flake ."
+      "switch-home": "home-manager switch -b bak --flake .",
+      "chsh-zsh": [
+        "grep -Fxq \"$(command -v zsh)\" /etc/shells ||",
+        "command -v zsh | sudo tee -a /etc/shells",
+        "chsh -s \"$(command -v zsh)\""
+      ]
     }
   }
 }
