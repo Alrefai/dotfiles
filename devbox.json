@@ -5,6 +5,8 @@
     "home-manager@latest",
     "neovim@latest",
     "python3Full@latest",
+    "_1password@latest",
+    "glow@latest",
   ],
   "env": {
     "DEVBOX_GLOBAL_PREFIX":    "$HOME/.local/share/devbox/global/default/.devbox/nix/profile/default",

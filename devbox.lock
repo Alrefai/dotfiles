@@ -1,6 +1,54 @@
 {
   "lockfile_version": "1",
   "packages": {
+    "_1password@latest": {
+      "last_modified": "2024-07-31T08:48:38Z",
+      "resolved": "github:NixOS/nixpkgs/c3392ad349a5227f4a3464dce87bcc5046692fce#_1password",
+      "source": "devbox-search",
+      "version": "2.29.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/s3l7qmkma67jbqml6lc4kmjyh2dv8lif-1password-cli-2.29.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/s3l7qmkma67jbqml6lc4kmjyh2dv8lif-1password-cli-2.29.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/816dr3mn558v3f1my7h33cwyn5p5xisp-1password-cli-2.29.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/816dr3mn558v3f1my7h33cwyn5p5xisp-1password-cli-2.29.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/jp2yl0r8wjcs7pm8kqqhn5pj2dbhimc0-1password-cli-2.29.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/jp2yl0r8wjcs7pm8kqqhn5pj2dbhimc0-1password-cli-2.29.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/s10lirfra6rmrkcvxmbn01sp68sgmqbd-1password-cli-2.29.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/s10lirfra6rmrkcvxmbn01sp68sgmqbd-1password-cli-2.29.0"
+        }
+      }
+    },
     "git@latest": {
       "last_modified": "2024-07-31T08:48:38Z",
       "resolved": "github:NixOS/nixpkgs/c3392ad349a5227f4a3464dce87bcc5046692fce#git",
@@ -70,6 +118,54 @@
             }
           ],
           "store_path": "/nix/store/zlkbk9a9l6jw9ghaknlyk6l73q263m44-git-2.45.2"
+        }
+      }
+    },
+    "glow@latest": {
+      "last_modified": "2024-07-31T08:48:38Z",
+      "resolved": "github:NixOS/nixpkgs/c3392ad349a5227f4a3464dce87bcc5046692fce#glow",
+      "source": "devbox-search",
+      "version": "1.5.1",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/p45nj9s1pn8kdpa1yg8ww178xr7hnfqf-glow-1.5.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/p45nj9s1pn8kdpa1yg8ww178xr7hnfqf-glow-1.5.1"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/xn94lcf8d8dhrn7gyl8z53biaw07yigs-glow-1.5.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/xn94lcf8d8dhrn7gyl8z53biaw07yigs-glow-1.5.1"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/aac28alz3y67v7zgyamw9l8z7qvvy97k-glow-1.5.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/aac28alz3y67v7zgyamw9l8z7qvvy97k-glow-1.5.1"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/2cxflhmh4n5bx26yl67h90yijjl3r3sv-glow-1.5.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/2cxflhmh4n5bx26yl67h90yijjl3r3sv-glow-1.5.1"
         }
       }
     },
