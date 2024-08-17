@@ -13,4 +13,9 @@
     "DEVBOX_GLOBAL_ROOT":      "$HOME/.local/share/devbox/global/current",
     "DEVBOX_COREPACK_ENABLED": "true",
   },
+  "shell": {
+    "scripts": {
+      "switch-home": "home-manager switch -b bak --flake ."
+    }
+  }
 }

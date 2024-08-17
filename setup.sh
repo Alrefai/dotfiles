@@ -14,4 +14,5 @@ sh -s -- install --extra-conf "trusted-users = $(whoami)" < <(
 nix profile install nixpkgs#devbox
 eval "$(devbox global shellenv --recompute)"
 eval "$(devbox global shellenv --preserve-path-stack -r)" && hash -r
+devbox global run switch-home
 
