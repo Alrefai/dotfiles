@@ -31,13 +31,16 @@
     forEachSupportedSystem = f:
       nixpkgs.lib.genAttrs supportedSystems (system:
         f {
+          inherit system;
           pkgs = import nixpkgs {inherit system;};
         });
   in {
     # Schemas tell Nix about the structure of your flake's outputs
     schemas = flake-schemas.schemas;
 
-    packages = forEachSupportedSystem ({pkgs}: {
+    packages = forEachSupportedSystem ({system, pkgs}: {
+      default = home-manager.defaultPackage.${system};
+
       homeConfigurations."mohammed" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
@@ -51,3 +54,4 @@
     });
   };
 }
+
