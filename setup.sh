@@ -1,23 +1,19 @@
 #!/usr/bin/env bash
 
 # install nix via determinate nix installer
-#
-# trusted-users = $(whoami) allows to accept a flake's `nixConfig`
-sh -s -- install --extra-conf "trusted-users = $(whoami)" < <(
-  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix
-)
+if ! command -v nix >/dev/null; then
+  sh -s -- install --extra-conf "trusted-users = $(whoami)" < <(
+    curl --proto '=https' --tlsv1.2 -sSf -L \
+      https://install.determinate.systems/nix
+  ) || exit 1
 
-# run nix daemon
-. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  # run nix daemon
+  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+else
+  mkdir -p ~/.config/nix
+  echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
+fi
 
-# install git if necessary
-command -v git >/dev/null || nix profile install nixpkgs#git
+# start a shell with git and neovim in the environment
+nix shell nixpkgs/nixos-24.05#{git,neovim}
 
-# setup global devbox
-nix profile install nixpkgs#devbox
-devbox global pull https://github.com/Alrefai/dotfiles.git
-eval "$(devbox global shellenv --recompute)"
-eval "$(devbox global shellenv --preserve-path-stack -r)" && hash -r
-
-# activate home-manager home profile
-devbox global run switch-home
