@@ -165,8 +165,9 @@ in {
   catppuccin.enable = true;
 
   # Let Home Manager install and manage itself.
-  # programs.home-manager.enable = true;
   programs = {
+    home-manager = {enable = true;};
+
     atuin = {enable = true;};
 
     eza = {
