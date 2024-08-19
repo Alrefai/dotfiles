@@ -13,17 +13,6 @@
     # zoxide for smart cd
     cd = "z";
 
-    # devbox helpers
-    dbr = "devbox run";
-    dbgr = "devbox global run";
-    dbgl = "devbox global list";
-    dbga = "devbox global add";
-    dbgd = "devbox global rm";
-    cddevbox = "cd $DEVBOX_GLOBAL_ROOT";
-
-    # home-manager
-    hsw = "home-manager switch -b bak --flake \${DEVBOX_GLOBAL_ROOT%/*}/default";
-
     # shell
     c = "clear";
     r = "exec $SHELL"; # Reload SHELL
@@ -92,20 +81,25 @@ in {
     # The home.packages option allows you to install Nix packages into your
     # environment.
     packages = with pkgs; [
+      _1password
       atuin
-      eza
       bat
+      curl
       delta
       direnv
+      eza
       fd
       fzf
       gh
+      git
       jq
       lazygit
+      neovim
       ripgrep
       starship
       tmux
       tree
+      wget
       yazi
       yq
       zoxide
@@ -165,8 +159,9 @@ in {
   catppuccin.enable = true;
 
   # Let Home Manager install and manage itself.
-  # programs.home-manager.enable = true;
   programs = {
+    home-manager = {enable = true;};
+
     atuin = {enable = true;};
 
     eza = {
