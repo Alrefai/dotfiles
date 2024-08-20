@@ -116,7 +116,7 @@ in {
       # (pkgs.writeShellScriptBin "my-hello" ''
       #   echo "Hello, ${config.home.username}!"
       # '')
-    ];
+    ] ++ lib.lists.optional (!pkgs.stdenv.isDarwin) gcc;
 
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
     # plain files is through 'home.file'.
@@ -153,6 +153,11 @@ in {
       # EDITOR = "vim";
     };
     sessionPath = [];
+  };
+
+  xdg = {
+    enable = true;
+    configFile."nvim".source = dotfiles/config/nvim;
   };
 
   # Enable Catppucin for all available programs.
