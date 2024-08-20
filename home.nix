@@ -82,27 +82,15 @@ in {
     # environment.
     packages = with pkgs; [
       _1password
-      atuin
-      bat
       curl
       delta
       direnv
-      eza
-      fd
-      fzf
       gh
       git
-      jq
-      lazygit
       neovim
-      ripgrep
-      starship
-      tmux
       tree
       wget
-      yazi
       yq
-      zoxide
 
       # # It is sometimes useful to fine-tune packages, for example, by applying
       # # overrides. You can do that directly here, just don't forget the
@@ -169,6 +157,14 @@ in {
 
     atuin = {enable = true;};
 
+    bat = {
+      enable = true;
+      config = {
+        italic-text = "always";
+        style = "full";
+      };
+    };
+
     eza = {
       enable = true;
       git = true;
@@ -178,14 +174,6 @@ in {
         "--header"
         "--git-ignore"
       ];
-    };
-
-    bat = {
-      enable = true;
-      config = {
-        italic-text = "always";
-        style = "full";
-      };
     };
 
     fd = {
@@ -302,3 +290,4 @@ in {
     };
   };
 }
+
