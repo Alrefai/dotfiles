@@ -29,16 +29,24 @@
       "aarch64-linux"
     ];
     forEachSupportedSystem = f:
-      nixpkgs.lib.genAttrs supportedSystems (system:
-        f {
-          inherit system;
-          pkgs = import nixpkgs {inherit system;};
-        });
+      nixpkgs.lib.genAttrs supportedSystems (
+        system:
+          f {
+            inherit system;
+            pkgs = import nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+            };
+          }
+      );
   in {
     # Schemas tell Nix about the structure of your flake's outputs
     schemas = flake-schemas.schemas;
 
-    packages = forEachSupportedSystem ({system, pkgs}: {
+    packages = forEachSupportedSystem ({
+      system,
+      pkgs,
+    }: {
       default = home-manager.defaultPackage.${system};
 
       homeConfigurations."mohammed" = home-manager.lib.homeManagerConfiguration {
@@ -54,4 +62,3 @@
     });
   };
 }
-
