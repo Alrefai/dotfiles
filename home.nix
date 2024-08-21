@@ -147,7 +147,12 @@ in {
 
   xdg = {
     enable = true;
-    configFile."nvim".source = dotfiles/config/nvim;
+    configFile = {
+      "nvim" = {
+        source = dotfiles/config/nvim;
+        recursive = true;
+      };
+    };
   };
 
   # Enable Catppucin for all available programs.
@@ -292,4 +297,3 @@ in {
     };
   };
 }
-
