@@ -230,11 +230,9 @@ in {
       };
       aliases = {
         delete-local-merged = ''
-          !xargs git branch -d < <(
-            grep -vE 'master|dev|main|staging' < <(
-              git fetch && git branch --merged
-            )
-          )
+          !git fetch && git branch --merged \
+          | grep -vE 'master|dev|main|staging' \
+          | xargs git branch -d
         '';
       };
       ignores = [
