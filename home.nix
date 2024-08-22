@@ -2,62 +2,7 @@
   config,
   pkgs,
   ...
-}: let
-  shellAliases = {
-    # bat --plain for unformatted cat
-    catp = "bat -P";
-
-    # replace cat with bat
-    cat = "bat";
-
-    # zoxide for smart cd
-    cd = "z";
-
-    # shell
-    c = "clear";
-    r = "exec $SHELL"; # Reload SHELL
-    rr = "rm -rf";
-
-    ## Enforce interaction
-    rm = "rm -i";
-    rd = "rm -ri";
-    cp = "cp -i";
-    mv = "mv -i";
-
-    vi = "nvim";
-
-    ## tmux
-    attach = "tmux attach-session -t";
-    switch = "tmux switch-client -t";
-    tmk = "tmux kill-session -t";
-    tls = "tmux ls";
-
-    # treee="tree -CI node_modules";
-    tarx = "tar -xzvf";
-
-    ## Git
-    g = "git status -s";
-    # ga="git add";
-    gb = "git branch";
-    # gc="git commit -m";
-    # gca="git commit -am";
-    gco = "git checkout";
-    gcob = "git checkout -b";
-    # grpr="git remote prune origin";
-    gl = "git log --oneline --graph";
-
-    ## eza aliases
-    # eza = "eza --group-directories-first --git-ignore -F auto --icons auto";
-    ls = "eza -1";
-    lsa = "ls -a";
-    ll = "eza -lho --git --git-repos";
-    l = "ll -a";
-    # lt="eza -lahT --ignore-glob=".git|$(ignore)"";
-
-    # vercel
-    "{vc,vercel}" = "vercel --global-config ~/.config/vercel";
-  };
-in {
+}: {
   home = {
     # Home Manager needs a bit of information about you and the paths it should
     # manage.
@@ -143,6 +88,60 @@ in {
       COLORTERM = "truecolor";
     };
     sessionPath = [];
+    shellAliases = {
+      # bat --plain for unformatted cat
+      catp = "bat -P";
+
+      # replace cat with bat
+      cat = "bat";
+
+      # zoxide for smart cd
+      cd = "z";
+
+      # shell
+      c = "clear";
+      r = "exec $SHELL"; # Reload SHELL
+      rr = "rm -rf";
+
+      ## Enforce interaction
+      rm = "rm -i";
+      rd = "rm -ri";
+      cp = "cp -i";
+      mv = "mv -i";
+
+      vi = "nvim";
+
+      ## tmux
+      attach = "tmux attach-session -t";
+      switch = "tmux switch-client -t";
+      tmk = "tmux kill-session -t";
+      tls = "tmux ls";
+
+      # treee="tree -CI node_modules";
+      tarx = "tar -xzvf";
+
+      ## Git
+      g = "git status -s";
+      # ga="git add";
+      gb = "git branch";
+      # gc="git commit -m";
+      # gca="git commit -am";
+      gco = "git checkout";
+      gcob = "git checkout -b";
+      # grpr="git remote prune origin";
+      gl = "git log --oneline --graph";
+
+      ## eza aliases
+      # eza = "eza --group-directories-first --git-ignore -F auto --icons auto";
+      ls = "eza -1";
+      lsa = "ls -a";
+      ll = "eza -lho --git --git-repos";
+      l = "ll -a";
+      # lt="eza -lahT --ignore-glob=".git|$(ignore)"";
+
+      # vercel
+      "{vc,vercel}" = "vercel --global-config ~/.config/vercel";
+    };
   };
 
   xdg = {
@@ -479,7 +478,6 @@ in {
         size = 600; # Number of history lines to keep
         path = "${config.xdg.dataHome}/zsh/zsh_history";
       };
-      inherit shellAliases;
     };
   };
 }
