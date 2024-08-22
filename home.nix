@@ -390,6 +390,10 @@
       };
     };
 
+    less.enable = true;
+
+    lesspipe.enable = true;
+
     ripgrep = {enable = true;};
 
     starship = {enable = true;};
