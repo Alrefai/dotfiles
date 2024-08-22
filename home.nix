@@ -382,7 +382,15 @@ in {
 
     jq = {enable = true;};
 
-    lazygit = {enable = true;};
+    lazygit = {
+      enable = true;
+      settings = {
+        git.paging = {
+          colorArg = "always";
+          pager = "delta --paging=never";
+        };
+      };
+    };
 
     ripgrep = {enable = true;};
 
