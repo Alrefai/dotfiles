@@ -57,8 +57,9 @@
       # # Building this configuration will create a copy of 'dotfiles/screenrc' in
       # # the Nix store. Activating the configuration will then make '~/.screenrc' a
       # # symlink to the Nix store copy.
-      ".profile".source = dotfiles/profile;
-      ".ssh/allowed_signers".source = dotfiles/ssh/allowed_signers;
+      ".profile".source = ./dotfiles/profile;
+      ".ssh/allowed_signers".source = ./dotfiles/ssh/allowed_signers;
+      ".local/bin".source = ./bin;
 
       # # You can also set the file content immediately.
       # ".gradle/gradle.properties".text = ''
