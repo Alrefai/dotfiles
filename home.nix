@@ -219,11 +219,12 @@ in {
         gpg = {
           format = "ssh";
           ssh = {
-            program =
-              if pkgs.stdenv.isDarwin
-              then "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-              else null;
             allowedSignersFile = "~/.ssh/allowed_signers";
+            ${
+              if pkgs.stdenv.isDarwin
+              then "program"
+              else null
+            } = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
           };
         };
       };
