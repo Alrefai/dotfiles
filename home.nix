@@ -3,6 +3,15 @@
   pkgs,
   ...
 }: {
+  nix = {
+    package = pkgs.nixVersions.nix_2_23;
+    gc.automatic = true;
+    extraOptions = ''
+      trusted-users = mohammed
+      experimental-features = fetch-tree flakes nix-command
+    '';
+  };
+
   home = {
     # Home Manager needs a bit of information about you and the paths it should
     # manage.
