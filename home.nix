@@ -175,7 +175,8 @@
       # lt="eza -lahT --ignore-glob=".git|$(ignore)"";
 
       # vercel
-      "{vc,vercel}" = "vercel --global-config ~/.config/vercel";
+      vercel = "vercel --global-config ~/.config/vercel";
+      vc = "vercel";
     };
   };
 
@@ -194,7 +195,7 @@
 
   # Let Home Manager install and manage itself.
   programs = {
-    home-manager = {enable = true;};
+    home-manager.enable = true;
 
     atuin = {enable = true;};
 
@@ -413,7 +414,7 @@
       ];
     };
 
-    jq = {enable = true;};
+    jq.enable = true;
 
     lazygit = {
       enable = true;
@@ -429,7 +430,7 @@
 
     lesspipe.enable = true;
 
-    ripgrep = {enable = true;};
+    ripgrep.enable = true;
 
     starship = {enable = true;};
 
@@ -458,17 +459,6 @@
         # don't use global env as it will slow us down
         skip_global_compinit=1
       '';
-      initExtraBeforeCompInit = ''
-        # add devbox bits to zsh
-        if command -v devbox >/dev/null; then
-          eval "$(devbox global shellenv)"
-          fpath+=(
-            $DEVBOX_GLOBAL_PREFIX/share/zsh/site-functions
-            $DEVBOX_GLOBAL_PREFIX/share/zsh/$ZSH_VERSION/functions
-            $DEVBOX_GLOBAL_PREFIX/share/zsh/vendor-completions
-          )
-        fi
-      '';
       initExtra = ''
         # extra options
         setopt auto_list            # auto list choices on ambiguous completion
@@ -480,10 +470,6 @@
         # use bat as a colorizing pager for man pages
         if command -v bat >/dev/null; then
           export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-        fi
-
-        if command -v devbox >/dev/null; then
-          source <(devbox completion zsh)
         fi
 
         # Create ssh sockets directory with the following code:
