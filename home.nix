@@ -515,7 +515,7 @@
         ignoreSpace = true;
         save = 500; # Number of history lines to save
         size = 600; # Number of history lines to keep
-        path = "${config.xdg.dataHome}/zsh/zsh_history";
+        path = "${config.xdg.stateHome}/zsh/zsh_history";
       };
     };
   };
