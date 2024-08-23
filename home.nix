@@ -94,10 +94,35 @@
     #  /etc/profiles/per-user/mohammed/etc/profile.d/hm-session-vars.sh
     #
     sessionVariables = {
-      # EDITOR = "vim";
-      COLORTERM = "truecolor";
+      # General
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+      # BROWSER = "open";
+      # LANG = "en_US.UTF-8";
+      # LC_ALL = "en_US.UTF-8";
+
+      # Custom excutable programs
+      XDG_BIN_HOME = "$HOME/.local/bin";
+
+      # Less
+      PAGER = "less";
+      LESSHISTFILE = "${config.xdg.stateHome}/less/history";
+
+      # Terminal
+      TERM = "xterm-256color";
+      COLORTERM = "truecolor"; #! Important: for delta catppuccin theme
+
+      # Node
+      # NPM_CONFIG_USERCONFIG = "${config.xdg.configHome}/npm/npmrc";
+      NPM_CONFIG_CACHE = "${config.xdg.cacheHome}/npm";
+      PNPM_HOME = "${config.xdg.dataHome}/pnpm";
+      NODE_REPL_HISTORY = "${config.xdg.stateHome}/node_repl_history";
     };
-    sessionPath = [];
+    sessionPath = [
+      "${config.xdg.dataHome}/npm-global/bin"
+      "${config.home.sessionVariables.PNPM_HOME}"
+      "$HOME/.local/bin"
+    ];
     shellAliases = {
       # bat --plain for unformatted cat
       catp = "bat -P";
