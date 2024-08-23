@@ -197,7 +197,29 @@
   programs = {
     home-manager.enable = true;
 
-    atuin = {enable = true;};
+    atuin = {
+      enable = true;
+      settings = {
+        ctrl_n_shortcuts = true;
+        enter_accept = true;
+        history_filter = [
+          "^l(l|s|t)?( +|$)"
+          "^cd( +|$)"
+          "^(c|b)at( +|$)"
+          "^vim?( +|$)"
+          "^nvim( +|$)"
+          "^env( +|$)"
+          "^type( +|$)"
+          "^which( +|$)"
+          "^g *$"
+          "^exit( +|$)"
+          "^builtin( +|$)"
+        ];
+        inline_height = 14;
+        keymap_mode = "auto";
+        style = "compact";
+      };
+    };
 
     bat = {
       enable = true;
