@@ -247,15 +247,44 @@
 
     fzf = {
       enable = true;
-      changeDirWidgetCommand = "fd --type d";
+      changeDirWidgetCommand = ''
+        fd --type d --color always --follow --hidden --no-require-git \
+          --exclude 'Library/' \
+          --exclude '.cache/' \
+          --exclude '.git/'
+      '';
       changeDirWidgetOptions = [
-        "--preview 'tree -C {} | head -200'"
+        "--preview 'tree -C {} --gitignore | head -200'"
       ];
-      defaultCommand = "fd --type f";
-      fileWidgetCommand = "fd --type f";
+      colors = {
+        bg = pkgs.lib.mkForce "-1";
+        fg = pkgs.lib.mkForce "-1";
+        "bg+" = pkgs.lib.mkForce "-1";
+      };
+      defaultCommand = ''
+        fd --type f --color always --follow --hidden --no-require-git -E '.git/'
+      '';
+      defaultOptions = [
+        "--bind J:down,K:up,ctrl-a:select-all,ctrl-d:deselect-all,ctrl-t:toggle-all"
+        "--no-height"
+        "--border"
+        "--ansi"
+      ];
+      fileWidgetCommand = ''
+        fd --type f --color always --follow --hidden --no-require-git -E '.git/'
+      '';
       fileWidgetOptions = [
-        "--preview 'bat --color=always --style=numbers --line-range=:500 {}'"
+        "--preview 'bat --color always --style numbers --line-range :500 {}'"
       ];
+      historyWidgetOptions = [
+        "--preview 'echo {}'"
+        "--preview-window down:3:wrap"
+        "--bind '?:toggle-preview'"
+        "--sort"
+        "--exact"
+        "--height '~14'"
+      ];
+      tmux.enableShellIntegration = true;
     };
 
     git = {
