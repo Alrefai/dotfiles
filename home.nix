@@ -520,6 +520,9 @@
         setopt interactive_comments # allow comments in interactive shells
         setopt ignoreeof            # Disable closing shell with C-d
 
+        # autosuggestions key bindings
+        bindkey '^ ' autosuggest-accept
+
         # use bat as a colorizing pager for man pages
         if command -v bat >/dev/null; then
           export MANPAGER="sh -c 'col -bx | bat -l man -p'"
