@@ -200,10 +200,12 @@
     atuin = {
       enable = true;
       settings = {
+        dotfiles.enabled = true;
+        sync.records = true;
         ctrl_n_shortcuts = true;
         enter_accept = true;
         history_filter = [
-          "^l(l|s|t)?( +|$)"
+          "^l(a|l|la|s|t)?( +|$)"
           "^cd( +|$)"
           "^(c|b)at( +|$)"
           "^vim?( +|$)"
@@ -211,11 +213,11 @@
           "^env( +|$)"
           "^type( +|$)"
           "^which( +|$)"
-          "^g *$"
           "^exit( +|$)"
           "^builtin( +|$)"
+          "^[a-zA-Z]{1,4} *$"
         ];
-        inline_height = 14;
+        inline_height = 20;
         keymap_mode = "auto";
         style = "compact";
       };
