@@ -132,6 +132,7 @@
 
       # zoxide for smart cd
       cd = "z";
+      cx = "zi";
 
       # shell
       c = "clear";
@@ -502,7 +503,10 @@
       enableZshIntegration = true;
     };
 
-    zoxide = {enable = true;};
+    zoxide = {
+      enable = true;
+      options = ["--no-cmd"];
+    };
 
     zsh = {
       enable = true;
@@ -527,6 +531,12 @@
 
         # autosuggestions key bindings
         bindkey '^ ' autosuggest-accept
+
+        # manually define z function for zoxide
+        if command -v zoxide >/dev/null; then
+          function z() { __zoxide_z "$@" }
+          function zi() { __zoxide_zi "$@" }
+        fi
 
         # use bat as a colorizing pager for man pages
         if command -v bat >/dev/null; then
