@@ -512,6 +512,10 @@
         # don't use global env as it will slow us down
         skip_global_compinit=1
       '';
+      initExtraBeforeCompInit = ''
+        # See available completion styles with 'compstyle -l'
+        zstyle ':plugin:ez-compinit' 'compstyle' 'zshzoo'
+      '';
       initExtra = ''
         # extra options
         setopt auto_list            # auto list choices on ambiguous completion
@@ -519,6 +523,7 @@
         setopt always_to_end        # move cursor to end if word had one match
         setopt interactive_comments # allow comments in interactive shells
         setopt ignoreeof            # Disable closing shell with C-d
+        setopt globdots             # Show hidden files and folders
 
         # autosuggestions key bindings
         bindkey '^ ' autosuggest-accept
@@ -550,8 +555,16 @@
       '';
       defaultKeymap = "viins";
       autocd = true;
+      antidote = {
+        enable = true;
+        plugins = [
+          "mattmc3/ez-compinit"
+        ];
+        useFriendlyNames = true;
+      };
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
+      completionInit = ""; # managed by "mattmc3/ez-compinit" plugin
       history = {
         expireDuplicatesFirst = true;
         ignoreSpace = true;
