@@ -119,9 +119,9 @@
       NODE_REPL_HISTORY = "${config.xdg.stateHome}/node_repl_history";
     };
     sessionPath = [
-      "${config.xdg.dataHome}/npm-global/bin"
-      "${config.home.sessionVariables.PNPM_HOME}"
       "$HOME/.local/bin"
+      "${config.home.sessionVariables.PNPM_HOME}"
+      "${config.xdg.dataHome}/npm-global/bin"
     ];
     shellAliases = {
       # bat --plain for unformatted cat
