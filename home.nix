@@ -177,7 +177,7 @@
 
       # vercel
       vercel = "vercel --global-config ~/.config/vercel";
-      vc = "vercel";
+      vc = "vercel --global-config ~/.config/vercel";
     };
   };
 
