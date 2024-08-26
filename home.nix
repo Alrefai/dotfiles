@@ -134,20 +134,34 @@
       cd = "z";
       cx = "zi";
 
-      # shell
+      # change directory upward
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      "...." = "cd ../../..";
+      "....." = "cd ../../../..";
+      "......" = "cd ../../../../..";
+
+      # print all occurrences in path and symlink with type command
+      type = "type -as";
+
+      # safely make directories
+      mkdir = "mkdir -p";
+
+      # convenient shell commands
       c = "clear";
       r = "exec $SHELL"; # Reload SHELL
       rr = "rm -rf";
 
-      ## Enforce interaction
+      # Enforce interaction
       rm = "rm -i";
       rd = "rm -ri";
       cp = "cp -i";
       mv = "mv -i";
 
+      # nvim
       vi = "nvim";
 
-      ## tmux
+      # tmux
       attach = "tmux attach-session -t";
       switch = "tmux switch-client -t";
       tmk = "tmux kill-session -t";
@@ -156,7 +170,7 @@
       # treee="tree -CI node_modules";
       tarx = "tar -xzvf";
 
-      ## Git
+      # Git
       g = "git status -s";
       # ga="git add";
       gb = "git branch";
