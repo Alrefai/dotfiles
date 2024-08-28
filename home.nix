@@ -2,7 +2,14 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  yazi-plugins = pkgs.fetchFromGitHub {
+    owner = "yazi-rs";
+    repo = "plugins";
+    rev = "HEAD";
+    sha256 = "sha256-clyhjvIhhSaWDLGDE+dA8+lxE3fZwo9GI1pVRDQ4tR0=";
+  };
+in {
   nix = {
     package = pkgs.nixVersions.nix_2_23;
     gc.automatic = true;
@@ -515,6 +522,56 @@
     yazi = {
       enable = true;
       enableZshIntegration = true;
+      settings = {
+        manager = {
+          sort_by = "modified";
+          sort_dir_first = true;
+          sort_reverse = true;
+          show_hidden = true;
+          show_symlink = true;
+        };
+      };
+      plugins = {
+        chmod = "${yazi-plugins}/chmod.yazi";
+        full-border = "${yazi-plugins}/full-border.yazi";
+        max-preview = "${yazi-plugins}/max-preview.yazi";
+        hide-preview = "${yazi-plugins}/hide-preview.yazi";
+        starship = pkgs.fetchFromGitHub {
+          owner = "Rolv-Apneseth";
+          repo = "starship.yazi";
+          rev = "HEAD";
+          sha256 = "sha256-0nritWu53CJAuqQxx6uOXMg4WiHTVm/i78nNRgGrlgg=";
+        };
+      };
+
+      initLua = ''
+        require("full-border"):setup {
+          -- Available values: ui.Border.PLAIN, ui.Border.ROUNDED
+          type = ui.Border.ROUNDED,
+        }
+
+        require("starship"):setup()
+      '';
+
+      keymap = {
+        manager.prepend_keymap = [
+          {
+            on = ["T" "T"];
+            run = "plugin --sync max-preview";
+            desc = "Maximize or restore the preview pane";
+          }
+          {
+            on = ["T" "t"];
+            run = "plugin --sync hide-preview";
+            desc = "Hide or show preview";
+          }
+          {
+            on = ["c" "m"];
+            run = "plugin chmod";
+            desc = "Chmod on selected files";
+          }
+        ];
+      };
     };
 
     zoxide = {
