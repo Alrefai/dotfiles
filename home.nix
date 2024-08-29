@@ -73,7 +73,6 @@ in {
       # # Building this configuration will create a copy of 'dotfiles/screenrc' in
       # # the Nix store. Activating the configuration will then make '~/.screenrc' a
       # # symlink to the Nix store copy.
-      ".profile".source = ./dotfiles/profile;
       ".ssh/allowed_signers".source = ./dotfiles/ssh/allowed_signers;
       ".local/bin".source = ./bin;
 
@@ -251,6 +250,65 @@ in {
         italic-text = "always";
         style = "full";
       };
+    };
+
+    bash = {
+      enable = true;
+      historyControl = ["ignoreboth"];
+      historyFile = "${config.xdg.stateHome}/bash/bash_history";
+      profileExtra = ''
+        # Homebrew
+        if [[ -e /usr/local/bin/brew ]]; then
+          export HOMEBREW_PREFIX=/usr/local
+        elif [[ -e /opt/homebrew/bin/brew ]]; then
+          export HOMEBREW_PREFIX=/opt/homebrew
+        fi
+        if [[ $HOMEBREW_PREFIX ]]; then
+          eval "$("$HOMEBREW_PREFIX"/bin/brew shellenv)"
+          export HOMEBREW_NO_ANALYTICS=1
+        fi
+
+        # 1Password SSH agent
+        if [[ $OSTYPE == 'darwin'* && ! $SSH_TTY ]]; then
+          export SSH_AUTH_SOCK=$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+        fi
+
+        # use bat as a colorizing pager for man pages
+        if command -v bat >/dev/null; then
+          export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -l man'"
+        fi
+      '';
+      initExtra = ''
+        # vim-style keybindings
+        set -o vi
+
+        # manually define z function for zoxide
+        if command -v zoxide >/dev/null; then
+          function z() { __zoxide_z "$@"; }
+          function zi() { __zoxide_zi "$@"; }
+        fi
+
+        # 1password-cli config:
+        # - load op (1Password CLI) completion
+        # - source op (1Password CLI) plugins
+        #
+        # ---
+        #
+        # ref: https://developer.1password.com/docs/cli/shell-plugins/github#step-3-source-the-pluginssh-file
+        if command -v op >/dev/null; then
+          eval "$(op completion bash)"
+          # compdef _op op
+          [[ -f ${config.xdg.configHome}/op/plugins.sh ]] &&
+            source "${config.xdg.configHome}"/op/plugins.sh
+        fi
+      '';
+      bashrcExtra = ''
+        # Create ssh sockets directory with the following code:
+        if [[ ! -d /tmp/ssh-sockets/ ]]; then
+          mkdir -p /tmp/ssh-sockets
+          chmod 700 /tmp/ssh-sockets
+        fi
+      '';
     };
 
     eza = {
@@ -522,6 +580,7 @@ in {
     yazi = {
       enable = true;
       enableZshIntegration = true;
+      enableBashIntegration = true;
       settings = {
         manager = {
           sort_by = "modified";
@@ -607,11 +666,6 @@ in {
         if command -v zoxide >/dev/null; then
           function z() { __zoxide_z "$@" }
           function zi() { __zoxide_zi "$@" }
-        fi
-
-        # use bat as a colorizing pager for man pages
-        if command -v bat >/dev/null; then
-          export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -l man'"
         fi
 
         # Create ssh sockets directory with the following code:
