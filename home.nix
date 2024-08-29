@@ -73,6 +73,7 @@ in {
       # # Building this configuration will create a copy of 'dotfiles/screenrc' in
       # # the Nix store. Activating the configuration will then make '~/.screenrc' a
       # # symlink to the Nix store copy.
+      # ".profile".source = ./dotfiles/profile;
       ".ssh/allowed_signers".source = ./dotfiles/ssh/allowed_signers;
       ".local/bin".source = ./bin;
 
@@ -565,7 +566,30 @@ in {
 
     ripgrep.enable = true;
 
-    starship = {enable = true;};
+    starship = {
+      enable = true;
+      settings = {
+        "$schema" = "https://starship.rs/config-schema.json";
+        command_timeout = 3000;
+        git_branch = {symbol = " ";};
+        hostname = {ssh_symbol = " ";};
+        os = {
+          disabled = false;
+          symbols = {
+            Arch = " ";
+            Macos = "";
+            NixOS = " ";
+            Ubuntu = " ";
+          };
+        };
+        shell = {
+          disabled = false;
+          format = "[$indicator]($style)";
+          bash_indicator = " ";
+          zsh_indicator = "";
+        };
+      };
+    };
 
     tmux = {
       enable = true;
