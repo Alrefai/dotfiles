@@ -147,8 +147,8 @@ in {
       "....." = "cd ../../../..";
       "......" = "cd ../../../../..";
 
-      # print all occurrences in path and symlink with type command
-      type = "type -as";
+      # print all occurrences in path with type command
+      type = "type -a";
 
       # safely make directories
       mkdir = "mkdir -p";
