@@ -214,7 +214,12 @@ in {
     enable = true;
     configFile = {
       "nvim" = {
-        source = dotfiles/config/nvim;
+        source = pkgs.fetchFromGitHub {
+          owner = "Alrefai";
+          repo = "minvim";
+          rev = "customize-config";
+          hash = "sha256-o7obqvZvb7MkLxp4r77yj2dwpQ30qs2q1VwwGtrjAMM=";
+        };
         recursive = true;
       };
       "tmux/tmux.conf".source = "${oh-my-tmux}/.tmux.conf";
