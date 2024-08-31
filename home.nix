@@ -218,7 +218,7 @@ in {
           owner = "Alrefai";
           repo = "minvim";
           rev = "customize-config";
-          hash = "sha256-o7obqvZvb7MkLxp4r77yj2dwpQ30qs2q1VwwGtrjAMM=";
+          hash = "sha256-XcnZSW4SLlS0pF5WyKABcEUWDwLKfZX15lK+trdSnco=";
         };
         recursive = true;
       };
