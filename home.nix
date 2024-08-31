@@ -3,6 +3,12 @@
   pkgs,
   ...
 }: let
+  oh-my-tmux = pkgs.fetchFromGitHub {
+    owner = "Alrefai";
+    repo = "oh-my-tmux";
+    rev = "local-config";
+    sha256 = "sha256-wYmH+rILwd5XN8vCpQHEMdI7zpcoveakV3sjg6KpvMM=";
+  };
   yazi-plugins = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "plugins";
@@ -44,13 +50,15 @@ in {
     packages = with pkgs;
       [
         _1password
+        coreutils #! required tmux-network-bandwidth plugin
         curl
         direnv
         gh
         neovim
+        tmux
         tree
         wget
-        yq
+        yq-go #! required for tmux-nerd-font-window-name plugin
 
         # # It is sometimes useful to fine-tune packages, for example, by applying
         # # overrides. You can do that directly here, just don't forget the
@@ -209,6 +217,8 @@ in {
         source = dotfiles/config/nvim;
         recursive = true;
       };
+      "tmux/tmux.conf".source = "${oh-my-tmux}/.tmux.conf";
+      "tmux/tmux.conf.local".source = "${oh-my-tmux}/.tmux.conf.local";
     };
   };
 
@@ -589,16 +599,6 @@ in {
           zsh_indicator = "";
         };
       };
-    };
-
-    tmux = {
-      enable = true;
-      baseIndex = 1;
-      historyLimit = 5000;
-      keyMode = "vi";
-      mouse = true;
-      newSession = true;
-      shortcut = "s";
     };
 
     yazi = {
