@@ -6,14 +6,14 @@
   oh-my-tmux = pkgs.fetchFromGitHub {
     owner = "Alrefai";
     repo = "oh-my-tmux";
-    rev = "local-config";
-    sha256 = "sha256-wYmH+rILwd5XN8vCpQHEMdI7zpcoveakV3sjg6KpvMM=";
+    rev = "c0355ad37e32d34ab23af426f0de80a5e8faa901";
+    hash = "sha256-wYmH+rILwd5XN8vCpQHEMdI7zpcoveakV3sjg6KpvMM=";
   };
   yazi-plugins = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "plugins";
-    rev = "HEAD";
-    sha256 = "sha256-clyhjvIhhSaWDLGDE+dA8+lxE3fZwo9GI1pVRDQ4tR0=";
+    rev = "a8421d98bbea11bee242883f2f7420e5ca498b3f";
+    hash = "sha256-0RZHBF2J2jMbCHcM71lHdn99diDr0zrMiorFgtVL5pI=";
   };
 in {
   nix = {
@@ -216,7 +216,7 @@ in {
         source = pkgs.fetchFromGitHub {
           owner = "Alrefai";
           repo = "minvim";
-          rev = "customize-config";
+          rev = "2b4a0f653659d80bbbf528173bcf1237e0c6fd8e";
           hash = "sha256-XcnZSW4SLlS0pF5WyKABcEUWDwLKfZX15lK+trdSnco=";
         };
         recursive = true;
@@ -662,8 +662,8 @@ in {
         starship = pkgs.fetchFromGitHub {
           owner = "Rolv-Apneseth";
           repo = "starship.yazi";
-          rev = "HEAD";
-          sha256 = "sha256-0nritWu53CJAuqQxx6uOXMg4WiHTVm/i78nNRgGrlgg=";
+          rev = "20d5a4d4544124bade559b31d51ad41561dad92b";
+          hash = "sha256-0nritWu53CJAuqQxx6uOXMg4WiHTVm/i78nNRgGrlgg=";
         };
       };
 
