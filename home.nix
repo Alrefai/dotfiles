@@ -53,7 +53,6 @@ in {
         coreutils #! required tmux-network-bandwidth plugin
         curl
         direnv
-        gh
         neovim
         tmux
         tree
@@ -383,6 +382,42 @@ in {
         "--height '~14'"
       ];
       tmux.enableShellIntegration = true;
+    };
+
+    gh = {
+      enable = true;
+      extensions = with pkgs; [
+        gh-eco
+        gh-f
+        gh-notify
+        gh-poi
+      ];
+      gitCredentialHelper.enable = false;
+      settings = {
+        # What protocol to use when performing git operations.
+        # Supported values: ssh, https
+        git_protocol = "ssh";
+
+        # What editor gh should run when creating issues, pull requests, etc.
+        # If blank, will refer to environment.
+        editor = "nvim";
+
+        # When to interactively prompt. This is a global config that cannot be
+        # overridden by hostname. Supported values: enabled, disabled
+        prompt = "enabled";
+
+        # A pager program to send command output to, e.g. "less".
+        # Set the value to "cat" to disable the pager.
+        pager = "delta";
+
+        # Aliases allow you to create nicknames for gh commands.
+        aliases = {
+          co = "pr checkout";
+          pv = "pr view";
+          prs = "f -p"; # show PRs
+          l = "f -l"; # show git logs
+        };
+      };
     };
 
     git = {
