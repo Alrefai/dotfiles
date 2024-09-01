@@ -21,7 +21,7 @@ in {
     gc.automatic = true;
     extraOptions = ''
       trusted-users = mohammed
-      experimental-features = fetch-tree flakes nix-command
+      experimental-features = flakes nix-command
     '';
   };
 
