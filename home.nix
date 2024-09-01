@@ -22,6 +22,7 @@ in {
     extraOptions = ''
       trusted-users = mohammed
       experimental-features = flakes nix-command
+      use-xdg-base-directories = true
     '';
   };
 
