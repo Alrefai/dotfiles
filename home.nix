@@ -687,6 +687,7 @@ in {
         setopt interactive_comments # allow comments in interactive shells
         setopt ignoreeof            # Disable closing shell with C-d
         setopt globdots             # Show hidden files and folders
+        setopt complete_aliases     # enable completion for aliased commands
 
         # autosuggestions key bindings
         bindkey '^ ' autosuggest-accept
