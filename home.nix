@@ -776,6 +776,11 @@ in {
         size = 600; # Number of history lines to keep
         path = "${config.xdg.stateHome}/zsh/zsh_history";
       };
+      shellGlobalAliases = {
+        G = "| grep -i";
+        HELP = "--help | bat --plain --language help";
+        RG = "| rg -i";
+      };
     };
   };
 }
