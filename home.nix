@@ -20,7 +20,7 @@ in {
     package = pkgs.nixVersions.nix_2_23;
     gc.automatic = true;
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = ["nix-command" "flakes"];
       use-xdg-base-directories = true;
     };
   };
