@@ -19,11 +19,11 @@ in {
   nix = {
     package = pkgs.nixVersions.nix_2_23;
     gc.automatic = true;
-    extraOptions = ''
-      trusted-users = mohammed
-      experimental-features = flakes nix-command
-      use-xdg-base-directories = true
-    '';
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      trusted-users = [ "mohammed" ];
+      use-xdg-base-directories = true;
+    };
   };
 
   home = {
