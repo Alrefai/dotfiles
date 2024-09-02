@@ -21,7 +21,6 @@ in {
     gc.automatic = true;
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "mohammed" ];
       use-xdg-base-directories = true;
     };
   };
