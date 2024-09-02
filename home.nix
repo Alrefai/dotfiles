@@ -55,6 +55,7 @@ in {
         curl
         direnv
         neovim
+        perl
         tmux
         tree
         wget
