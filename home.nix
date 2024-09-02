@@ -204,6 +204,9 @@ in {
       l = "ll -a";
       # lt="eza -lahT --ignore-glob=".git|$(ignore)"";
 
+      # fix lazygit delta pager truecolor in tmux
+      lazygit = "TERM=screen-256color lazygit";
+
       # vercel
       vercel = "vercel --global-config ~/.config/vercel";
       vc = "vercel --global-config ~/.config/vercel";
