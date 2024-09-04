@@ -45,7 +45,7 @@
     packages = forEachSupportedSystem ({pkgs}: {
       default = home-manager.defaultPackage.${pkgs.system};
 
-      homeConfigurations."mohammed" = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.mohammed = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
         # Specify your home configuration modules here, for example,
@@ -54,6 +54,11 @@
           ./home.nix
           catppuccin.homeManagerModules.catppuccin
         ];
+      };
+
+      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+        inherit pkgs;
+        modules = [ ./configuration.nix ];
       };
     });
   };
