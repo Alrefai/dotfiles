@@ -3,6 +3,7 @@
   lib,
   pkgs,
   inputs,
+  username,
   ...
 }: let
   inherit (inputs) minvim mitmux yazi-plugins starship-yazi;
@@ -19,11 +20,11 @@ in {
   home = {
     # Home Manager needs a bit of information about you and the paths it should
     # manage.
-    username = "mohammed";
+    inherit username;
     homeDirectory =
       if pkgs.stdenv.isDarwin
-      then "/Users/mohammed"
-      else "/home/mohammed";
+      then "/Users/${username}"
+      else "/home/${username}";
 
     preferXdgDirectories = true;
 

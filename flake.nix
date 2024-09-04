@@ -43,6 +43,7 @@
     catppuccin,
     ...
   } @ inputs: let
+    username = "mohammed";
     # Helpers for producing system-specific outputs
     supportedSystems = [
       "aarch64-darwin"
@@ -67,9 +68,9 @@
     packages = forEachSupportedSystem ({pkgs}: {
       default = home-manager.defaultPackage.${pkgs.system};
 
-      homeConfigurations.mohammed = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations."${username}" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        extraSpecialArgs = {inherit inputs;};
+        extraSpecialArgs = {inherit inputs username;};
 
         # Specify your home configuration modules here, for example,
         # the path to your home.nix.
