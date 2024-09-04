@@ -4,14 +4,36 @@
   inputs = {
     flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/*.tar.gz";
 
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.2405.*.tar.gz";
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
 
     home-manager = {
-      url = "https://flakehub.com/f/nix-community/home-manager/0.2405.*.tar.gz";
+      url = "https://flakehub.com/f/nix-community/home-manager/0.1.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     catppuccin.url = "https://flakehub.com/f/catppuccin/nix/1.0.*.tar.gz";
+
+    #*** Non-flake source code ***#
+    # forked from nvim-lua/kickstart.nvim
+    minvim = {
+      url = "github:alrefai/minvim/config";
+      flake = false;
+    };
+    # forked from gpakosz/.tmux
+    mitmux = {
+      url = "github:alrefai/mitmux/config";
+      flake = false;
+    };
+    # yazi plugins
+    yazi-plugins = {
+      url = "github:yazi-rs/plugins";
+      flake = false;
+    };
+    # starship prompt yazi plugin
+    starship-yazi = {
+      url = "github:Rolv-Apneseth/starship.yazi";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -20,29 +42,35 @@
     home-manager,
     catppuccin,
     ...
-  }: let
+  } @ inputs: let
+    username = "mohammed";
     # Helpers for producing system-specific outputs
     supportedSystems = [
-      "x86_64-linux"
       "aarch64-darwin"
       "x86_64-darwin"
       "aarch64-linux"
+      "x86_64-linux"
     ];
     forEachSupportedSystem = f:
-      nixpkgs.lib.genAttrs supportedSystems (system:
-        f {
-          inherit system;
-          pkgs = import nixpkgs {inherit system;};
-        });
+      nixpkgs.lib.genAttrs supportedSystems (
+        system:
+          f {
+            pkgs = import nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+            };
+          }
+      );
   in {
     # Schemas tell Nix about the structure of your flake's outputs
-    schemas = flake-schemas.schemas;
+    inherit (flake-schemas) schemas;
 
-    packages = forEachSupportedSystem ({system, pkgs}: {
-      default = home-manager.defaultPackage.${system};
+    packages = forEachSupportedSystem ({pkgs}: {
+      default = home-manager.defaultPackage.${pkgs.system};
 
-      homeConfigurations."mohammed" = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations."${username}" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
+        extraSpecialArgs = {inherit inputs username;};
 
         # Specify your home configuration modules here, for example,
         # the path to your home.nix.
@@ -51,7 +79,11 @@
           catppuccin.homeManagerModules.catppuccin
         ];
       };
+
+      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+        inherit pkgs;
+        modules = [./configuration.nix];
+      };
     });
   };
 }
-

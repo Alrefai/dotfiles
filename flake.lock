@@ -35,30 +35,64 @@
         ]
       },
       "locked": {
-        "lastModified": 1720042825,
-        "narHash": "sha256-A0vrUB6x82/jvf17qPCpxaM+ulJnD8YZwH9Ci0BsAzE=",
-        "rev": "e1391fb22e18a36f57e6999c7a9f966dc80ac073",
-        "revCount": 3571,
+        "lastModified": 1725180166,
+        "narHash": "sha256-fzssXuGR/mCeGbzM1ExaTqDz7QDGta3WA4jJsZyRruo=",
+        "rev": "471e3eb0a114265bcd62d11d58ba8d3421ee68eb",
+        "revCount": 3679,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/nix-community/home-manager/0.2405.3571%2Brev-e1391fb22e18a36f57e6999c7a9f966dc80ac073/01907c3f-45dd-77c1-8cd6-b73c290990e2/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/nix-community/home-manager/0.1.3679%2Brev-471e3eb0a114265bcd62d11d58ba8d3421ee68eb/0191aea8-c5ca-7c37-bc22-0f92fc456072/source.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://flakehub.com/f/nix-community/home-manager/0.2405.%2A.tar.gz"
+        "url": "https://flakehub.com/f/nix-community/home-manager/0.1.0.tar.gz"
+      }
+    },
+    "minvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1725453106,
+        "narHash": "sha256-D1g4L5bB0ZpOW+qPhucPaQlmTy/S8GohzUSlAr8x1A8=",
+        "owner": "alrefai",
+        "repo": "minvim",
+        "rev": "089f2c63bfcd979b3604c5049ae7666ddcac701b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alrefai",
+        "ref": "config",
+        "repo": "minvim",
+        "type": "github"
+      }
+    },
+    "mitmux": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1725063443,
+        "narHash": "sha256-wYmH+rILwd5XN8vCpQHEMdI7zpcoveakV3sjg6KpvMM=",
+        "owner": "alrefai",
+        "repo": "mitmux",
+        "rev": "c0355ad37e32d34ab23af426f0de80a5e8faa901",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alrefai",
+        "ref": "config",
+        "repo": "mitmux",
+        "type": "github"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1723556749,
-        "narHash": "sha256-+CHVZnTnIYRLYsARInHYoWkujzcRkLY/gXm3s5bE52o=",
-        "rev": "4a92571f9207810b559c9eac203d1f4d79830073",
-        "revCount": 634054,
+        "lastModified": 1725103162,
+        "narHash": "sha256-Ym04C5+qovuQDYL/rKWSR+WESseQBbNAe5DsXNx5trY=",
+        "rev": "12228ff1752d7b7624a54e9c1af4b222b3c1073b",
+        "revCount": 674318,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.2405.634054%2Brev-4a92571f9207810b559c9eac203d1f4d79830073/01914d63-b212-712f-bb11-24565c742847/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.1.674318%2Brev-12228ff1752d7b7624a54e9c1af4b222b3c1073b/0191adaa-df39-7d38-92e0-798658d0033f/source.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://flakehub.com/f/NixOS/nixpkgs/0.2405.%2A.tar.gz"
+        "url": "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz"
       }
     },
     "root": {
@@ -66,7 +100,43 @@
         "catppuccin": "catppuccin",
         "flake-schemas": "flake-schemas",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs"
+        "minvim": "minvim",
+        "mitmux": "mitmux",
+        "nixpkgs": "nixpkgs",
+        "starship-yazi": "starship-yazi",
+        "yazi-plugins": "yazi-plugins"
+      }
+    },
+    "starship-yazi": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1724165300,
+        "narHash": "sha256-0nritWu53CJAuqQxx6uOXMg4WiHTVm/i78nNRgGrlgg=",
+        "owner": "Rolv-Apneseth",
+        "repo": "starship.yazi",
+        "rev": "20d5a4d4544124bade559b31d51ad41561dad92b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rolv-Apneseth",
+        "repo": "starship.yazi",
+        "type": "github"
+      }
+    },
+    "yazi-plugins": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1725428449,
+        "narHash": "sha256-qHxmRdryT2q0PFWrZK31wI9oAAlawvJ98rSIR+o6z3E=",
+        "owner": "yazi-rs",
+        "repo": "plugins",
+        "rev": "63beb7528b36c3c6df5f7757276efa3ef6feeb9d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yazi-rs",
+        "repo": "plugins",
+        "type": "github"
       }
     }
   },
