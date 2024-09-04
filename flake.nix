@@ -12,6 +12,28 @@
     };
 
     catppuccin.url = "https://flakehub.com/f/catppuccin/nix/1.0.*.tar.gz";
+
+    #*** Non-flake source code ***#
+    # forked from nvim-lua/kickstart.nvim
+    minvim = {
+      url = "github:alrefai/minvim/config";
+      flake = false;
+    };
+    # forked from gpakosz/.tmux
+    mitmux = {
+      url = "github:alrefai/mitmux/config";
+      flake = false;
+    };
+    # yazi plugins
+    yazi-plugins = {
+      url = "github:yazi-rs/plugins";
+      flake = false;
+    };
+    # starship prompt yazi plugin
+    starship-yazi = {
+      url = "github:Rolv-Apneseth/starship.yazi";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -20,13 +42,13 @@
     home-manager,
     catppuccin,
     ...
-  }: let
+  } @ inputs: let
     # Helpers for producing system-specific outputs
     supportedSystems = [
-      "x86_64-linux"
       "aarch64-darwin"
       "x86_64-darwin"
       "aarch64-linux"
+      "x86_64-linux"
     ];
     forEachSupportedSystem = f:
       nixpkgs.lib.genAttrs supportedSystems (
@@ -40,13 +62,14 @@
       );
   in {
     # Schemas tell Nix about the structure of your flake's outputs
-    schemas = flake-schemas.schemas;
+    inherit (flake-schemas) schemas;
 
     packages = forEachSupportedSystem ({pkgs}: {
       default = home-manager.defaultPackage.${pkgs.system};
 
       homeConfigurations.mohammed = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
+        extraSpecialArgs = {inherit inputs;};
 
         # Specify your home configuration modules here, for example,
         # the path to your home.nix.
@@ -58,7 +81,7 @@
 
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         inherit pkgs;
-        modules = [ ./configuration.nix ];
+        modules = [./configuration.nix];
       };
     });
   };
