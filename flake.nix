@@ -58,7 +58,7 @@
     # Schemas tell Nix about the structure of your flake's outputs
     inherit (flake-schemas) schemas;
 
-    homeConfigurations = let
+    legacyPackages = let
       username = "mohammed";
 
       # Define supported systems
@@ -72,8 +72,10 @@
       # Partially apply the system list
       forAllSystems = forEachSystem allSystems;
     in
-      forAllSystems ({pkgs}: {
-        "${username}" = home-manager.lib.homeManagerConfiguration {
+      forAllSystems ({pkgs}: rec {
+        default = homeConfigurations.${username};
+        homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
+          # inherit (pkgs) system;
           inherit pkgs;
           extraSpecialArgs = {inherit inputs username;};
           # Specify your home configuration modules here, for example,
