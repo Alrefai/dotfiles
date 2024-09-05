@@ -43,15 +43,8 @@
     catppuccin,
     ...
   } @ inputs: let
-    username = "mohammed";
     # Helpers for producing system-specific outputs
-    supportedSystems = [
-      "aarch64-darwin"
-      "x86_64-darwin"
-      "aarch64-linux"
-      "x86_64-linux"
-    ];
-    forEachSupportedSystem = f:
+    forEachSystem = supportedSystems: f:
       nixpkgs.lib.genAttrs supportedSystems (
         system:
           f {
@@ -65,25 +58,38 @@
     # Schemas tell Nix about the structure of your flake's outputs
     inherit (flake-schemas) schemas;
 
-    packages = forEachSupportedSystem ({pkgs}: {
-      default = home-manager.defaultPackage.${pkgs.system};
+    legacyPackages = let
+      username = "mohammed";
 
-      homeConfigurations."${username}" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = {inherit inputs username;};
+      # Define supported systems
+      allSystems = [
+        "aarch64-darwin"
+        "x86_64-darwin"
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
 
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
-        modules = [
-          ./home.nix
-          catppuccin.homeManagerModules.catppuccin
-        ];
-      };
+      # Partially apply the system list
+      forAllSystems = forEachSystem allSystems;
+    in
+      forAllSystems ({pkgs}: rec {
+        default = homeConfigurations.${username};
+        homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
+          # inherit (pkgs) system;
+          inherit pkgs;
+          extraSpecialArgs = {inherit inputs username;};
+          # Specify your home configuration modules here, for example,
+          # the path to your home.nix.
+          modules = [
+            ./home.nix
+            catppuccin.homeManagerModules.catppuccin
+          ];
+        };
+      });
 
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        inherit pkgs;
-        modules = [./configuration.nix];
-      };
-    });
+    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      modules = [./configuration.nix];
+    };
   };
 }
