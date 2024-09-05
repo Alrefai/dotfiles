@@ -9,7 +9,7 @@
   inherit (inputs) minvim mitmux yazi-plugins starship-yazi;
 in {
   nix = {
-    package = pkgs.nixVersions.nix_2_23;
+    package = pkgs.nix;
     gc.automatic = true;
     settings = {
       experimental-features = ["nix-command" "flakes"];
