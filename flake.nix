@@ -65,13 +65,10 @@
     # Schemas tell Nix about the structure of your flake's outputs
     inherit (flake-schemas) schemas;
 
-    packages = forEachSupportedSystem ({pkgs}: {
-      default = home-manager.defaultPackage.${pkgs.system};
-
-      homeConfigurations."${username}" = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations = forEachSupportedSystem ({pkgs}: {
+      "${username}" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         extraSpecialArgs = {inherit inputs username;};
-
         # Specify your home configuration modules here, for example,
         # the path to your home.nix.
         modules = [
@@ -79,11 +76,11 @@
           catppuccin.homeManagerModules.catppuccin
         ];
       };
-
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        inherit pkgs;
-        modules = [./configuration.nix];
-      };
     });
+
+    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      modules = [./configuration.nix];
+    };
   };
 }
