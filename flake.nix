@@ -77,8 +77,7 @@
       forAllSystems = forEachSystem allSystems;
 
       # Function to generate home-manager configurations for a given system
-      generateHomeConfigurations = {pkgs}: rec {
-        default = homeConfigurations.${username};
+      generateHomeConfigurations = {pkgs}: {
         # Define the home-manager configuration for the defined user
         homeConfigurations = {
           ${username} = home-manager.lib.homeManagerConfiguration {
