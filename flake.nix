@@ -43,11 +43,12 @@
     catppuccin,
     ...
   } @ inputs: let
-    # Helpers for producing system-specific outputs
-    forEachSystem = supportedSystems: f:
+    # A higher-order helper function that generates system-specific
+    # outputs
+    forEachSystem = supportedSystems: generateConfig:
       nixpkgs.lib.genAttrs supportedSystems (
         system:
-          f {
+          generateConfig {
             pkgs = import nixpkgs {
               inherit system;
               config.allowUnfree = true;
@@ -58,10 +59,12 @@
     # Schemas tell Nix about the structure of your flake's outputs
     inherit (flake-schemas) schemas;
 
+    #*** home-manager configurations ***#
     legacyPackages = let
+      # Define user
       username = "mohammed";
 
-      # Define supported systems
+      # List of supported systems/architectures
       allSystems = [
         "aarch64-darwin"
         "x86_64-darwin"
@@ -69,23 +72,30 @@
         "x86_64-linux"
       ];
 
-      # Partially apply the system list
+      # Partially apply the system list to `forEachSystem`, a higher-order
+      # function that generates system-specific configurations
       forAllSystems = forEachSystem allSystems;
-    in
-      forAllSystems ({pkgs}: rec {
+
+      # Function to generate home-manager configurations for a given system
+      generateHomeConfigurations = {pkgs}: rec {
         default = homeConfigurations.${username};
-        homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-          # inherit (pkgs) system;
-          inherit pkgs;
-          extraSpecialArgs = {inherit inputs username;};
-          # Specify your home configuration modules here, for example,
-          # the path to your home.nix.
-          modules = [
-            ./home.nix
-            catppuccin.homeManagerModules.catppuccin
-          ];
+        # Define the home-manager configuration for the defined user
+        homeConfigurations = {
+          ${username} = home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            # Pass arguments to the configuration modules
+            extraSpecialArgs = {inherit inputs username;};
+            # List of configuration modules to include
+            modules = [
+              ./home.nix
+              catppuccin.homeManagerModules.catppuccin
+            ];
+          };
         };
-      });
+      };
+    in
+      # Apply the configuration generator to all supported systems
+      forAllSystems generateHomeConfigurations;
 
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
