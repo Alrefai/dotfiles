@@ -43,50 +43,61 @@
     catppuccin,
     ...
   } @ inputs: let
-    # Helpers for producing system-specific outputs
-    forEachSystem = supportedSystems: f:
+    # A higher-order helper function that generates system-specific
+    # outputs
+    forEachSystem = supportedSystems: generateConfig:
       nixpkgs.lib.genAttrs supportedSystems (
         system:
-          f {
+          generateConfig {
             pkgs = import nixpkgs {
               inherit system;
               config.allowUnfree = true;
             };
           }
       );
-  in {
-    # Schemas tell Nix about the structure of your flake's outputs
-    inherit (flake-schemas) schemas;
 
-    legacyPackages = let
-      username = "mohammed";
-
-      # Define supported systems
-      allSystems = [
-        "aarch64-darwin"
-        "x86_64-darwin"
-        "aarch64-linux"
-        "x86_64-linux"
-      ];
-
-      # Partially apply the system list
-      forAllSystems = forEachSystem allSystems;
-    in
-      forAllSystems ({pkgs}: rec {
-        default = homeConfigurations.${username};
-        homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-          # inherit (pkgs) system;
+    # A higher-order function to generate home-manager configurations for
+    # given username and system
+    generateHomeConfigurations = username: {pkgs}: {
+      # Define the home-manager configuration for the defined user
+      homeConfigurations = {
+        ${username} = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
+          # Pass arguments to the configuration modules
           extraSpecialArgs = {inherit inputs username;};
-          # Specify your home configuration modules here, for example,
-          # the path to your home.nix.
+          # List of configuration modules to include
           modules = [
             ./home.nix
             catppuccin.homeManagerModules.catppuccin
           ];
         };
-      });
+      };
+    };
 
+    # List of supported systems/architectures
+    allSystems = [
+      "aarch64-darwin"
+      "x86_64-darwin"
+      "aarch64-linux"
+      "x86_64-linux"
+    ];
+
+    # Partially apply the system list to `forEachSystem` function
+    forAllSystems = forEachSystem allSystems;
+
+    # Apply the configuration generator to all supported systems
+    # for the provided username
+    homeConfigsForAllSystems = forAllSystems (
+      generateHomeConfigurations "mohammed"
+    );
+  in {
+    # Schemas tell Nix about the structure of your flake's outputs
+    inherit (flake-schemas) schemas;
+
+    #*** home-manager configurations ***#
+    legacyPackages = homeConfigsForAllSystems;
+
+    #*** nixos configurations ***#
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [./configuration.nix];

@@ -9,12 +9,25 @@
   inherit (inputs) minvim mitmux yazi-plugins starship-yazi;
 in {
   nix = {
-    package = pkgs.nix;
     gc.automatic = true;
+    package = pkgs.nixFlakes;
     settings = {
-      experimental-features = ["nix-command" "flakes"];
-      use-xdg-base-directories = true;
+      allowed-users = "${username}";
       auto-optimise-store = true;
+      build-users-group = "nixbld";
+      experimental-features = ["nix-command" "flakes"];
+      extra-trusted-substituters = ["https://cache.flakehub.com"];
+      extra-trusted-public-keys = [
+        "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
+        "cache.flakehub.com-4:Asi8qIv291s0aYLyH6IOnr5Kf6+OF14WVjkE6t3xMio="
+        "cache.flakehub.com-5:zB96CRlL7tiPtzA9/WKyPkp3A2vqxqgdgyTVNGShPDU="
+        "cache.flakehub.com-6:W4EGFwAGgBj3he7c5fNh9NkOXw0PUVaxygCVKeuvaqU="
+        "cache.flakehub.com-7:mvxJ2DZVHn/kRxlIaxYNMuDG1OvMckZu32um1TadOR8="
+        "cache.flakehub.com-8:moO+OVS0mnTjBTcOUh2kYLQEd59ExzyoW1QgQ8XAARQ="
+        "cache.flakehub.com-9:wChaSeTI6TeCuV/Sg2513ZIM9i0qJaYsF+lZCXg0J6o="
+        "cache.flakehub.com-10:2GqeNlIp6AKp4EF2MVbE1kBOp9iBSyo0UPR9KoR0o1Y="
+      ];
+      use-xdg-base-directories = true;
     };
   };
 
@@ -49,7 +62,6 @@ in {
         neovim
         perl
         tmux
-        tree
         wget
         yq-go #! required for tmux-nerd-font-window-name plugin
 
@@ -186,7 +198,6 @@ in {
       tmk = "tmux kill-session -t";
       tls = "tmux ls";
 
-      # treee="tree -CI node_modules";
       tarx = "tar -xzvf";
 
       # Git
@@ -206,7 +217,8 @@ in {
       lsa = "ls -a";
       ll = "eza -lho --git --git-repos";
       l = "ll -a";
-      # lt="eza -lahT --ignore-glob=".git|$(ignore)"";
+      lt = "eza -lahoTL 3 --group-directories-first --icons --git-repos-no-status -I '.git$' --color always";
+      tree = "eza -lahoT --group-directories-first --icons --git-repos-no-status -I '.git$' --color always";
 
       # fix lazygit delta pager truecolor in tmux
       lazygit = "TERM=screen-256color lazygit";
@@ -354,7 +366,7 @@ in {
           --exclude '.git/'
       '';
       changeDirWidgetOptions = [
-        "--preview 'tree -C {} --gitignore | head -200'"
+        "--preview 'eza --icons --color always --tree --level 3 {} | head -200'"
       ];
       colors = {
         bg = pkgs.lib.mkForce "-1";
