@@ -73,27 +73,31 @@
         };
       };
     };
+
+    # List of supported systems/architectures
+    allSystems = [
+      "aarch64-darwin"
+      "x86_64-darwin"
+      "aarch64-linux"
+      "x86_64-linux"
+    ];
+
+    # Partially apply the system list to `forEachSystem` function
+    forAllSystems = forEachSystem allSystems;
+
+    # Apply the configuration generator to all supported systems
+    # for the provided username
+    homeConfigsForAllSystems = forAllSystems (
+      generateHomeConfigurations "mohammed"
+    );
   in {
     # Schemas tell Nix about the structure of your flake's outputs
     inherit (flake-schemas) schemas;
 
     #*** home-manager configurations ***#
-    legacyPackages = let
-      # List of supported systems/architectures
-      allSystems = [
-        "aarch64-darwin"
-        "x86_64-darwin"
-        "aarch64-linux"
-        "x86_64-linux"
-      ];
+    legacyPackages = homeConfigsForAllSystems;
 
-      # Partially apply the system list to `forEachSystem`
-      forAllSystems = forEachSystem allSystems;
-    in
-      # Apply the configuration generator to all supported systems
-      # for the provided username
-      forAllSystems (generateHomeConfigurations "mohammed");
-
+    #*** nixos configurations ***#
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [./configuration.nix];
