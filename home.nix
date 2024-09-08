@@ -62,7 +62,6 @@ in {
         neovim
         perl
         tmux
-        tree
         wget
         yq-go #! required for tmux-nerd-font-window-name plugin
 
@@ -199,7 +198,6 @@ in {
       tmk = "tmux kill-session -t";
       tls = "tmux ls";
 
-      # treee="tree -CI node_modules";
       tarx = "tar -xzvf";
 
       # Git
@@ -219,7 +217,8 @@ in {
       lsa = "ls -a";
       ll = "eza -lho --git --git-repos";
       l = "ll -a";
-      # lt="eza -lahT --ignore-glob=".git|$(ignore)"";
+      lt = "eza -lahoTL 3 --group-directories-first --icons --git-repos-no-status -I '.git$' --color always";
+      tree = "eza -lahoT --group-directories-first --icons --git-repos-no-status -I '.git$' --color always";
 
       # fix lazygit delta pager truecolor in tmux
       lazygit = "TERM=screen-256color lazygit";
@@ -367,7 +366,7 @@ in {
           --exclude '.git/'
       '';
       changeDirWidgetOptions = [
-        "--preview 'tree -C {} --gitignore | head -200'"
+        "--preview 'eza --icons --color always --tree --level 3 {} | head -200'"
       ];
       colors = {
         bg = pkgs.lib.mkForce "-1";
