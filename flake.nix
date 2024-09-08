@@ -6,6 +6,11 @@
 
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
 
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "https://flakehub.com/f/nix-community/home-manager/0.1.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -39,6 +44,7 @@
   outputs = {
     flake-schemas,
     nixpkgs,
+    lix-module,
     home-manager,
     catppuccin,
     ...
@@ -100,7 +106,7 @@
     #*** nixos configurations ***#
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
-      modules = [./configuration.nix];
+      modules = [./configuration.nix lix-module.nixosModules.default];
     };
   };
 }
