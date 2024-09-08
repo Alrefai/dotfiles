@@ -622,6 +622,7 @@ in {
       settings = {
         "$schema" = "https://starship.rs/config-schema.json";
         command_timeout = 3000;
+        container = {disabled = true;};
         git_branch = {symbol = " ";};
         hostname = {ssh_symbol = " ";};
         os = {
