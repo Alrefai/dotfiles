@@ -44,6 +44,7 @@
   outputs = {
     flake-schemas,
     nixpkgs,
+    systems,
     lix-module,
     home-manager,
     catppuccin,
@@ -80,16 +81,8 @@
       };
     };
 
-    # List of supported systems/architectures
-    allSystems = [
-      "aarch64-darwin"
-      "x86_64-darwin"
-      "aarch64-linux"
-      "x86_64-linux"
-    ];
-
     # Partially apply the system list to `forEachSystem` function
-    forAllSystems = forEachSystem allSystems;
+    forAllSystems = forEachSystem (import systems);
 
     # Apply the configuration generator to all supported systems
     # for the provided username
