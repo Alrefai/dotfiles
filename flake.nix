@@ -11,6 +11,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "https://flakehub.com/f/nix-community/home-manager/0.1.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,10 +47,12 @@
   };
 
   outputs = {
+    self,
     flake-schemas,
     nixpkgs,
     systems,
     lix-module,
+    treefmt-nix,
     home-manager,
     catppuccin,
     ...
@@ -84,6 +91,11 @@
     # Partially apply the system list to `forEachSystem` function
     forAllSystems = forEachSystem (import systems);
 
+    # Eval the treefmt modules from ./treefmt.nix
+    treefmtEval = forAllSystems (
+      {pkgs}: treefmt-nix.lib.evalModule pkgs ./treefmt.nix
+    );
+
     # Apply the configuration generator to all supported systems
     # for the provided username
     homeConfigsForAllSystems = forAllSystems (
@@ -92,6 +104,16 @@
   in {
     # Schemas tell Nix about the structure of your flake's outputs
     inherit (flake-schemas) schemas;
+
+    # for `nix fmt`
+    formatter = forAllSystems (
+      {pkgs}: treefmtEval.${pkgs.system}.config.build.wrapper
+    );
+
+    # for `nix flake check`
+    checks = forAllSystems ({pkgs}: {
+      formatting = treefmtEval.${pkgs.system}.config.build.check self;
+    });
 
     #*** home-manager configurations ***#
     legacyPackages = homeConfigsForAllSystems;
