@@ -4,6 +4,9 @@
   pkgs,
   inputs,
   username,
+  alejandra,
+  statix,
+  treefmt,
   ...
 }: let
   inherit (inputs) minvim mitmux yazi-plugins starship-yazi;
@@ -42,12 +45,15 @@ in {
     packages = with pkgs;
       [
         _1password
+        alejandra # nix formatter
         coreutils #! required tmux-network-bandwidth plugin
         curl
         direnv
         neovim
         perl
+        statix # nix linter
         tmux
+        treefmt # universal code formatting tool
         wget
         yq-go #! required for tmux-nerd-font-window-name plugin
 
@@ -183,6 +189,9 @@ in {
       switch = "tmux switch-client -t";
       tmk = "tmux kill-session -t";
       tls = "tmux ls";
+
+      # treefmt
+      fmt = "treefmt -vv";
 
       tarx = "tar -xzvf";
 
