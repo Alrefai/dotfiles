@@ -55,19 +55,22 @@ in {
     # The home.packages option allows you to install Nix packages into your
     # environment.
     packages =
-      builtins.attrValues {
+      # custom pkgs from treefmt.nix
+      [
+        alejandra # nix formatter
+        statix # nix linter
+        treefmt # universal code formatting tool
+      ]
+      ++ builtins.attrValues {
         inherit
           (pkgs)
           _1password
-          alejandra # nix formatter
           coreutils #! required for tmux-network-bandwidth plugin
           curl
           direnv
           neovim
           perl
-          statix # nix linter
           tmux
-          treefmt # universal code formatting tool
           wget
           yq-go #! required for tmux-nerd-font-window-name plugin
           ;
