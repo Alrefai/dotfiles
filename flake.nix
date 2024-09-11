@@ -70,15 +70,43 @@
           }
       );
 
+    # Partially apply the system list to `forEachSystem` function
+    forAllSystems = forEachSystem (import systems);
+
+    # Eval the treefmt modules from ./treefmt.nix
+    treefmtEval = forAllSystems (
+      {pkgs}: treefmt-nix.lib.evalModule pkgs ./treefmt.nix
+    );
+
     # A higher-order function to generate home-manager configurations for
     # given username and system
     generateHomeConfigurations = username: {pkgs}: {
       # Define the home-manager configuration for the defined user
-      homeConfigurations = {
+      homeConfigurations = let
+        treefmtEvalPlatform = treefmtEval.${pkgs.system};
+        # Make the treefmt command available in the shell using the specified
+        # configuration in `./treefmt.nix`.
+        treefmt = treefmtEvalPlatform.config.build.wrapper;
+        # Get access to the individual programs from treefmt, which could be
+        # useful to provide them to your IDE or editor.
+        inherit
+          (treefmtEvalPlatform.config.build.programs)
+          alejandra # nix formatter
+          statix # nix linter
+          ;
+      in {
         ${username} = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           # Pass arguments to the configuration modules
-          extraSpecialArgs = {inherit inputs username;};
+          extraSpecialArgs = {
+            inherit
+              inputs
+              username
+              treefmt
+              alejandra
+              statix
+              ;
+          };
           # List of configuration modules to include
           modules = [
             ./home.nix
@@ -87,14 +115,6 @@
         };
       };
     };
-
-    # Partially apply the system list to `forEachSystem` function
-    forAllSystems = forEachSystem (import systems);
-
-    # Eval the treefmt modules from ./treefmt.nix
-    treefmtEval = forAllSystems (
-      {pkgs}: treefmt-nix.lib.evalModule pkgs ./treefmt.nix
-    );
 
     # Apply the configuration generator to all supported systems
     # for the provided username
