@@ -1,3 +1,15 @@
+# Avoid using `with` expression; replace it with the following expression:
+#
+# ```
+# packages = builtins.attrValues {
+#   inherit (pkgs) curl jq;
+# };
+# ```
+# ---
+#
+# references:
+# https://nix.dev/guides/best-practices#with-scopes
+#
 {
   config,
   lib,
@@ -42,35 +54,33 @@ in {
 
     # The home.packages option allows you to install Nix packages into your
     # environment.
-    packages = with pkgs;
-      [
-        _1password
-        alejandra # nix formatter
-        coreutils #! required tmux-network-bandwidth plugin
-        curl
-        direnv
-        neovim
-        perl
-        statix # nix linter
-        tmux
-        treefmt # universal code formatting tool
-        wget
-        yq-go #! required for tmux-nerd-font-window-name plugin
-
-        # # It is sometimes useful to fine-tune packages, for example, by applying
-        # # overrides. You can do that directly here, just don't forget the
-        # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-        # # fonts?
-        # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-        # # You can also create simple shell scripts directly inside your
-        # # configuration. For example, this adds a command 'my-hello' to your
-        # # environment:
-        # (pkgs.writeShellScriptBin "my-hello" ''
-        #   echo "Hello, ${config.home.username}!"
-        # '')
-      ]
-      ++ lib.lists.optionals stdenv.isLinux [gcc gnumake nettools unzip];
+    packages =
+      builtins.attrValues {
+        inherit
+          (pkgs)
+          _1password
+          alejandra # nix formatter
+          coreutils #! required for tmux-network-bandwidth plugin
+          curl
+          direnv
+          neovim
+          perl
+          statix # nix linter
+          tmux
+          treefmt # universal code formatting tool
+          wget
+          yq-go #! required for tmux-nerd-font-window-name plugin
+          ;
+      }
+      ++ pkgs.lib.lists.optionals pkgs.stdenv.isLinux (builtins.attrValues {
+        inherit
+          (pkgs)
+          gcc
+          gnumake
+          nettools
+          unzip
+          ;
+      });
 
     activation = {
       restoreNeovimPlugins = lib.hm.dag.entryAfter ["writeBoundary"] ''
@@ -396,12 +406,15 @@ in {
 
     gh = {
       enable = true;
-      extensions = with pkgs; [
-        gh-eco
-        gh-f
-        gh-notify
-        gh-poi
-      ];
+      extensions = builtins.attrValues {
+        inherit
+          (pkgs)
+          gh-eco
+          gh-f
+          gh-notify
+          gh-poi
+          ;
+      };
       gitCredentialHelper.enable = false;
       settings = {
         # What protocol to use when performing git operations.
