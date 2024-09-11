@@ -19,6 +19,8 @@
   alejandra,
   statix,
   treefmt,
+  shellcheck,
+  shfmt,
   ...
 }: let
   inherit (inputs) minvim mitmux yazi-plugins starship-yazi;
@@ -58,6 +60,8 @@ in {
       # custom pkgs from treefmt.nix
       [
         alejandra # nix formatter
+        shellcheck # sh linter
+        shfmt # sh formatter
         statix # nix linter
         treefmt # universal code formatting tool
       ]

@@ -92,6 +92,8 @@
         inherit
           (treefmtEvalPlatform.config.build.programs)
           alejandra # nix formatter
+          shellcheck # sh linter
+          shfmt # sh formatter
           statix # nix linter
           ;
       in {
@@ -102,9 +104,11 @@
             inherit
               inputs
               username
-              treefmt
               alejandra
+              shellcheck
+              shfmt
               statix
+              treefmt
               ;
           };
           # List of configuration modules to include
