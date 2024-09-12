@@ -73,6 +73,7 @@ in {
           curl
           direnv
           neovim
+          nixd # nix language server
           perl
           tmux
           wget
