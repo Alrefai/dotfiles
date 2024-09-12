@@ -625,6 +625,7 @@ in {
         container = {disabled = true;};
         git_branch = {symbol = " ";};
         hostname = {ssh_symbol = " ";};
+        nix_shell = {heuristic = true;};
         os = {
           disabled = false;
           symbols = {
