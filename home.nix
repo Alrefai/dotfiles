@@ -1,15 +1,3 @@
-# Avoid using `with` expression; replace it with the following expression:
-#
-# ```
-# packages = builtins.attrValues {
-#   inherit (pkgs) curl jq;
-# };
-# ```
-# ---
-#
-# references:
-# https://nix.dev/guides/best-practices#with-scopes
-#
 {
   config,
   lib,
@@ -25,6 +13,18 @@
 }: let
   inherit (inputs) minvim mitmux yazi-plugins starship-yazi;
 in {
+  # Avoid using `with` expression; replace it with the following expression:
+  #
+  # ```
+  # packages = builtins.attrValues {
+  #   inherit (pkgs) curl jq;
+  # };
+  # ```
+  # ---
+  #
+  # references:
+  # https://nix.dev/guides/best-practices#with-scopes
+  #
   nix = {
     gc.automatic = true;
     package = pkgs.nix;
