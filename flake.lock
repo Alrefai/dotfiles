@@ -118,11 +118,11 @@
     "minvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1726683050,
-        "narHash": "sha256-sauU/oN0lMg213/UaevCGb9wCbq50Hfd/XWNnsB0CZk=",
+        "lastModified": 1726685852,
+        "narHash": "sha256-6OjIPoQ8HJPKqfcc68HgQZvHHJFEiXS1pOZAzlAg7Es=",
         "owner": "alrefai",
         "repo": "minvim",
-        "rev": "a979704e6928b6dabc73be55332a850de251956c",
+        "rev": "e7e7f8fcb1a87ba55b5b7b1320e587008b078ba8",
         "type": "github"
       },
       "original": {
