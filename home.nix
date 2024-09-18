@@ -72,7 +72,7 @@ in {
           coreutils #! required for tmux-network-bandwidth plugin
           curl
           direnv
-          marksman # mardown language server
+          marksman # markdown language server
           neovim
           nixd # nix language server
           perl
