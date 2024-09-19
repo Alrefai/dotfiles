@@ -69,12 +69,14 @@ in {
         inherit
           (pkgs)
           _1password
+          corepack_latest
           coreutils #! required for tmux-network-bandwidth plugin
           curl
           direnv
           marksman # markdown language server
           neovim
           nixd # nix language server
+          nodejs_latest
           perl
           tmux
           wget
