@@ -5,6 +5,7 @@
   inputs,
   username,
   alejandra,
+  dprint,
   statix,
   treefmt,
   shellcheck,
@@ -60,6 +61,7 @@ in {
       # custom pkgs from treefmt.nix
       [
         alejandra # nix formatter
+        dprint # code formatter
         shellcheck # sh linter
         shfmt # sh formatter
         statix # nix linter
