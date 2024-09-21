@@ -100,6 +100,7 @@
         inherit
           (treefmtEvalPlatform.config.build.programs)
           alejandra # nix formatter
+          dprint # code formatter
           shellcheck # sh linter
           shfmt # sh formatter
           statix # nix linter
