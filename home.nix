@@ -78,6 +78,7 @@ in {
           nixd # nix language server
           nodejs_latest
           perl
+          pnpm-shell-completion
           tmux
           wget
           yq-go #! required for tmux-nerd-font-window-name plugin
