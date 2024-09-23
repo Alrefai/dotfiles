@@ -72,7 +72,6 @@ in {
           corepack_latest
           coreutils #! required for tmux-network-bandwidth plugin
           curl
-          direnv
           marksman # markdown language server
           neovim
           nixd # nix language server
@@ -356,6 +355,12 @@ in {
           chmod 700 /tmp/ssh-sockets
         fi
       '';
+    };
+
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+      silent = true;
     };
 
     eza = {
