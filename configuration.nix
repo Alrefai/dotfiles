@@ -38,4 +38,6 @@
       libraries = with pkgs; [glib];
     };
   };
+
+  services.tailscale.enable = true;
 }
