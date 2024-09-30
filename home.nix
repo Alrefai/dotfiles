@@ -653,6 +653,12 @@ in {
 
     lesspipe.enable = true;
 
+    nushell = {
+      enable = true;
+      configFile.source = ./dotfiles/nushell/config.nu;
+      envFile.source = ./dotfiles/nushell/env.nu;
+    };
+
     ripgrep.enable = true;
 
     starship = {
@@ -686,6 +692,7 @@ in {
       enable = true;
       enableZshIntegration = true;
       enableBashIntegration = true;
+      enableNushellIntegration = true;
       settings = {
         manager = {
           sort_by = "modified";
