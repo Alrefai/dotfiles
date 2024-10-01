@@ -254,6 +254,10 @@ in {
       };
       "tmux/tmux.conf".source = "${mitmux}/.tmux.conf";
       "tmux/tmux.conf.local".source = "${mitmux}/.tmux.conf.local";
+      "wezterm" = {
+        source = ./dotfiles/wezterm;
+        recursive = true;
+      };
     };
   };
 
