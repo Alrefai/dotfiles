@@ -318,11 +318,6 @@ in {
           export HOMEBREW_NO_ANALYTICS=1
         fi
 
-        # 1Password SSH agent
-        if [[ $OSTYPE == 'darwin'* && ! $SSH_TTY ]]; then
-          export SSH_AUTH_SOCK=$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
-        fi
-
         # use bat as a colorizing pager for man pages
         if command -v bat >/dev/null; then
           export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -l man'"
