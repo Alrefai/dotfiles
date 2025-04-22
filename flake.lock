@@ -2,16 +2,16 @@
   "nodes": {
     "catppuccin": {
       "locked": {
-        "lastModified": 1719915848,
-        "narHash": "sha256-zq+CMkdT8A9z74HonwspXp8HsX4OvP4uaVdD98AO6as=",
-        "rev": "9345073d27d91ab66c1b6ab65df322906992aa59",
-        "revCount": 256,
+        "lastModified": 1734734291,
+        "narHash": "sha256-CFX4diEQHKvZYjnhf7TLg20m3ge1O4vqgplsk/Kuaek=",
+        "rev": "1e4c3803b8da874ff75224ec8512cb173036bbd8",
+        "revCount": 344,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/catppuccin/nix/1.0.2/019072fa-ccb0-7720-89a3-130f22a7b006/source.tar.gz?rev=9345073d27d91ab66c1b6ab65df322906992aa59&revCount=256"
+        "url": "https://api.flakehub.com/f/pinned/catppuccin/nix/1.2.1/0193e646-1107-7f69-a402-f2a3988ecf1d/source.tar.gz?rev=1e4c3803b8da874ff75224ec8512cb173036bbd8&revCount=344"
       },
       "original": {
         "type": "tarball",
-        "url": "https://flakehub.com/f/catppuccin/nix/1.0.%2A.tar.gz"
+        "url": "https://flakehub.com/f/catppuccin/nix/1.2.%2A.tar.gz"
       }
     },
     "flake-schemas": {

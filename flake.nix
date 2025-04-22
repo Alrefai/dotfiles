@@ -21,7 +21,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    catppuccin.url = "https://flakehub.com/f/catppuccin/nix/1.0.*.tar.gz";
+    catppuccin.url = "https://flakehub.com/f/catppuccin/nix/1.2.*.tar.gz";
 
     #*** Non-flake source code ***#
     # forked from nvim-lua/kickstart.nvim
