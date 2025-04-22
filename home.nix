@@ -68,7 +68,7 @@ in {
       ++ builtins.attrValues {
         inherit
           (pkgs)
-          _1password
+          _1password-cli
           corepack_latest
           coreutils #! required for tmux-network-bandwidth plugin
           curl
