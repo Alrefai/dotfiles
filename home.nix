@@ -262,7 +262,10 @@ in {
   };
 
   # Enable Catppucin for all available programs.
-  catppuccin.enable = true;
+  catppuccin = {
+    enable = true;
+    accent = "blue";
+  };
 
   # Let Home Manager install and manage itself.
   programs = {
