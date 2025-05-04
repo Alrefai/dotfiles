@@ -690,7 +690,7 @@ in {
       enableBashIntegration = true;
       settings = {
         manager = {
-          sort_by = "modified";
+          sort_by = "mtime";
           sort_dir_first = true;
           sort_reverse = true;
           show_hidden = true;
@@ -700,8 +700,7 @@ in {
       plugins = {
         chmod = "${yazi-plugins}/chmod.yazi";
         full-border = "${yazi-plugins}/full-border.yazi";
-        max-preview = "${yazi-plugins}/max-preview.yazi";
-        hide-preview = "${yazi-plugins}/hide-preview.yazi";
+        toggle-pane = "${yazi-plugins}/toggle-pane.yazi";
         starship = starship-yazi;
       };
 
@@ -718,13 +717,13 @@ in {
         manager.prepend_keymap = [
           {
             on = ["T" "T"];
-            run = "plugin --sync max-preview";
+            run = "plugin toggle-pane max-preview";
             desc = "Maximize or restore the preview pane";
           }
           {
             on = ["T" "t"];
-            run = "plugin --sync hide-preview";
-            desc = "Hide or show preview";
+            run = "plugin toggle-pane min-preview";
+            desc = "Show or hide the preview pane";
           }
           {
             on = ["c" "m"];
