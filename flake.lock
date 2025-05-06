@@ -135,11 +135,11 @@
     "mitmux": {
       "flake": false,
       "locked": {
-        "lastModified": 1727119961,
-        "narHash": "sha256-AbpI4APQJAdxqcpyiTKhgwg9f76vNTAVOaRz9G5V+fU=",
+        "lastModified": 1746550778,
+        "narHash": "sha256-uxElWcFeD6r4p8r6f/4d3vs/R7owmAjKZizQmPPYHPY=",
         "owner": "alrefai",
         "repo": "mitmux",
-        "rev": "29e476849ecf5c783993f47d83c8d653f270c99b",
+        "rev": "3df5c6f930bdb439086db063d7d27393bee9e846",
         "type": "github"
       },
       "original": {
