@@ -747,49 +747,52 @@ in {
         # don't use global env as it will slow us down
         skip_global_compinit=1
       '';
-      initExtraBeforeCompInit = ''
-        # See available completion styles with 'compstyle -l'
-        zstyle ':plugin:ez-compinit' 'compstyle' 'zshzoo'
-      '';
-      initExtra = ''
-        # extra options
-        setopt auto_list            # auto list choices on ambiguous completion
-        setopt auto_menu            # automatically use menu completion
-        setopt always_to_end        # move cursor to end if word had one match
-        setopt interactive_comments # allow comments in interactive shells
-        setopt ignoreeof            # Disable closing shell with C-d
-        setopt globdots             # Show hidden files and folders
-        setopt complete_aliases     # enable completion for aliased commands
+      initContent = let
+        initExtraBeforeCompInit = lib.mkOrder 500 ''
+          # See available completion styles with 'compstyle -l'
+          zstyle ':plugin:ez-compinit' 'compstyle' 'zshzoo'
+        '';
+        initExtra = lib.mkOrder 1000 ''
+          # extra options
+          setopt auto_list            # auto list choices on ambiguous completion
+          setopt auto_menu            # automatically use menu completion
+          setopt always_to_end        # move cursor to end if word had one match
+          setopt interactive_comments # allow comments in interactive shells
+          setopt ignoreeof            # Disable closing shell with C-d
+          setopt globdots             # Show hidden files and folders
+          setopt complete_aliases     # enable completion for aliased commands
 
-        # autosuggestions key bindings
-        bindkey '^ ' autosuggest-accept
+          # autosuggestions key bindings
+          bindkey '^ ' autosuggest-accept
 
-        # manually define z function for zoxide
-        if command -v zoxide >/dev/null; then
-          function z() { __zoxide_z "$@" }
-          function zi() { __zoxide_zi "$@" }
-        fi
+          # manually define z function for zoxide
+          if command -v zoxide >/dev/null; then
+            function z() { __zoxide_z "$@" }
+            function zi() { __zoxide_zi "$@" }
+          fi
 
-        # Create ssh sockets directory with the following code:
-        if [[ ! -d /tmp/ssh-sockets/ ]]; then
-          mkdir -p /tmp/ssh-sockets
-          chmod 700 /tmp/ssh-sockets
-        fi
+          # Create ssh sockets directory with the following code:
+          if [[ ! -d /tmp/ssh-sockets/ ]]; then
+            mkdir -p /tmp/ssh-sockets
+            chmod 700 /tmp/ssh-sockets
+          fi
 
-        # 1password-cli config:
-        # - load op (1Password CLI) completion
-        # - source op (1Password CLI) plugins
-        #
-        # ---
-        #
-        # ref: https://developer.1password.com/docs/cli/shell-plugins/github#step-3-source-the-pluginssh-file
-        if command -v op >/dev/null; then
-          eval "$(op completion zsh)"
-          # compdef _op op
-          [[ -f ${config.xdg.configHome}/op/plugins.sh ]] &&
-            source "${config.xdg.configHome}"/op/plugins.sh
-        fi
-      '';
+          # 1password-cli config:
+          # - load op (1Password CLI) completion
+          # - source op (1Password CLI) plugins
+          #
+          # ---
+          #
+          # ref: https://developer.1password.com/docs/cli/shell-plugins/github#step-3-source-the-pluginssh-file
+          if command -v op >/dev/null; then
+            eval "$(op completion zsh)"
+            # compdef _op op
+            [[ -f ${config.xdg.configHome}/op/plugins.sh ]] &&
+              source "${config.xdg.configHome}"/op/plugins.sh
+          fi
+        '';
+      in
+        lib.mkMerge [initExtraBeforeCompInit initExtra];
       defaultKeymap = "viins";
       autocd = true;
       antidote = {
