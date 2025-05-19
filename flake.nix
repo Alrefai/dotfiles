@@ -21,7 +21,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    catppuccin.url = "https://flakehub.com/f/catppuccin/nix/1.2.*.tar.gz";
+    catppuccin.url = "github:catppuccin/nix";
 
     #*** Non-flake source code ***#
     # forked from nvim-lua/kickstart.nvim
@@ -114,7 +114,7 @@
           # List of configuration modules to include
           modules = [
             ./home.nix
-            catppuccin.homeManagerModules.catppuccin
+            catppuccin.homeModules.catppuccin
           ];
         };
       };
