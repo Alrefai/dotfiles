@@ -82,6 +82,7 @@ in {
           wget
           yq-go #! required for tmux-nerd-font-window-name plugin
           ;
+        inherit (pkgs.beetsPackages) audible;
       }
       ++ pkgs.lib.lists.optionals pkgs.stdenv.isLinux (builtins.attrValues {
         inherit
@@ -364,6 +365,55 @@ in {
           chmod 700 /tmp/ssh-sockets
         fi
       '';
+    };
+
+    beets = {
+      enable = true;
+      settings = {
+        directory = "${config.home.homeDirectory}/Audiobooks";
+        library = "${config.xdg.dataHome}/beets/library.db";
+        plugins = [
+          "audible"
+          "edit"
+          "fromfilename"
+        ];
+        paths = {
+          default = "$albumartist/$album%aunique{}/$track - $title";
+          singleton = "Non-Album/$artist - $title";
+          comp = "Compilations/$album%aunique{}/$track - $title";
+          albumtype_soundtrack = "Soundtracks/$album/$track $title";
+
+          # For books that belong to a series
+          "albumtype:audiobook series_name::.+ series_position::.+" = "$albumartist/%ifdef{series_name}/%ifdef{series_position} - $album%aunique{}/$track - $title";
+          "albumtype:audiobook series_name::.+" = "$albumartist/%ifdef{series_name}/$album%aunique{}/$track - $title";
+
+          # Stand-alone books
+          "albumtype:audiobook" = "$albumartist/$album%aunique{}/$track - $title";
+        };
+        import.move = true;
+        musicbrainz.enabled = false;
+        audible = {
+          # if the number of files in the book is the same as the number of
+          # chapters from Audible, attempt to match each file to an audible
+          # chapter
+          match_chapters = true;
+          # disable the source_weight penalty
+          source_weight = 0.0;
+          # whether to retrieve cover art
+          fetch_art = true;
+          # include author and narrator in artist tag
+          include_narrator_in_artists = true;
+          # set to false to remove ", Book X" from end of titles
+          keep_series_reference_in_title = true;
+          # set to false to remove subtitle if it contains the series name and
+          # the word book ex. "Book 1 in Great Series", "Great Series, Book 1"
+          keep_series_reference_in_subtitle = true;
+          # output desc.txt
+          write_description_file = true;
+          # output reader.txt
+          write_reader_file = true;
+        };
+      };
     };
 
     direnv = {
