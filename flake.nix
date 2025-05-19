@@ -142,9 +142,15 @@
     #*** home-manager configurations ***#
     legacyPackages = homeConfigsForAllSystems;
 
-    #*** nixos configurations ***#
+    #*** nixos configurations for orb vm ***#
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
+      modules = [./configuration.nix lix-module.nixosModules.default];
+    };
+
+    #*** nixos configurations for mimacbook ***#
+    nixosConfigurations.mimacbook = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
       modules = [./configuration.nix lix-module.nixosModules.default];
     };
   };
