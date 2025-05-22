@@ -89,6 +89,7 @@ in {
           gcc
           gnumake
           nettools
+          oniux
           unzip
           ;
       });
