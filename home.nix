@@ -502,8 +502,10 @@ in {
         "AppleDouble"
         "LSOverride"
 
-        # Icon must end with two \r
-        "con"
+        # Ignore icon files
+        # https://stackoverflow.com/a/65429032/9185553
+        "Icon?"
+        "![iI]con[_a-zA-Z0-9]"
 
         # Thumbnails
         "_*"
