@@ -27,16 +27,57 @@
     use-xdg-base-directories = true;
   };
 
-  users.defaultUserShell = pkgs.zsh;
+  users = {
+    defaultUserShell = pkgs.zsh;
+    extraUsers.mohammed = {
+      subUidRanges = [
+        {
+          startUid = 100000;
+          count = 65536;
+        }
+      ];
+      subGidRanges = [
+        {
+          startGid = 100000;
+          count = 65536;
+        }
+      ];
+    };
+  };
 
   programs = {
     zsh.enable = true;
     nix-ld = {
       enable = true;
       package = pkgs.nix-ld-rs;
-      libraries = with pkgs; [glib];
+      libraries = [pkgs.glibc];
     };
   };
 
   services.tailscale.enable = true;
+
+  # Enable common container config files in /etc/containers
+  virtualisation = {
+    containers.enable = true;
+    oci-containers.backend = "podman";
+    podman = {
+      enable = true;
+
+      # Periodically prune Podman resources weekly
+      autoPrune.enable = true;
+
+      # Create a `docker` alias for podman, to use it as a drop-in replacement
+      dockerCompat = true;
+
+      # Make the Podman socket available in place of the Docker socket,
+      # so Docker tools can find the Podman socket.
+      dockerSocket.enable = true;
+
+      # Required for containers under podman-compose to be able to talk to each other.
+      defaultNetwork.settings.dns_enabled = true;
+    };
+  };
+
+  # Useful other development tools
+  environment.systemPackages = [pkgs.podman-compose];
 }
