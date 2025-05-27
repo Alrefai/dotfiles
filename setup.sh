@@ -18,10 +18,11 @@ else
     mkdir -p ~/.config/nix
     echo 'experimental-features = nix-command flakes' >>~/.config/nix/nix.conf
     echo 'use-xdg-base-directories = true' >>~/.config/nix/nix.conf
+    echo 'trusted-users = @admin @wheel' >>~/.config/nix/nix.conf
     echo 'Added extra configurations to ~/.config/nix/nix.conf'
     echo
     echo "Rebuild NixOS configurations from dotfiles repo..."
-    sudo nixos-rebuild switch --flake github:alrefai/dotfiles#nixos --impure
+    sudo nixos-rebuild switch --flake github:alrefai/dotfiles/config#nixos --impure
   else
     echo 'This system is not running NixOS.'
   fi
@@ -29,4 +30,4 @@ fi
 
 echo
 echo "Switching home-manager configurations from dotfiles repo..."
-nix run home-manager/master -- switch -b bak --flake github:alrefai/dotfiles
+nix run home-manager/master -- switch -b bak --flake github:alrefai/dotfiles/config
