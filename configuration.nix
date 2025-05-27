@@ -27,7 +27,6 @@
     use-xdg-base-directories = true;
   };
 
-  environment.shells = with pkgs; [bash zsh];
   users.defaultUserShell = pkgs.zsh;
 
   programs = {
