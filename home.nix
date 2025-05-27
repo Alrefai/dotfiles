@@ -352,6 +352,12 @@ in {
         fi
       '';
       bashrcExtra = ''
+        # Ghostty shell integration for Bash.
+        # This should be at the top of your bashrc!
+        if [[ $GHOSTTY_RESOURCES_DIR ]]; then
+          builtin source "$GHOSTTY_RESOURCES_DIR/shell-integration/bash/ghostty.bash"
+        fi
+
         # Create ssh sockets directory with the following code:
         if [[ ! -d /tmp/ssh-sockets/ ]]; then
           mkdir -p /tmp/ssh-sockets
@@ -756,6 +762,12 @@ in {
           zstyle ':plugin:ez-compinit' 'compstyle' 'zshzoo'
         '';
         initExtra = lib.mkOrder 1000 ''
+          # Ghostty shell integration for ZSH.
+          # This should be at the top of your zshrc!
+          if [[ $GHOSTTY_RESOURCES_DIR ]]; then
+            builtin source "$GHOSTTY_RESOURCES_DIR/shell-integration/zsh/ghostty-integration"
+          fi
+
           # extra options
           setopt auto_list            # auto list choices on ambiguous completion
           setopt auto_menu            # automatically use menu completion
