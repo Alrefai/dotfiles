@@ -257,6 +257,32 @@ in {
         recursive = true;
       };
     };
+    dataFile = let
+      overrideDistination = {postInstall ? "", ...}: {
+        postInstall =
+          postInstall
+          + ''
+            read -r TMP_DIR < <(mktemp -d)
+            cp -r $target/* $TMP_DIR
+            rm -rf $out/*
+            cp -r $TMP_DIR/* $out
+            rm -rf $TMP_DIR
+          '';
+      };
+    in {
+      "tmux/plugins/tmux-cpu".source = pkgs.tmuxPlugins
+        .cpu.overrideAttrs overrideDistination;
+      "tmux/plugins/tmux-yank".source = pkgs.tmuxPlugins
+        .yank.overrideAttrs overrideDistination;
+      "tmux/plugins/tmux-copycat".source = pkgs.tmuxPlugins
+        .copycat.overrideAttrs overrideDistination;
+      "tmux/plugins/tmux-resurrect".source = pkgs.tmuxPlugins
+        .resurrect.overrideAttrs overrideDistination;
+      "tmux/plugins/tmux-continuum".source = pkgs.tmuxPlugins
+        .continuum.overrideAttrs overrideDistination;
+      "tmux/plugins/vim-tmux-navigator".source = pkgs.tmuxPlugins
+        .vim-tmux-navigator.overrideAttrs overrideDistination;
+    };
   };
 
   # Enable Catppucin for all available programs.
