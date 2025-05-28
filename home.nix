@@ -34,6 +34,26 @@ in {
     };
   };
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      beets = prev.beets.override {
+        pluginOverrides = let
+          inherit (pkgs.beetsPackages) audible filetote;
+        in {
+          audible = {
+            enable = true;
+            propagatedBuildInputs = [audible];
+          };
+          filetote = {
+            enable = true;
+            propagatedBuildInputs = [filetote];
+          };
+        };
+      };
+      mibeets = final.beets;
+    })
+  ];
+
   home = {
     # Home Manager needs a bit of information about you and the paths it should
     # manage.
@@ -369,6 +389,7 @@ in {
 
     beets = {
       enable = true;
+      package = pkgs.mibeets;
       settings = {
         directory = "${config.home.homeDirectory}/Audiobooks";
         library = "${config.xdg.dataHome}/beets/library.db";
@@ -378,19 +399,47 @@ in {
           "fromfilename"
         ];
         paths = {
-          default = "$albumartist/$album%aunique{}/$track - $title";
+          default = "$albumartist/$album%aunique{}/$title";
           singleton = "Non-Album/$artist - $title";
           comp = "Compilations/$album%aunique{}/$track - $title";
           albumtype_soundtrack = "Soundtracks/$album/$track $title";
 
           # For books that belong to a series
-          "albumtype:audiobook series_name::.+ series_position::.+" = "$albumartist/%ifdef{series_name}/%ifdef{series_position} - $album%aunique{}/$track - $title";
-          "albumtype:audiobook series_name::.+" = "$albumartist/%ifdef{series_name}/$album%aunique{}/$track - $title";
+          "albumtype:audiobook series_name::.+ series_position::.+" = "$albumartist/%ifdef{series_name}/%ifdef{series_position} - $album%aunique{}/$title";
+          "albumtype:audiobook series_name::.+" = "$albumartist/%ifdef{series_name}/$album%aunique{}/$title";
 
           # Stand-alone books
-          "albumtype:audiobook" = "$albumartist/$album%aunique{}/$track - $title";
+          "albumtype:audiobook" = "$albumartist/$album%aunique{}/$title";
         };
-        import.move = true;
+        import = {
+          move = true;
+          copy = false;
+          write = true;
+
+          resume = true;
+          incremental = true;
+
+          # Controlling whether skipped directories are recorded in the
+          # incremental list. When set to yes, skipped directories won’t
+          # be recorded, and beets will try to import them again
+          # later. When set to no, skipped directories will be recorded,
+          # and skipped later. Defaults to no.
+          incremental_skip_later = true;
+
+          # Specifies what should happen during an interactive import
+          # session when there is no recommendation. Useful when you are
+          # only interested in processing medium and strong
+          # recommendations interactively.
+          none_rec_action = "skip";
+
+          # Controls how duplicates are treated in import task. “skip”
+          # means that new item(album or track) will be skipped; “keep”
+          # means keep both old and new items; “remove” means remove old
+          # item; “merge” means merge into one album; “ask” means the
+          # user should be prompted for the action each time. The default
+          # is ask.
+          duplicate_action = "skip";
+        };
         musicbrainz.enabled = false;
         audible = {
           # if the number of files in the book is the same as the number of
@@ -413,6 +462,7 @@ in {
           # output reader.txt
           write_reader_file = true;
         };
+        filetote.extensions = ".*";
       };
     };
 
