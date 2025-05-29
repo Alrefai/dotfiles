@@ -2,11 +2,13 @@
 
 > **Note:** Using model `codex-mini-latest`, provider `openai`, approval mode `suggest`
 >
-> **Recommended:** add `alias codex='op run --no-masking -- codex'` to your shell profile for automatic API‑key lookup.
+> **Recommended:** add `alias codex='op run --no-masking -- codex'` to your
+> shell profile for automatic API‑key lookup.
+
 ## 🤖 Agent Behavior
 
-- You are an agent—keep going until the user’s query is completely resolved. Only
-  end your turn when you are sure that the problem has been solved.
+- You are an agent—keep going until the user’s query is completely resolved.
+  Only end your turn when you are sure that the problem has been solved.
 - If you are not sure about file content or codebase structure pertaining to
   the user’s request, use your tools to read files and gather the relevant
   information; do NOT guess or make up an answer.
@@ -22,8 +24,9 @@ This repository contains Nix flakes for configuring:
 - **Home Manager**: user-level dotfiles, packages, and environment.
 - **NixOS system**: machine-level configuration.
 
-We use a single `flake.nix` to generate Home Manager configurations for Mohammed’s machines
-and a NixOS system configuration under `nixosConfigurations`.
+We use a single `flake.nix` to generate Home Manager configurations for
+Mohammed’s machines and a NixOS system configuration under
+`nixosConfigurations`.
 
 ## 🛠️ Setup & Development Shell
 
@@ -72,7 +75,8 @@ sudo nixos-rebuild switch --flake .#nixos
 - **Indentation:** 2 spaces, no tabs, max 80 chars per line.
 - **Nix Formatting:** run `nix fmt`.
 - **Shell scripts:** `set -euo pipefail`, proper shebangs, linted by `shellcheck`.
-- **Commits:** Conventional Commits (header ≤ 50 chars in lower-case, body ≤ 72 chars).
+- **Commits:** Conventional Commits (header ≤ 50 chars in lower-case,
+  body ≤ 72 chars).
 - **Code blocks:** annotate with language comments for syntax highlighting.
 
 ## 🔨 Common Tasks
@@ -86,9 +90,9 @@ sudo nixos-rebuild switch --flake .#nixos
 
 ## ⚓ PR Merge Strategy
 
-See `docs/pr-merge-strategy.md` for details on GitHub pull-request merge strategies.
-We recommend using **squash and merge** for this repository to produce a clean,
-linear history.
+See `docs/pr-merge-strategy.md` for details on GitHub pull-request merge
+strategies. We recommend using **squash and merge** for this repository to
+produce a clean, linear history.
 
 ## 📋 Outstanding AI‑Backlog
 
@@ -139,4 +143,5 @@ codex "Refactor Nix flakes configuration"
 codex --full-context "Update style conventions in codex.md"
 ```
 
-*This file is maintained by the Codex CLI agent. Do not edit manually unless updating agent configuration.*
+*This file is maintained by the Codex CLI agent. Do not edit manually unless
+updating agent configuration.*
