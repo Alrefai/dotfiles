@@ -9,3 +9,6 @@
 # devcontainer
 *.devcontainer
 
+# Codex session state (keep private)
+sessions/*.json
+
