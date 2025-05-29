@@ -61,7 +61,7 @@ sudo nixos-rebuild switch --flake .#nixos
 - **Indentation:** 2 spaces, no tabs, max 80 chars per line.
 - **Nix Formatting:** run `nix fmt`.
 - **Shell scripts:** `set -euo pipefail`, proper shebangs, linted by `shellcheck`.
-- **Commits:** Conventional Commits (header ≤ 50 chars, body ≤ 72 chars).
+- **Commits:** Conventional Commits (header ≤ 50 chars in lower-case, body ≤ 72 chars).
 - **Code blocks:** annotate with language comments for syntax highlighting.
 
 ## 🔨 Common Tasks
@@ -72,6 +72,12 @@ sudo nixos-rebuild switch --flake .#nixos
 | Run flake checks                | `nix flake check`                        |
 | Apply Home Manager config       | `home-manager switch --flake .#mohammed` |
 | Build NixOS system              | `sudo nixos-rebuild switch --flake .#nixos` |
+
+## ⚓ PR Merge Strategy
+
+See `docs/pr-merge-strategy.md` for details on GitHub pull-request merge strategies.
+We recommend using **squash and merge** for this repository to produce a clean,
+linear history.
 
 ## 📋 Outstanding AI‑Backlog
 
