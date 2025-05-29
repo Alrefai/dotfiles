@@ -91,28 +91,31 @@ in {
       });
 
     activation = {
-      restoreNeovimPlugins = lib.hm.dag.entryAfter ["writeBoundary"] ''
-        if [[ -d "${config.xdg.configHome}/nvim" ]]; then
-          PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
-          PATH="/nix/var/nix/profiles/default/bin:$PATH"
-          PATH="${config.xdg.stateHome}/nix/profile/bin:$PATH"
-          NVIM_APPNAME=nvim run --silence nvim --headless "+Lazy! restore" +qa
-        fi
-      '';
+      restoreNeovimPlugins =
+        lib.hm.dag.entryAfter ["writeBoundary"]
+        # bash
+        ''
+          if [[ -d "${config.xdg.configHome}/nvim" ]]; then
+            PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+            PATH="/nix/var/nix/profiles/default/bin:$PATH"
+            PATH="${config.xdg.stateHome}/nix/profile/bin:$PATH"
+            NVIM_APPNAME=nvim run --silence nvim --headless "+Lazy! restore" +qa
+          fi
+        '';
     };
 
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
     # plain files is through 'home.file'.
     file = {
-      # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-      # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-      # # symlink to the Nix store copy.
+      # Building this configuration will create a copy of 'dotfiles/screenrc' in
+      # the Nix store. Activating the configuration will then make '~/.screenrc'
+      # a symlink to the Nix store copy.
       # ".profile".source = ./dotfiles/profile;
       ".ssh/allowed_signers".source = ./dotfiles/ssh/allowed_signers;
       ".ssh/github.pub".source = ./dotfiles/ssh/github.pub;
       ".local/bin".source = ./bin;
 
-      # # You can also set the file content immediately.
+      # You can also set the file content immediately.
       # ".gradle/gradle.properties".text = ''
       #   org.gradle.console=verbose
       #   org.gradle.daemon.idletimeout=3600000
@@ -261,7 +264,9 @@ in {
       overrideDistination = {postInstall ? "", ...}: {
         postInstall =
           postInstall
-          + ''
+          +
+          # sh
+          ''
             read -r TMP_DIR < <(mktemp -d)
             cp -r $target/* $TMP_DIR
             rm -rf $out/*
@@ -333,60 +338,66 @@ in {
       enable = true;
       historyControl = ["ignoreboth"];
       historyFile = "${config.xdg.stateHome}/bash/bash_history";
-      profileExtra = ''
-        # Homebrew
-        if [[ -e /usr/local/bin/brew ]]; then
-          export HOMEBREW_PREFIX=/usr/local
-        elif [[ -e /opt/homebrew/bin/brew ]]; then
-          export HOMEBREW_PREFIX=/opt/homebrew
-        fi
-        if [[ $HOMEBREW_PREFIX ]]; then
-          eval "$("$HOMEBREW_PREFIX"/bin/brew shellenv)"
-          export HOMEBREW_NO_ANALYTICS=1
-        fi
+      profileExtra =
+        # bash
+        ''
+          # Homebrew
+          if [[ -e /usr/local/bin/brew ]]; then
+            export HOMEBREW_PREFIX=/usr/local
+          elif [[ -e /opt/homebrew/bin/brew ]]; then
+            export HOMEBREW_PREFIX=/opt/homebrew
+          fi
+          if [[ $HOMEBREW_PREFIX ]]; then
+            eval "$("$HOMEBREW_PREFIX"/bin/brew shellenv)"
+            export HOMEBREW_NO_ANALYTICS=1
+          fi
 
-        # use bat as a colorizing pager for man pages
-        if command -v bat >/dev/null; then
-          export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -l man'"
-        fi
-      '';
-      initExtra = ''
-        # vim-style keybindings
-        set -o vi
+          # use bat as a colorizing pager for man pages
+          if command -v bat >/dev/null; then
+            export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -l man'"
+          fi
+        '';
+      initExtra =
+        # bash
+        ''
+          # vim-style keybindings
+          set -o vi
 
-        # manually define z function for zoxide
-        if command -v zoxide >/dev/null; then
-          function z() { __zoxide_z "$@"; }
-          function zi() { __zoxide_zi "$@"; }
-        fi
+          # manually define z function for zoxide
+          if command -v zoxide >/dev/null; then
+            function z() { __zoxide_z "$@"; }
+            function zi() { __zoxide_zi "$@"; }
+          fi
 
-        # 1password-cli config:
-        # - load op (1Password CLI) completion
-        # - source op (1Password CLI) plugins
-        #
-        # ---
-        #
-        # ref: https://developer.1password.com/docs/cli/shell-plugins/github#step-3-source-the-pluginssh-file
-        if command -v op >/dev/null; then
-          eval "$(op completion bash)"
-          # compdef _op op
-          [[ -f ${config.xdg.configHome}/op/plugins.sh ]] &&
-            source "${config.xdg.configHome}"/op/plugins.sh
-        fi
-      '';
-      bashrcExtra = ''
-        # Ghostty shell integration for Bash.
-        # This should be at the top of your bashrc!
-        if [[ $GHOSTTY_RESOURCES_DIR ]]; then
-          builtin source "$GHOSTTY_RESOURCES_DIR/shell-integration/bash/ghostty.bash"
-        fi
+          # 1password-cli config:
+          # - load op (1Password CLI) completion
+          # - source op (1Password CLI) plugins
+          #
+          # ---
+          #
+          # ref: https://developer.1password.com/docs/cli/shell-plugins/github#step-3-source-the-pluginssh-file
+          if command -v op >/dev/null; then
+            eval "$(op completion bash)"
+            # compdef _op op
+            [[ -f ${config.xdg.configHome}/op/plugins.sh ]] &&
+              source "${config.xdg.configHome}"/op/plugins.sh
+          fi
+        '';
+      bashrcExtra =
+        # bash
+        ''
+          # Ghostty shell integration for Bash.
+          # This should be at the top of your bashrc!
+          if [[ $GHOSTTY_RESOURCES_DIR ]]; then
+            builtin source "$GHOSTTY_RESOURCES_DIR/shell-integration/bash/ghostty.bash"
+          fi
 
-        # Create ssh sockets directory with the following code:
-        if [[ ! -d /tmp/ssh-sockets/ ]]; then
-          mkdir -p /tmp/ssh-sockets
-          chmod 700 /tmp/ssh-sockets
-        fi
-      '';
+          # Create ssh sockets directory with the following code:
+          if [[ ! -d /tmp/ssh-sockets/ ]]; then
+            mkdir -p /tmp/ssh-sockets
+            chmod 700 /tmp/ssh-sockets
+          fi
+        '';
     };
 
     direnv = {
@@ -410,14 +421,16 @@ in {
       hidden = true;
     };
 
-    fzf = {
+    fzf = rec {
       enable = true;
-      changeDirWidgetCommand = ''
-        fd --type d --color always --follow --hidden --no-require-git \
-          --exclude 'Library/' \
-          --exclude '.cache/' \
-          --exclude '.git/'
-      '';
+      changeDirWidgetCommand =
+        # bash
+        ''
+          fd --type d --color always --follow --hidden --no-require-git \
+            --exclude 'Library/' \
+            --exclude '.cache/' \
+            --exclude '.git/'
+        '';
       changeDirWidgetOptions = [
         "--preview 'eza --icons --color always --tree --level 3 {} | head -200'"
       ];
@@ -426,18 +439,23 @@ in {
         fg = pkgs.lib.mkForce "-1";
         "bg+" = pkgs.lib.mkForce "-1";
       };
-      defaultCommand = ''
-        fd --type f --color always --follow --hidden --no-require-git -E '.git/'
-      '';
+      defaultCommand =
+        # bash
+        ''
+          fd --type f \
+            --color always \
+            --follow \
+            --hidden \
+            --no-require-git \
+            -E '.git/'
+        '';
       defaultOptions = [
         "--bind J:down,K:up,ctrl-a:select-all,ctrl-d:deselect-all,ctrl-t:toggle-all"
         "--no-height"
         "--border"
         "--ansi"
       ];
-      fileWidgetCommand = ''
-        fd --type f --color always --follow --hidden --no-require-git -E '.git/'
-      '';
+      fileWidgetCommand = defaultCommand;
       fileWidgetOptions = [
         "--preview 'bat --color always --style numbers --line-range :500 {}'"
       ];
@@ -793,14 +811,16 @@ in {
         starship = starship-yazi;
       };
 
-      initLua = ''
-        require("full-border"):setup {
-          -- Available values: ui.Border.PLAIN, ui.Border.ROUNDED
-          type = ui.Border.ROUNDED,
-        }
+      initLua =
+        # lua
+        ''
+          require("full-border"):setup {
+            -- Available values: ui.Border.PLAIN, ui.Border.ROUNDED
+            type = ui.Border.ROUNDED,
+          }
 
-        require("starship"):setup()
-      '';
+          require("starship"):setup()
+        '';
 
       keymap = {
         mgr.prepend_keymap = [
@@ -831,61 +851,69 @@ in {
     zsh = {
       enable = true;
       dotDir = ".config/zsh";
-      envExtra = ''
-        [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
-        # don't use global env as it will slow us down
-        skip_global_compinit=1
-      '';
+      envExtra =
+        # bash
+        ''
+          [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
+          # don't use global env as it will slow us down
+          skip_global_compinit=1
+        '';
       initContent = let
-        initExtraBeforeCompInit = lib.mkOrder 500 ''
-          # See available completion styles with 'compstyle -l'
-          zstyle ':plugin:ez-compinit' 'compstyle' 'zshzoo'
-        '';
-        initExtra = lib.mkOrder 1000 ''
-          # Ghostty shell integration for ZSH.
-          # This should be at the top of your zshrc!
-          if [[ $GHOSTTY_RESOURCES_DIR ]]; then
-            builtin source "$GHOSTTY_RESOURCES_DIR/shell-integration/zsh/ghostty-integration"
-          fi
+        initExtraBeforeCompInit =
+          lib.mkOrder 500
+          # sh
+          ''
+            # See available completion styles with 'compstyle -l'
+            zstyle ':plugin:ez-compinit' 'compstyle' 'zshzoo'
+          '';
+        initExtra =
+          lib.mkOrder 1000
+          # sh
+          ''
+            # Ghostty shell integration for ZSH.
+            # This should be at the top of your zshrc!
+            if [[ $GHOSTTY_RESOURCES_DIR ]]; then
+              builtin source "$GHOSTTY_RESOURCES_DIR/shell-integration/zsh/ghostty-integration"
+            fi
 
-          # extra options
-          setopt auto_list            # auto list choices on ambiguous completion
-          setopt auto_menu            # automatically use menu completion
-          setopt always_to_end        # move cursor to end if word had one match
-          setopt interactive_comments # allow comments in interactive shells
-          setopt ignoreeof            # Disable closing shell with C-d
-          setopt globdots             # Show hidden files and folders
-          setopt complete_aliases     # enable completion for aliased commands
+            # extra options
+            setopt auto_list            # auto list choices on ambiguous completion
+            setopt auto_menu            # automatically use menu completion
+            setopt always_to_end        # move cursor to end if word had one match
+            setopt interactive_comments # allow comments in interactive shells
+            setopt ignoreeof            # Disable closing shell with C-d
+            setopt globdots             # Show hidden files and folders
+            setopt complete_aliases     # enable completion for aliased commands
 
-          # autosuggestions key bindings
-          bindkey '^ ' autosuggest-accept
+            # autosuggestions key bindings
+            bindkey '^ ' autosuggest-accept
 
-          # manually define z function for zoxide
-          if command -v zoxide >/dev/null; then
-            function z() { __zoxide_z "$@" }
-            function zi() { __zoxide_zi "$@" }
-          fi
+            # manually define z function for zoxide
+            if command -v zoxide >/dev/null; then
+              function z() { __zoxide_z "$@" }
+              function zi() { __zoxide_zi "$@" }
+            fi
 
-          # Create ssh sockets directory with the following code:
-          if [[ ! -d /tmp/ssh-sockets/ ]]; then
-            mkdir -p /tmp/ssh-sockets
-            chmod 700 /tmp/ssh-sockets
-          fi
+            # Create ssh sockets directory with the following code:
+            if [[ ! -d /tmp/ssh-sockets/ ]]; then
+              mkdir -p /tmp/ssh-sockets
+              chmod 700 /tmp/ssh-sockets
+            fi
 
-          # 1password-cli config:
-          # - load op (1Password CLI) completion
-          # - source op (1Password CLI) plugins
-          #
-          # ---
-          #
-          # ref: https://developer.1password.com/docs/cli/shell-plugins/github#step-3-source-the-pluginssh-file
-          if command -v op >/dev/null; then
-            eval "$(op completion zsh)"
-            # compdef _op op
-            [[ -f ${config.xdg.configHome}/op/plugins.sh ]] &&
-              source "${config.xdg.configHome}"/op/plugins.sh
-          fi
-        '';
+            # 1password-cli config:
+            # - load op (1Password CLI) completion
+            # - source op (1Password CLI) plugins
+            #
+            # ---
+            #
+            # ref: https://developer.1password.com/docs/cli/shell-plugins/github#step-3-source-the-pluginssh-file
+            if command -v op >/dev/null; then
+              eval "$(op completion zsh)"
+              # compdef _op op
+              [[ -f ${config.xdg.configHome}/op/plugins.sh ]] &&
+                source "${config.xdg.configHome}"/op/plugins.sh
+            fi
+          '';
       in
         lib.mkMerge [initExtraBeforeCompInit initExtra];
       defaultKeymap = "viins";
