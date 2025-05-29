@@ -17,6 +17,20 @@
   function calls only, as this may impair your ability to solve the problem
   and think insightfully.
 
+## 🏗️ Agentic Workflow
+
+Introduce a top-level `.codex/` workspace for agent state, including:
+- A high-level `requirements.md` file outlining goals, conventions, and scope.
+- Dated planning files (e.g., `.codex/plan_YYYY-MM-DD.md`) to track milestones.
+- Changelog entries in `CHANGELOG.md` for significant completed work.
+
+## ⚙️ Modes of interaction
+
+- **Interactive mode:** propose each milestone or change and await your
+  approval before proceeding.
+- **Full-auto mode:** execute the whole plan without pausing, then summarize
+  all work for your review.
+
 ## 📚 Project Overview
 
 This repository contains Nix flakes for configuring:

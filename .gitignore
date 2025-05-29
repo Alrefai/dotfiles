@@ -10,5 +10,7 @@
 *.devcontainer
 
 # Codex session state (keep private)
+# Codex CLI agent workspace and sessions (keep private)
 sessions/*.json
+.codex/
 
