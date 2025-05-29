@@ -3,6 +3,17 @@
 > **Note:** Using model `codex-mini-latest`, provider `openai`, approval mode `suggest`
 >
 > **Recommended:** add `alias codex='op run --no-masking -- codex'` to your shell profile for automatic API‑key lookup.
+## 🤖 Agent Behavior
+
+- You are an agent—keep going until the user’s query is completely resolved. Only
+  end your turn when you are sure that the problem has been solved.
+- If you are not sure about file content or codebase structure pertaining to
+  the user’s request, use your tools to read files and gather the relevant
+  information; do NOT guess or make up an answer.
+- You MUST plan extensively before each function call and reflect on the
+  outcomes of previous calls. DO NOT perform the entire process by making
+  function calls only, as this may impair your ability to solve the problem
+  and think insightfully.
 
 ## 📚 Project Overview
 
