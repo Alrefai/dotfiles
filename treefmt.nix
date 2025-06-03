@@ -4,6 +4,12 @@ _: {
     alejandra.enable = true;
     dprint = {
       enable = true;
+      includes = [
+        "**/*.{astro,html,ts,tsx,js,mjs,cjs,jsx,json,jsonc,toml,yaml,yml,md}"
+        "**/*.{graphql,gql,ipynb,py,pyi}"
+        "Dockerfile"
+      ];
+      excludes = ["node_modules" "*-lock.json" "*-lock.yaml" "dist"];
       settings = {
         incremental = true;
         lineWidth = 80;
@@ -24,12 +30,6 @@ _: {
         markdown.textWrap = "always";
         markup.quotes = "single";
         ruff.lineLength = 80;
-        includes = [
-          "**/*.{astro,html,ts,tsx,js,mjs,cjs,jsx,json,jsonc,toml,yaml,yml,md}"
-          "**/*.{graphql,gql,ipynb,py,pyi}"
-          "Dockerfile"
-        ];
-        excludes = ["node_modules" "*-lock.json" "*-lock.yaml" "dist"];
         # https://plugins.dprint.dev
         plugins = [
           "https://plugins.dprint.dev/typescript-0.95.5.wasm"
