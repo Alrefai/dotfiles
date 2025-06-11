@@ -6,6 +6,11 @@
 
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
 
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0-3.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -52,6 +57,7 @@
     nixpkgs,
     systems,
     lix-module,
+    nix-darwin,
     treefmt-nix,
     home-manager,
     catppuccin,
@@ -120,10 +126,13 @@
       };
     };
 
+    # Set the username for all systems
+    username = "mohammed";
+
     # Apply the configuration generator to all supported systems
     # for the provided username
     homeConfigsForAllSystems = forAllSystems (
-      generateHomeConfigurations "mohammed"
+      generateHomeConfigurations username
     );
   in {
     # Schemas tell Nix about the structure of your flake's outputs
@@ -146,6 +155,15 @@
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [./configuration.nix lix-module.nixosModules.default];
+    };
+
+    #*** macos configurations ***#
+    darwinConfigurations.mimacvm = nix-darwin.lib.darwinSystem {
+      specialArgs = {
+        inherit username;
+        hostname = "mimacvm";
+      };
+      modules = [./modules/darwin];
     };
   };
 }
