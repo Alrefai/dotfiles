@@ -732,7 +732,7 @@ in {
       enableZshIntegration = true;
       enableBashIntegration = true;
       settings = {
-        manager = {
+        mgr = {
           sort_by = "mtime";
           sort_dir_first = true;
           sort_reverse = true;
@@ -757,7 +757,7 @@ in {
       '';
 
       keymap = {
-        manager.prepend_keymap = [
+        mgr.prepend_keymap = [
           {
             on = ["T" "T"];
             run = "plugin toggle-pane max-preview";
