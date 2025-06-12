@@ -648,6 +648,40 @@ in {
       ];
     };
 
+    ghostty = {
+      enable = true;
+      package = null;
+      settings = {
+        # Font configuration
+        font-family = "JetBrains Mono";
+        font-feature = [
+          # `Ww` with lover middle connection
+          "cv07"
+          # `y` with different ascender construction
+          "cv11"
+          # `u` with traditional construction
+          "cv12"
+          # `$` with broken bar
+          "cv14"
+        ];
+
+        # Color scheme configuration
+        theme = "catppuccin-mocha";
+        background = "#000000";
+        foreground = "#b3b1ad";
+        cursor-color = "#b3b1ad";
+        cursor-text = "#000000";
+
+        # Window configuration
+        macos-titlebar-style = "hidden";
+        window-padding-color = "background";
+        shell-integration-features = "no-cursor";
+
+        # Keybind configuration
+        keybind = ["alt+shift+space=toggle_quick_terminal"];
+      };
+    };
+
     jq.enable = true;
 
     lazygit = {
