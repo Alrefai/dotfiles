@@ -154,7 +154,7 @@ in {
       LESSHISTFILE = "${config.xdg.stateHome}/less/history";
 
       # Terminal
-      TERM = "xterm-256color";
+      # TERM = "xterm-256color";
       COLORTERM = "truecolor"; #! Important: for delta catppuccin theme
 
       # Node
