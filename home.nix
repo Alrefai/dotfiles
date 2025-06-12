@@ -113,6 +113,7 @@ in {
       # # symlink to the Nix store copy.
       # ".profile".source = ./dotfiles/profile;
       ".ssh/allowed_signers".source = ./dotfiles/ssh/allowed_signers;
+      ".ssh/github.pub".source = ./dotfiles/ssh/github.pub;
       ".local/bin".source = ./bin;
 
       # # You can also set the file content immediately.
@@ -699,6 +700,29 @@ in {
     lesspipe.enable = true;
 
     ripgrep.enable = true;
+
+    ssh = {
+      enable = true;
+      controlMaster = "auto";
+      controlPersist = "600";
+      extraConfig = ''
+        ConnectTimeout 3
+        PubkeyAuthentication no
+        IdentitiesOnly yes
+      '';
+      hashKnownHosts = true;
+      includes = ["~/.ssh/config.d/*.conf"];
+      matchBlocks = {
+        "github.com github" = {
+          hostname = "github.com";
+          user = "git";
+          identityFile = "~/.ssh/github.pub";
+          extraOptions = {
+            "PubkeyAuthentication" = "yes";
+          };
+        };
+      };
+    };
 
     starship = {
       enable = true;
