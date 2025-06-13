@@ -127,7 +127,12 @@
     };
 
     # Set the username for all systems
-    username = "mohammed";
+    username = let
+      name = builtins.getEnv "USER";
+    in
+      if name == ""
+      then "mohammed"
+      else name;
 
     # Apply the configuration generator to all supported systems
     # for the provided username
@@ -158,12 +163,58 @@
     };
 
     #*** macos configurations ***#
-    darwinConfigurations.mimacvm = nix-darwin.lib.darwinSystem {
-      specialArgs = {
+    darwinConfigurations = let
+      # Default values that can be overridden per-host
+      defaults = {
         inherit username;
-        hostname = "mimacvm";
+        system = "aarch64-darwin"; # Most common for modern Macs
+        extraModules = [];
+        extraSpecialArgs = {};
       };
-      modules = [./modules/darwin];
-    };
+
+      # Host configurations - easy to add new hosts
+      hosts = {
+        mimacvm = {
+          # Inherits all defaults automatically
+        };
+
+        # Example: Intel Mac with custom settings
+        # work-macbook = {
+        #   system = "x86_64-darwin";
+        #   username = "work-user";
+        #   extraModules = [
+        #     ./modules/work-specific.nix
+        #     ./modules/intel-mac.nix
+        #   ];
+        #   extraSpecialArgs = {
+        #     enableWorkTools = true;
+        #   };
+        # };
+
+        # Example: M1 Mac mini with minimal config
+        # mac-mini = {
+        #   extraModules = [
+        #     ./modules/headless.nix
+        #   ];
+        # };
+      };
+
+      # Helper function to create a Darwin system configuration
+      mkDarwinHost = hostname: hostConfig: let
+        # Merge host config with defaults
+        config = defaults // hostConfig // {inherit hostname;};
+      in
+        nix-darwin.lib.darwinSystem {
+          specialArgs =
+            {
+              inherit (config) hostname username system;
+            }
+            // config.extraSpecialArgs;
+
+          modules = [./modules/darwin] ++ config.extraModules;
+        };
+    in
+      # Generate configurations for all hosts
+      nixpkgs.lib.mapAttrs mkDarwinHost hosts;
   };
 }
