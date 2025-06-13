@@ -3,6 +3,7 @@
   pkgs,
   hostname,
   username,
+  system,
   ...
 }: {
   # Configure Nix
@@ -44,7 +45,7 @@
   };
 
   # Set the host platform
-  nixpkgs.hostPlatform = "aarch64-darwin";
+  nixpkgs.hostPlatform = system;
 
   environment = {
     # Override the default nix profiles and their order in path.
