@@ -1,5 +1,7 @@
 {
   description = "Home Manager configuration of mohammed";
+  # FORK: To use this configuration, replace "mohammed" with your username
+  # throughout this file
 
   inputs = {
     flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/*.tar.gz";
@@ -127,12 +129,7 @@
     };
 
     # Set the username for all systems
-    username = let
-      name = builtins.getEnv "USER";
-    in
-      if name == ""
-      then "mohammed"
-      else name;
+    username = "mohammed";
 
     # Apply the configuration generator to all supported systems
     # for the provided username
