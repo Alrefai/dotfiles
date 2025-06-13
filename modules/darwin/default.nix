@@ -120,7 +120,7 @@
         SecondClickThreshold = 0;
       };
       NSGlobalDomain = {
-        _HIHideMenuBar = true;
+        _HIHideMenuBar = false;
         AppleInterfaceStyle = "Dark";
         "com.apple.trackpad.forceClick" = true;
       };
