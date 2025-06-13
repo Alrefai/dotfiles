@@ -211,7 +211,9 @@
             }
             // config.extraSpecialArgs;
 
-          modules = [./modules/darwin] ++ config.extraModules;
+          modules =
+            [./modules/darwin lix-module.nixosModules.default]
+            ++ config.extraModules;
         };
     in
       # Generate configurations for all hosts
