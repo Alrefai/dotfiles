@@ -65,33 +65,15 @@
     catppuccin,
     ...
   } @ inputs: let
-    # A higher-order helper function that generates system-specific
-    # outputs
-    forEachSystem = supportedSystems: generateConfig:
-      nixpkgs.lib.genAttrs supportedSystems (
-        system:
-          generateConfig {
-            pkgs = import nixpkgs {
-              inherit system;
-              config.allowUnfree = true;
-            };
-          }
-      );
-
-    # Partially apply the system list to `forEachSystem` function
-    forAllSystems = forEachSystem (import systems);
-
     # Eval the treefmt modules from ./treefmt.nix
     treefmtFor = system:
       treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system}
       ./treefmt.nix;
 
-    # A higher-order function to generate home-manager configurations for
-    # given username and system
-    generateHomeConfigurations = username: {pkgs}: {
-      # Define the home-manager configuration for the defined user
-      homeConfigurations = let
-        treefmtEvalPlatform = treefmtFor pkgs.system;
+    devToolsOverlay = final: prev: {
+      devTools = let
+        treefmtEvalPlatform = treefmtFor final.system;
+      in {
         # Make the treefmt command available in the shell using the specified
         # configuration in `./treefmt.nix`.
         treefmt = treefmtEvalPlatform.config.build.wrapper;
@@ -104,21 +86,34 @@
           shfmt # sh formatter
           statix # nix linter
           ;
-      in {
+      };
+    };
+
+    # A higher-order helper function that generates system-specific outputs
+    forEachSystem = supportedSystems: generateConfig:
+      nixpkgs.lib.genAttrs supportedSystems (
+        system:
+          generateConfig {
+            pkgs = import nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+              overlays = [devToolsOverlay];
+            };
+          }
+      );
+
+    # Partially apply the system list to `forEachSystem` function
+    forAllSystems = forEachSystem (import systems);
+
+    # A higher-order function to generate home-manager configurations for
+    # given username and system
+    mkHomeConfig = username: {pkgs}: {
+      # Define the home-manager configuration for the defined user
+      homeConfigurations = {
         ${username} = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           # Pass arguments to the configuration modules
-          extraSpecialArgs = {
-            inherit
-              inputs
-              username
-              alejandra
-              shellcheck
-              shfmt
-              statix
-              treefmt
-              ;
-          };
+          extraSpecialArgs = {inherit inputs username;};
           # List of configuration modules to include
           modules = [
             ./home.nix
@@ -130,12 +125,6 @@
 
     # Set the username for all systems
     username = "mohammed";
-
-    # Apply the configuration generator to all supported systems
-    # for the provided username
-    homeConfigsForAllSystems = forAllSystems (
-      generateHomeConfigurations username
-    );
   in {
     # Schemas tell Nix about the structure of your flake's outputs
     inherit (flake-schemas) schemas;
@@ -156,7 +145,8 @@
     });
 
     #*** home-manager configurations ***#
-    legacyPackages = homeConfigsForAllSystems;
+    # Make configurations for all supported systems for the provided username
+    legacyPackages = forAllSystems (mkHomeConfig username);
 
     #*** nixos configurations ***#
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
