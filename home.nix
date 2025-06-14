@@ -4,11 +4,6 @@
   pkgs,
   inputs,
   username,
-  alejandra,
-  statix,
-  treefmt,
-  shellcheck,
-  shfmt,
   ...
 }: let
   inherit (inputs) minvim mitmux yazi-plugins starship-yazi;
@@ -57,15 +52,7 @@ in {
     # The home.packages option allows you to install Nix packages into your
     # environment.
     packages =
-      # custom pkgs from treefmt.nix
-      [
-        alejandra # nix formatter
-        shellcheck # sh linter
-        shfmt # sh formatter
-        statix # nix linter
-        treefmt # universal code formatting tool
-      ]
-      ++ builtins.attrValues {
+      builtins.attrValues {
         inherit
           (pkgs)
           _1password-cli
@@ -81,6 +68,15 @@ in {
           tmux
           wget
           yq-go #! required for tmux-nerd-font-window-name plugin
+          ;
+        inherit
+          (pkgs.devTools)
+          # custom pkgs from treefmt.nix
+          alejandra # nix formatter
+          shellcheck # sh linter
+          shfmt # sh formatter
+          statix # nix linter
+          treefmt # universal code formatting tool
           ;
       }
       ++ pkgs.lib.lists.optionals pkgs.stdenv.isLinux (builtins.attrValues {
