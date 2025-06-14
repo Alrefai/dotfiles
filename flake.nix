@@ -1,5 +1,8 @@
 {
-  description = "Home Manager configuration of mohammed";
+  description = ''
+    Multi-platform Nix configuration with home-manager (standalone), nix-darwin,
+    and NixOS support
+  '';
   # FORK: To use this configuration, replace "mohammed" with your username
   # throughout this file
 
@@ -105,24 +108,6 @@
     # Partially apply the system list to `forEachSystem` function
     forAllSystems = forEachSystem (import systems);
 
-    # A higher-order function to generate home-manager configurations for
-    # given username and system
-    mkHomeConfig = username: {pkgs}: {
-      # Define the home-manager configuration for the defined user
-      homeConfigurations = {
-        ${username} = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          # Pass arguments to the configuration modules
-          extraSpecialArgs = {inherit inputs username;};
-          # List of configuration modules to include
-          modules = [
-            ./home.nix
-            catppuccin.homeModules.catppuccin
-          ];
-        };
-      };
-    };
-
     # Set the username for all systems
     username = "mohammed";
   in {
@@ -145,8 +130,27 @@
     });
 
     #*** home-manager configurations ***#
-    # Make configurations for all supported systems for the provided username
-    legacyPackages = forAllSystems (mkHomeConfig username);
+    legacyPackages = let
+      # A higher-order function to generate home-manager configurations for
+      # given username and system
+      mkHomeConfig = username: {pkgs}: {
+        # Define the home-manager configuration for the defined user
+        homeConfigurations = {
+          ${username} = home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            # Pass arguments to the configuration modules
+            extraSpecialArgs = {inherit inputs username;};
+            # List of configuration modules to include
+            modules = [
+              ./home.nix
+              catppuccin.homeModules.catppuccin
+            ];
+          };
+        };
+      };
+    in
+      # Make configurations for all supported systems for the provided username
+      forAllSystems (mkHomeConfig username);
 
     #*** nixos configurations ***#
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
