@@ -82,16 +82,16 @@
     forAllSystems = forEachSystem (import systems);
 
     # Eval the treefmt modules from ./treefmt.nix
-    treefmtEval = forAllSystems (
-      {pkgs}: treefmt-nix.lib.evalModule pkgs ./treefmt.nix
-    );
+    treefmtFor = system:
+      treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system}
+      ./treefmt.nix;
 
     # A higher-order function to generate home-manager configurations for
     # given username and system
     generateHomeConfigurations = username: {pkgs}: {
       # Define the home-manager configuration for the defined user
       homeConfigurations = let
-        treefmtEvalPlatform = treefmtEval.${pkgs.system};
+        treefmtEvalPlatform = treefmtFor pkgs.system;
         # Make the treefmt command available in the shell using the specified
         # configuration in `./treefmt.nix`.
         treefmt = treefmtEvalPlatform.config.build.wrapper;
@@ -142,12 +142,17 @@
 
     # for `nix fmt`
     formatter = forAllSystems (
-      {pkgs}: treefmtEval.${pkgs.system}.config.build.wrapper
+      {pkgs}: let
+        treefmtEvalPlatform = treefmtFor pkgs.system;
+      in
+        treefmtEvalPlatform.config.build.wrapper
     );
 
     # for `nix flake check`
-    checks = forAllSystems ({pkgs}: {
-      formatting = treefmtEval.${pkgs.system}.config.build.check self;
+    checks = forAllSystems ({pkgs}: let
+      treefmtEvalPlatform = treefmtFor pkgs.system;
+    in {
+      formatting = treefmtEvalPlatform.config.build.check self;
     });
 
     #*** home-manager configurations ***#
