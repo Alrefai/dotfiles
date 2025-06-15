@@ -6,7 +6,16 @@
   username,
   ...
 }: let
-  inherit (inputs) minvim mitmux yazi-plugins starship-yazi;
+  inherit
+    (inputs)
+    minvim
+    mitmux
+    tmux-sessionx
+    tmux-window-name
+    tmux-network-bandwidth
+    yazi-plugins
+    starship-yazi
+    ;
 in {
   # Avoid using `with` expression; replace it with the following expression:
   #
@@ -287,6 +296,9 @@ in {
         .continuum.overrideAttrs overrideDistination;
       "tmux/plugins/vim-tmux-navigator".source = pkgs.tmuxPlugins
         .vim-tmux-navigator.overrideAttrs overrideDistination;
+      "tmux/plugins/tmux-sessionx".source = tmux-sessionx;
+      "tmux/plugins/tmux-nerd-font-window-name".source = tmux-window-name;
+      "tmux/plugins/tmux-network-bandwidth".source = tmux-network-bandwidth;
     };
   };
 
