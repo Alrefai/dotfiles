@@ -151,17 +151,27 @@
       # given username and system
       mkHomeConfig = username: {pkgs}: {
         # Define the home-manager configuration for the defined user
-        homeConfigurations = {
-          ${username} = home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-            # Pass arguments to the configuration modules
-            extraSpecialArgs = {inherit inputs username;};
-            # List of configuration modules to include
-            modules = [
-              ./home.nix
-              catppuccin.homeModules.catppuccin
-            ];
-          };
+        homeConfigurations = let
+          mkConfig = {
+            extraModules ? [],
+            extraSpecialArgs ? {},
+          }:
+            home-manager.lib.homeManagerConfiguration {
+              inherit pkgs;
+              # Pass arguments to the configuration modules
+              extraSpecialArgs = {inherit inputs username;} // extraSpecialArgs;
+              # List of configuration modules to include
+              modules =
+                [./home.nix catppuccin.homeModules.catppuccin]
+                ++ extraModules;
+            };
+        in {
+          ${username} = mkConfig {};
+
+          # Example: additional configuration for mimacvm host
+          # "${username}@mimacvm" = mkConfig {
+          #   extraModules = [{programs.aria2.enable = true;}];
+          # };
         };
       };
     in
