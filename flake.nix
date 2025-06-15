@@ -44,6 +44,21 @@
       url = "github:alrefai/mitmux/config";
       flake = false;
     };
+    # tmux plugin: sessionx
+    tmux-sessionx = {
+      url = "github:omerxx/tmux-sessionx";
+      flake = false;
+    };
+    # tmux plugin: nerd-font-window-name
+    tmux-window-name = {
+      url = "github:joshmedeski/tmux-nerd-font-window-name";
+      flake = false;
+    };
+    # tmux plugin: network-bandwidth
+    tmux-network-bandwidth = {
+      url = "github:alrefai/tmux-network-bandwidth/separator-option";
+      flake = false;
+    };
     # yazi plugins
     yazi-plugins = {
       url = "github:yazi-rs/plugins";

@@ -216,6 +216,9 @@
         "nixpkgs": "nixpkgs_2",
         "starship-yazi": "starship-yazi",
         "systems": "systems_2",
+        "tmux-network-bandwidth": "tmux-network-bandwidth",
+        "tmux-sessionx": "tmux-sessionx",
+        "tmux-window-name": "tmux-window-name",
         "treefmt-nix": "treefmt-nix",
         "yazi-plugins": "yazi-plugins"
       }
@@ -263,6 +266,55 @@
       "original": {
         "id": "systems",
         "type": "indirect"
+      }
+    },
+    "tmux-network-bandwidth": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1699043663,
+        "narHash": "sha256-Y5o6eIJYw+KIVuFjlkPpkUOcu/w2EWgA2VsEXmojHEU=",
+        "owner": "alrefai",
+        "repo": "tmux-network-bandwidth",
+        "rev": "11f11f3a8afc1bf067adc7809d9f2a9a4c3a84a6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alrefai",
+        "ref": "separator-option",
+        "repo": "tmux-network-bandwidth",
+        "type": "github"
+      }
+    },
+    "tmux-sessionx": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1736251564,
+        "narHash": "sha256-SRKI4mliMSMp/Yd+oSn48ArbbRA+szaj70BQeTd8NhM=",
+        "owner": "omerxx",
+        "repo": "tmux-sessionx",
+        "rev": "42c18389e73b80381d054dd1005b8c9a66942248",
+        "type": "github"
+      },
+      "original": {
+        "owner": "omerxx",
+        "repo": "tmux-sessionx",
+        "type": "github"
+      }
+    },
+    "tmux-window-name": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1748354675,
+        "narHash": "sha256-UcfEsq7BqJMeYXtGDNMoi/E+iEnEe9iM2KVoi7ektOE=",
+        "owner": "joshmedeski",
+        "repo": "tmux-nerd-font-window-name",
+        "rev": "4c9e7a51387d0cead1465a3628244beb790a3c95",
+        "type": "github"
+      },
+      "original": {
+        "owner": "joshmedeski",
+        "repo": "tmux-nerd-font-window-name",
+        "type": "github"
       }
     },
     "treefmt-nix": {
