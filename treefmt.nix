@@ -4,7 +4,7 @@
     alejandra.enable = true;
     dprint = {
       enable = true;
-      includes = ["**/*.md"];
+      includes = ["{,**/}*.md"];
       settings = {
         incremental = true;
         lineWidth = 80;
