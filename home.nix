@@ -258,6 +258,7 @@ in {
   xdg = {
     enable = true;
     configFile = {
+      "git/message".source = ./dotfiles/git/message;
       "nvim" = {
         source = minvim;
         recursive = true;
@@ -536,6 +537,7 @@ in {
         rebase.updateRefs = true;
         user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOFpuK6A0N/8InMCdhyKNCOiWH5UkGnahLzJ3U0Niwut";
         commit.gpgSign = true;
+        commit.template = "~/${config.xdg.configFile."git/message".target}";
         gpg = {
           format = "ssh";
           ssh = {

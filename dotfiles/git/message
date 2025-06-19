@@ -1,0 +1,80 @@
+# ==============================================================================
+# Commit Message Template
+# Purpose: Standardize commit messages for clarity, automation, and changelogs.
+# Usage: This is pre-filled when using `git commit` (no -m), not enforced.
+# ==============================================================================
+
+# --------------------------
+# Conventional Commit Format
+# --------------------------
+# <type>(<scope>)!?: <subject>
+#
+# > Entire header should be ≤50 characters, in lowercase, and imperative mood.
+#
+# type: Required. See allowed types below.
+# scope: Optional. Affected area (e.g. auth, ui, api).
+# !: Optional. Breaking change.
+# subject: Required.
+
+# Examples:
+# feat(ui): add carousel to landing page
+# fix(auth): handle OAuth callback errors
+# chore(deps)!: update to latest major versions
+
+# -------------
+# Allowed Types
+# -------------
+# feat:      New feature
+# fix:       Bug fix
+# docs:      Documentation only changes
+# style:     Non-functional formatting (whitespace, commas)
+# refactor:  Code change without behavior change
+# perf:      Performance improvement
+# test:      Adding or improving tests
+# build:     Changes that affect the build system
+# ci:        Changes to CI config
+# chore:     Maintenance tasks
+# revert:    Reverts a previous commit
+
+# ------------------
+# Body (recommended)
+# ------------------
+# - Explain *what* and *why*, not *how*
+# - Use bullet points for multiple improvements
+# - Wrap at 72 characters
+
+# -----------------
+# Footer (optional)
+# -----------------
+# - For breaking changes:
+# BREAKING CHANGE: <description>
+#
+# - For linked issues:
+# Closes: #<issue number>, #<issue number>
+#
+# - Co-authors:
+# Co-authored-by: <Name> <email@example.com>
+
+# -----------------------------------------
+# Feedback-Driven Template (Optional block)
+# -----------------------------------------
+# <type>(<scope>)!?: <action per user feedback on specific issue>
+#
+# User feedback: "<exact quote of user feedback>"
+#
+# Original issue: <description of what was inadequate/wrong>
+#
+# Key changes:
+# - <specific improvement 1>
+# - <specific improvement 2>
+# - <specific improvement 3>
+#
+# <Context-specific section>:
+# <relevant details, impacts, or technical notes>
+#
+# <Summary of outcome and value provided>
+
+# ==============================================================================
+# Tip: Git automatically ignores lines starting with `#`.
+# Only non-commented lines will be included in the commit message.
+# ==============================================================================
