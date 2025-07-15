@@ -65,17 +65,24 @@ in {
         inherit
           (pkgs)
           _1password-cli
+          bottom # Modern top (command: btm)
           corepack_latest
-          coreutils #! required for tmux-network-bandwidth plugin
           curl
+          dog # Modern DNS client (better than dig)
+          dua # Disk Usage Analyzer
           marksman # markdown language server
           neovim
           nixd # nix language server
           nodejs_latest
           perl
           pnpm-shell-completion
+          procs # Modern ps with colors
+          ripgrep-all # ripgrep with search in PDFs, E-Books, zip, and more
           tmux
+          uutils-coreutils-noprefix # Rust rewrite of the GNU coreutils
+          uutils-findutils # Rust implementation of findutils
           wget
+          xh # Friendly and fast tool for sending HTTP requests
           yq-go #! required for tmux-nerd-font-window-name plugin
           ;
         inherit
@@ -89,15 +96,18 @@ in {
           ;
       }
       ++ pkgs.lib.lists.optionals pkgs.stdenv.isLinux (builtins.attrValues {
-        inherit
-          (pkgs)
-          gcc
-          gnumake
-          nettools
-          oniux
-          unzip
-          ;
-      });
+          inherit
+            (pkgs)
+            gcc
+            gnumake
+            oniux
+            unzip
+            ;
+        }
+        # Lower priority resolves the conflict
+        ++ [
+          (pkgs.lib.lowPrio pkgs.nettools)
+        ]);
 
     activation = {
       restoreNeovimPlugins =
