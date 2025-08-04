@@ -16,9 +16,11 @@ else
   if [[ -e /etc/NIXOS ]]; then
     echo 'This system is running NixOS.'
     mkdir -p ~/.config/nix
-    echo 'experimental-features = nix-command flakes' >>~/.config/nix/nix.conf
-    echo 'use-xdg-base-directories = true' >>~/.config/nix/nix.conf
-    echo 'trusted-users = @admin @wheel' >>~/.config/nix/nix.conf
+    {
+      echo 'experimental-features = nix-command flakes'
+      echo 'use-xdg-base-directories = true'
+      echo 'trusted-users = @admin @wheel'
+    } >>~/.config/nix/nix.conf
     echo 'Added extra configurations to ~/.config/nix/nix.conf'
     echo
     echo "Rebuild NixOS configurations from dotfiles repo..."
