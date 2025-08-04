@@ -16,6 +16,38 @@
     yazi-plugins
     starship-yazi
     ;
+
+  uutils-coreutils-fzf-compat = pkgs.uutils-coreutils-noprefix.overrideAttrs (
+    oldAttrs: {
+      postInstall =
+        (oldAttrs.postInstall or "")
+        +
+        # bash
+        ''
+          # Create GNU-compatible wrapper for mkfifo
+          mv $out/bin/mkfifo $out/bin/.mkfifo-uutils
+
+          cat > $out/bin/mkfifo << 'EOF'
+          #!/usr/bin/env bash
+          set -euo pipefail
+
+          # Find the actual uutils coreutils multicall binary
+          uutils_coreutils="$(dirname "$(readlink -f "$0")")/.mkfifo-uutils"
+
+          # Handle GNU coreutils compatibility for fzf
+          if [[ $# -ge 2 && "$1" == "-m" && "$2" == "o+w" ]]; then
+            # Convert GNU syntax to octal: o+w = 622 (owner rw, group w, other w)
+            shift 2
+            exec "$uutils_coreutils" mkfifo -m 622 "$@"
+          else
+            # Pass through all other arguments unchanged
+            exec "$uutils_coreutils" mkfifo "$@"
+          fi
+          EOF
+          chmod +x $out/bin/mkfifo
+        '';
+    }
+  );
 in {
   # Avoid using `with` expression; replace it with the following expression:
   #
@@ -79,7 +111,6 @@ in {
           procs # Modern ps with colors
           ripgrep-all # ripgrep with search in PDFs, E-Books, zip, and more
           tmux
-          uutils-coreutils-noprefix # Rust rewrite of the GNU coreutils
           uutils-findutils # Rust implementation of findutils
           wget
           xh # Friendly and fast tool for sending HTTP requests
@@ -95,6 +126,9 @@ in {
           treefmt # universal code formatting tool
           ;
       }
+      ++ [
+        uutils-coreutils-fzf-compat # Rust coreutils with GNU-compatible mkfifo wrapper
+      ]
       ++ pkgs.lib.lists.optionals pkgs.stdenv.isLinux (builtins.attrValues {
         inherit
           (pkgs)
@@ -473,6 +507,7 @@ in {
         "--no-height"
         "--border"
         "--ansi"
+        "--tmux bottom,40%"
       ];
       fileWidgetCommand = defaultCommand;
       fileWidgetOptions = [
@@ -486,7 +521,6 @@ in {
         "--exact"
         "--height '~14'"
       ];
-      tmux.enableShellIntegration = true;
     };
 
     gh = {
