@@ -271,16 +271,15 @@
     "tmux-network-bandwidth": {
       "flake": false,
       "locked": {
-        "lastModified": 1699043663,
-        "narHash": "sha256-Y5o6eIJYw+KIVuFjlkPpkUOcu/w2EWgA2VsEXmojHEU=",
+        "lastModified": 1754230204,
+        "narHash": "sha256-7bCxozWY6RGuQPBK0LjHj8z+IQ4C/WnfBU7ENFCycFo=",
         "owner": "alrefai",
         "repo": "tmux-network-bandwidth",
-        "rev": "11f11f3a8afc1bf067adc7809d9f2a9a4c3a84a6",
+        "rev": "f7bef0f30419183dbac4a2af04a42c69cdccedd8",
         "type": "github"
       },
       "original": {
         "owner": "alrefai",
-        "ref": "separator-option",
         "repo": "tmux-network-bandwidth",
         "type": "github"
       }

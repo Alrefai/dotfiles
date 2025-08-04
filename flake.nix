@@ -56,7 +56,7 @@
     };
     # tmux plugin: network-bandwidth
     tmux-network-bandwidth = {
-      url = "github:alrefai/tmux-network-bandwidth/separator-option";
+      url = "github:alrefai/tmux-network-bandwidth";
       flake = false;
     };
     # yazi plugins
