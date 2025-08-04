@@ -96,18 +96,14 @@ in {
           ;
       }
       ++ pkgs.lib.lists.optionals pkgs.stdenv.isLinux (builtins.attrValues {
-          inherit
-            (pkgs)
-            gcc
-            gnumake
-            oniux
-            unzip
-            ;
-        }
-        # Lower priority resolves the conflict
-        ++ [
-          (pkgs.lib.lowPrio pkgs.nettools)
-        ]);
+        inherit
+          (pkgs)
+          gcc
+          gnumake
+          oniux
+          unzip
+          ;
+      });
 
     activation = {
       restoreNeovimPlugins =
