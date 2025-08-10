@@ -51,6 +51,12 @@ in {
     settings = {
       experimental-features = ["nix-command" "flakes"];
       use-xdg-base-directories = true;
+      extra-substituters = [
+        "https://mohammed-dotfiles.cachix.org"
+      ];
+      extra-trusted-public-keys = [
+        "mohammed-dotfiles.cachix.org-1:Gn/t1kHt168qsDtFLSGh2FS+n0tt1tphSpqdvjI2tb0="
+      ];
     };
   };
 
@@ -82,6 +88,7 @@ in {
           (pkgs)
           _1password-cli
           bottom # Modern top (command: btm)
+          cachix # Cachix CLI
           corepack_latest
           curl
           dog # Modern DNS client (better than dig)
