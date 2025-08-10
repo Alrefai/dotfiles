@@ -25,23 +25,20 @@
         # bash
         ''
           # Create GNU-compatible wrapper for mkfifo
-          mv $out/bin/mkfifo $out/bin/.mkfifo-uutils
+          rm -f $out/bin/mkfifo
 
           cat > $out/bin/mkfifo << 'EOF'
           #!/usr/bin/env bash
           set -euo pipefail
 
-          # Find the actual uutils coreutils multicall binary
-          uutils_coreutils="$(dirname "$(readlink -f "$0")")/.mkfifo-uutils"
-
           # Handle GNU coreutils compatibility for fzf
           if [[ $# -ge 2 && "$1" == "-m" && "$2" == "o+w" ]]; then
-            # Convert GNU syntax to octal: o+w = 622 (owner rw, group w, other w)
+            # Convert GNU syntax to octal: o+w = 666
             shift 2
-            exec "$uutils_coreutils" mkfifo -m 622 "$@"
+            exec coreutils mkfifo -m 666 "$@"
           else
             # Pass through all other arguments unchanged
-            exec "$uutils_coreutils" mkfifo "$@"
+            exec coreutils mkfifo "$@"
           fi
           EOF
           chmod +x $out/bin/mkfifo
