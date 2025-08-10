@@ -17,34 +17,21 @@
     starship-yazi
     ;
 
-  uutils-coreutils-fzf-compat = pkgs.uutils-coreutils-noprefix.overrideAttrs (
-    oldAttrs: {
-      postInstall =
-        (oldAttrs.postInstall or "")
-        +
-        # bash
-        ''
-          # Create GNU-compatible wrapper for mkfifo
-          rm -f $out/bin/mkfifo
+  # GNU-compatible mkfifo wrapper for fzf compatibility
+  mkfifo-wrapper = pkgs.writeShellScriptBin "mkfifo" ''
+    #!/usr/bin/env bash
+    set -euo pipefail
 
-          cat > $out/bin/mkfifo << 'EOF'
-          #!/usr/bin/env bash
-          set -euo pipefail
-
-          # Handle GNU coreutils compatibility for fzf
-          if [[ $# -ge 2 && "$1" == "-m" && "$2" == "o+w" ]]; then
-            # Convert GNU syntax to octal: o+w = 666
-            shift 2
-            exec coreutils mkfifo -m 666 "$@"
-          else
-            # Pass through all other arguments unchanged
-            exec coreutils mkfifo "$@"
-          fi
-          EOF
-          chmod +x $out/bin/mkfifo
-        '';
-    }
-  );
+    # Handle GNU coreutils compatibility for fzf
+    if [[ $# -ge 2 && "$1" == "-m" && "$2" == "o+w" ]]; then
+      # Convert GNU syntax to octal: o+w = 666
+      shift 2
+      exec coreutils mkfifo -m 666 "$@"
+    else
+      # Pass through all other arguments unchanged
+      exec coreutils mkfifo "$@"
+    fi
+  '';
 in {
   # Avoid using `with` expression; replace it with the following expression:
   #
@@ -108,6 +95,7 @@ in {
           procs # Modern ps with colors
           ripgrep-all # ripgrep with search in PDFs, E-Books, zip, and more
           tmux
+          uutils-coreutils-noprefix # Rust coreutils
           uutils-findutils # Rust implementation of findutils
           wget
           xh # Friendly and fast tool for sending HTTP requests
@@ -124,7 +112,7 @@ in {
           ;
       }
       ++ [
-        uutils-coreutils-fzf-compat # Rust coreutils with GNU-compatible mkfifo wrapper
+        (pkgs.hiPrio mkfifo-wrapper) # GNU-compatible mkfifo wrapper for fzf
       ]
       ++ pkgs.lib.lists.optionals pkgs.stdenv.isLinux (builtins.attrValues {
         inherit
