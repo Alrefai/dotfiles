@@ -169,10 +169,50 @@
       forAllSystems (mkHomeConfig username);
 
     #*** nixos configurations ***#
-    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      system = "aarch64-linux";
-      modules = [./configuration.nix lix-module.nixosModules.default];
-    };
+    nixosConfigurations = let
+      # Default values that can be overridden per-host
+      defaults = {
+        inherit username;
+        system = "aarch64-linux"; # Default system for all VMs
+        extraModules = [];
+        extraSpecialArgs = {};
+      };
+
+      # Host configurations - easy to add new hosts
+      hosts = {
+        nixos = {
+          # Inherits all defaults automatically
+          # Uses OrbStack-managed /etc/nixos/configuration.nix
+          extraModules = [/etc/nixos/configuration.nix];
+        };
+
+        mimacbook = {
+          system = "x86_64-linux";
+          extraModules = [./modules/nixos/hosts/mimacbook/configuration.nix];
+        };
+      };
+
+      # Helper function to create a NixOS system configuration
+      mkNixOSHost = hostname: hostConfig: let
+        # Merge host config with defaults
+        config = defaults // hostConfig // {inherit hostname;};
+      in
+        nixpkgs.lib.nixosSystem {
+          inherit (config) system;
+
+          specialArgs =
+            {
+              inherit (config) hostname username;
+            }
+            // config.extraSpecialArgs;
+
+          modules =
+            [./modules/nixos/common lix-module.nixosModules.default]
+            ++ config.extraModules;
+        };
+    in
+      # Generate configurations for all hosts
+      nixpkgs.lib.mapAttrs mkNixOSHost hosts;
 
     #*** macos configurations ***#
     darwinConfigurations = let
