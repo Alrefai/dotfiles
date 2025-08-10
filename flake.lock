@@ -72,12 +72,12 @@
         ]
       },
       "locked": {
-        "lastModified": 1754263839,
-        "narHash": "sha256-ck7lILfCNuunsLvExPI4Pw9OOCJksxXwozum24W8b+8=",
-        "rev": "1d7abbd5454db97e0af51416f4960b3fb64a4773",
-        "revCount": 5205,
+        "lastModified": 1754756528,
+        "narHash": "sha256-W1jYKMetZSOHP5m2Z5Wokdj/ct17swPHs+MiY2WT1HQ=",
+        "rev": "3ec1cd9a0703fbd55d865b7fd2b07d08374f0355",
+        "revCount": 5247,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/nix-community/home-manager/0.1.5205%2Brev-1d7abbd5454db97e0af51416f4960b3fb64a4773/0198739f-5435-756d-835d-d30e3abf0da0/source.tar.gz?rev=1d7abbd5454db97e0af51416f4960b3fb64a4773&revCount=5205"
+        "url": "https://api.flakehub.com/f/pinned/nix-community/home-manager/0.1.5247%2Brev-3ec1cd9a0703fbd55d865b7fd2b07d08374f0355/01988fe8-f7bb-736e-8bfa-cc288a342016/source.tar.gz?rev=3ec1cd9a0703fbd55d865b7fd2b07d08374f0355&revCount=5247"
       },
       "original": {
         "type": "tarball",
@@ -192,12 +192,12 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1753939845,
-        "narHash": "sha256-K2ViRJfdVGE8tpJejs8Qpvvejks1+A4GQej/lBk5y7I=",
-        "rev": "94def634a20494ee057c76998843c015909d6311",
-        "revCount": 837094,
+        "lastModified": 1754725699,
+        "narHash": "sha256-iAcj9T/Y+3DBy2J0N+yF9XQQQ8IEb5swLFzs23CdP88=",
+        "rev": "85dbfc7aaf52ecb755f87e577ddbe6dbbdbc1054",
+        "revCount": 841808,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.1.837094%2Brev-94def634a20494ee057c76998843c015909d6311/019866ba-4140-7e21-9b2b-75f13bfb023e/source.tar.gz?rev=94def634a20494ee057c76998843c015909d6311&revCount=837094"
+        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.1.841808%2Brev-85dbfc7aaf52ecb755f87e577ddbe6dbbdbc1054/01989280-4b63-70f9-95b3-49c511cb4d92/source.tar.gz?rev=85dbfc7aaf52ecb755f87e577ddbe6dbbdbc1054&revCount=841808"
       },
       "original": {
         "type": "tarball",
