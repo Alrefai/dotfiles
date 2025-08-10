@@ -52,10 +52,10 @@ in {
       experimental-features = ["nix-command" "flakes"];
       use-xdg-base-directories = true;
       extra-substituters = [
-        "https://mohammed-dotfiles.cachix.org"
+        "https://midot.cachix.org"
       ];
       extra-trusted-public-keys = [
-        "mohammed-dotfiles.cachix.org-1:Gn/t1kHt168qsDtFLSGh2FS+n0tt1tphSpqdvjI2tb0="
+        "midot.cachix.org-1:QOnnEfGYhNLcqLKOXBNutkKqHpDU3nuNyZBGgeNZXJI="
       ];
     };
   };

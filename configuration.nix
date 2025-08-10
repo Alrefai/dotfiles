@@ -12,7 +12,7 @@
     experimental-features = ["nix-command" "flakes"];
     extra-substituters = [
       "https://cache.lix.systems"
-      "https://mohammed-dotfiles.cachix.org"
+      "https://midot.cachix.org"
     ];
     extra-trusted-substituters = ["https://cache.flakehub.com"];
     extra-trusted-public-keys = [
@@ -25,7 +25,7 @@
       "cache.flakehub.com-8:moO+OVS0mnTjBTcOUh2kYLQEd59ExzyoW1QgQ8XAARQ="
       "cache.flakehub.com-9:wChaSeTI6TeCuV/Sg2513ZIM9i0qJaYsF+lZCXg0J6o="
       "cache.flakehub.com-10:2GqeNlIp6AKp4EF2MVbE1kBOp9iBSyo0UPR9KoR0o1Y="
-      "mohammed-dotfiles.cachix.org-1:Gn/t1kHt168qsDtFLSGh2FS+n0tt1tphSpqdvjI2tb0="
+      "midot.cachix.org-1:QOnnEfGYhNLcqLKOXBNutkKqHpDU3nuNyZBGgeNZXJI="
     ];
     trusted-users = ["@admin" "@wheel"];
     use-xdg-base-directories = true;
