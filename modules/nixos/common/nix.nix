@@ -1,6 +1,5 @@
 # Nix daemon configuration, cachix, and experimental features
-{ ... }:
-{
+_: {
   nix.settings = {
     auto-optimise-store = true;
     experimental-features = ["nix-command" "flakes"];

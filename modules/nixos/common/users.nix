@@ -1,6 +1,9 @@
 # User configuration
-{ pkgs, username, ... }:
 {
+  pkgs,
+  username,
+  ...
+}: {
   users = {
     defaultUserShell = pkgs.zsh;
     extraUsers.${username} = {

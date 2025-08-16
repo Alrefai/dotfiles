@@ -156,7 +156,7 @@
         variant = "mac";
       };
     };
-    
+
     # Enable the GNOME Desktop Environment (using new options)
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;

@@ -1,6 +1,5 @@
 # Common services configuration
-{ ... }:
-{
+_: {
   services.tailscale.enable = true;
 
   # Enable common container config files in /etc/containers
