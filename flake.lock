@@ -174,6 +174,26 @@
         "type": "github"
       }
     },
+    "nix2container": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1752002763,
+        "narHash": "sha256-JYAkdZvpdSx9GUoHPArctYMypSONob4DYKRkOubUWtY=",
+        "owner": "nlewo",
+        "repo": "nix2container",
+        "rev": "4f2437f6a1844b843b380d483087ae6d461240ee",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nlewo",
+        "repo": "nix2container",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1753694789,
@@ -204,6 +224,22 @@
         "url": "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz"
       }
     },
+    "playwright-mcp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1755304738,
+        "narHash": "sha256-SGSzX41D9nOTsGiU16tRFXgarWgePRsNWIcEnNGH0lQ=",
+        "owner": "microsoft",
+        "repo": "playwright-mcp",
+        "rev": "d5d810f8966731744627cba0ac3d49be4d0c6fe5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "microsoft",
+        "repo": "playwright-mcp",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "catppuccin": "catppuccin",
@@ -213,7 +249,11 @@
         "minvim": "minvim",
         "mitmux": "mitmux",
         "nix-darwin": "nix-darwin",
+        "nix2container": "nix2container",
         "nixpkgs": "nixpkgs_2",
+        "playwright-mcp": "playwright-mcp",
+        "semgrep-mcp": "semgrep-mcp",
+        "sequential-mcp": "sequential-mcp",
         "starship-yazi": "starship-yazi",
         "systems": "systems_2",
         "tmux-network-bandwidth": "tmux-network-bandwidth",
@@ -221,6 +261,40 @@
         "tmux-window-name": "tmux-window-name",
         "treefmt-nix": "treefmt-nix",
         "yazi-plugins": "yazi-plugins"
+      }
+    },
+    "semgrep-mcp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1755286526,
+        "narHash": "sha256-B5C1qJmZJq7vIUMgCj9IVsihwD/OVbAzxMlNSHQ5Cmk=",
+        "owner": "semgrep",
+        "repo": "mcp",
+        "rev": "a6aa597ee687e7b3b112219b1201a056909a39d3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "semgrep",
+        "repo": "mcp",
+        "type": "github"
+      }
+    },
+    "sequential-mcp": {
+      "flake": false,
+      "locked": {
+        "dir": "src/sequentialthinking",
+        "lastModified": 1755367983,
+        "narHash": "sha256-5T+UyvTaiheMWvoX9MKxpAtGs/VZB9fSsjUGQ9ZNMrg=",
+        "owner": "modelcontextprotocol",
+        "repo": "servers",
+        "rev": "6c99f2650f533741eef218e2f4a3a66c00dd91dd",
+        "type": "github"
+      },
+      "original": {
+        "dir": "src/sequentialthinking",
+        "owner": "modelcontextprotocol",
+        "repo": "servers",
+        "type": "github"
       }
     },
     "starship-yazi": {

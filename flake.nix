@@ -33,6 +33,27 @@
 
     catppuccin.url = "github:catppuccin/nix";
 
+    # MCP (Model Context Protocol) servers and container builder
+    nix2container = {
+      url = "github:nlewo/nix2container";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    playwright-mcp = {
+      url = "github:microsoft/playwright-mcp";
+      flake = false;
+    };
+
+    sequential-mcp = {
+      url = "github:modelcontextprotocol/servers?dir=src/sequentialthinking";
+      flake = false;
+    };
+
+    semgrep-mcp = {
+      url = "github:semgrep/mcp";
+      flake = false;
+    };
+
     #*** Non-flake source code ***#
     # forked from nvim-lua/kickstart.nvim
     minvim = {
@@ -182,8 +203,16 @@
       hosts = {
         nixos = {
           # Inherits all defaults automatically
-          # Uses OrbStack-managed /etc/nixos/configuration.nix
-          extraModules = [/etc/nixos/configuration.nix];
+          extraSpecialArgs = {
+            inherit
+              (inputs)
+              nix2container
+              playwright-mcp
+              sequential-mcp
+              semgrep-mcp
+              ;
+          };
+          extraModules = [./modules/nixos/hosts/nixos];
         };
 
         mimacbook = {
