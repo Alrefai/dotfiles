@@ -1,5 +1,5 @@
 # Common NixOS configuration shared across all hosts
-{ ... }:
+{ username, ... }:
 {
   imports = [
     ./nix.nix
