@@ -1,9 +1,9 @@
 # User configuration
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 {
   users = {
     defaultUserShell = pkgs.zsh;
-    extraUsers.mohammed = {
+    extraUsers.${username} = {
       subUidRanges = [
         {
           startUid = 100000;
