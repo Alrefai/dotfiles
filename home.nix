@@ -48,15 +48,19 @@ in {
   nix = {
     gc.automatic = true;
     package = pkgs.lixPackageSets.stable.lix;
-    settings = (import ./modules/shared/nix.nix).commonSettings // {
-      # Home Manager specific caches
-      extra-substituters = [
-        "https://midot.cachix.org"
-      ];
-      extra-trusted-public-keys = (import ./modules/shared/nix.nix).commonSettings.extra-trusted-public-keys ++ [
-        "midot.cachix.org-1:QOnnEfGYhNLcqLKOXBNutkKqHpDU3nuNyZBGgeNZXJI="
-      ];
-    };
+    settings =
+      (import ./modules/shared/nix.nix).commonSettings
+      // {
+        # Home Manager specific caches
+        extra-substituters = [
+          "https://midot.cachix.org"
+        ];
+        extra-trusted-public-keys =
+          (import ./modules/shared/nix.nix).commonSettings.extra-trusted-public-keys
+          ++ [
+            "midot.cachix.org-1:QOnnEfGYhNLcqLKOXBNutkKqHpDU3nuNyZBGgeNZXJI="
+          ];
+      };
   };
 
   home = {

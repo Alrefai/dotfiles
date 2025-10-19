@@ -15,23 +15,27 @@
     };
     optimise.automatic = true;
     package = pkgs.lixPackageSets.stable.lix;
-    settings = (import ../shared/nix.nix).commonSettings // {
-      # Disable auto-optimise-store because of this issue:
-      # https://github.com/NixOS/nix/issues/7273
-      # "error: cannot link '/nix/store/.tmp-link-xxxxx-xxxxx'
-      # to '/nix/store/.links/xxxx': File exists"
-      auto-optimise-store = false;
-      # Darwin specific caches
-      substituters = [
-        "https://nix-community.cachix.org"
-      ];
-      extra-trusted-substituters = ["https://cache.flakehub.com"];
-      extra-trusted-public-keys = (import ../../shared/nix.nix).commonSettings.extra-trusted-public-keys ++ [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      ];
-      builders-use-substitutes = true;
-      trusted-users = ["@admin"];
-    };
+    settings =
+      (import ../shared/nix.nix).commonSettings
+      // {
+        # Disable auto-optimise-store because of this issue:
+        # https://github.com/NixOS/nix/issues/7273
+        # "error: cannot link '/nix/store/.tmp-link-xxxxx-xxxxx'
+        # to '/nix/store/.links/xxxx': File exists"
+        auto-optimise-store = false;
+        # Darwin specific caches
+        substituters = [
+          "https://nix-community.cachix.org"
+        ];
+        extra-trusted-substituters = ["https://cache.flakehub.com"];
+        extra-trusted-public-keys =
+          (import ../../shared/nix.nix).commonSettings.extra-trusted-public-keys
+          ++ [
+            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          ];
+        builders-use-substitutes = true;
+        trusted-users = ["@admin"];
+      };
   };
 
   # Set the host platform
