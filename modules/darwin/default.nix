@@ -15,7 +15,7 @@
     };
     optimise.automatic = true;
     package = pkgs.lixPackageSets.stable.lix;
-    settings = (import ../../shared/nix.nix).commonSettings // {
+    settings = (import ../shared/nix.nix).commonSettings // {
       # Disable auto-optimise-store because of this issue:
       # https://github.com/NixOS/nix/issues/7273
       # "error: cannot link '/nix/store/.tmp-link-xxxxx-xxxxx'

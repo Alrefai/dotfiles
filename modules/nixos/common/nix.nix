@@ -1,6 +1,6 @@
 # Nix daemon configuration, cachix, and experimental features
 {pkgs, ...}: let
-  shared = import ../../../shared/nix.nix;
+  shared = import ../../shared/nix.nix;
 in {
   nix = {
     package = pkgs.lixPackageSets.stable.lix;
