@@ -14,6 +14,7 @@
       options = "--delete-older-than 7d";
     };
     optimise.automatic = true;
+    package = pkgs.lixPackageSets.stable.lix;
     settings = {
       # Disable auto-optimise-store because of this issue:
       # https://github.com/NixOS/nix/issues/7273
@@ -22,12 +23,10 @@
       auto-optimise-store = false;
       experimental-features = ["nix-command" "flakes"];
       substituters = [
-        "https://cache.lix.systems"
         "https://nix-community.cachix.org"
       ];
       extra-trusted-substituters = ["https://cache.flakehub.com"];
       extra-trusted-public-keys = [
-        "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
         "cache.flakehub.com-4:Asi8qIv291s0aYLyH6IOnr5Kf6+OF14WVjkE6t3xMio="

@@ -47,7 +47,7 @@ in {
   #
   nix = {
     gc.automatic = true;
-    package = pkgs.nix;
+    package = pkgs.lixPackageSets.stable.lix;
     settings = {
       experimental-features = ["nix-command" "flakes"];
       use-xdg-base-directories = true;

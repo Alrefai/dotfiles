@@ -16,11 +16,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-1.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -76,7 +71,6 @@
     flake-schemas,
     nixpkgs,
     systems,
-    lix-module,
     nix-darwin,
     treefmt-nix,
     home-manager,
@@ -206,9 +200,7 @@
             }
             // config.extraSpecialArgs;
 
-          modules =
-            [./modules/nixos/common lix-module.nixosModules.default]
-            ++ config.extraModules;
+          modules = [./modules/nixos/common] ++ config.extraModules;
         };
     in
       # Generate configurations for all hosts
@@ -263,9 +255,7 @@
             }
             // config.extraSpecialArgs;
 
-          modules =
-            [./modules/darwin lix-module.nixosModules.default]
-            ++ config.extraModules;
+          modules = [./modules/darwin] ++ config.extraModules;
         };
     in
       # Generate configurations for all hosts
