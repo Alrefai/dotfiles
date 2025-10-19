@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Ref__ref_read_url",
+      "Bash(curl:*)",
+      "Bash(podman rm:*)",
+      "Bash(podman run:*)",
+      "mcp__Ref__ref_search_documentation",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:pypi.org)",
+      "Bash(podman images:*)"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "outputStyle": "Explanatory"
+}
