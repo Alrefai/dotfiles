@@ -172,9 +172,9 @@
     # Lock the screen when lid is closed.
     logind = {
       lidSwitch = "lock";
-      extraConfig = ''
-        HandlePowerKey=ignore
-      '';
+      settings.Login = {
+        HandlePowerKey = "ignore";
+      };
     };
 
     # Control the screen brightness when lid is closed.
