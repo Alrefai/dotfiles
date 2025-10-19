@@ -789,23 +789,34 @@ in {
 
     ssh = {
       enable = true;
-      controlMaster = "auto";
-      controlPersist = "600";
       extraConfig = ''
         ConnectTimeout 3
         PubkeyAuthentication no
-        IdentitiesOnly yes
       '';
-      hashKnownHosts = true;
       includes = ["~/.ssh/config.d/*.conf"];
       matchBlocks = {
+        "*" = {
+          controlMaster = "auto";
+          controlPersist = "600";
+          hashKnownHosts = true;
+          identitiesOnly = true;
+
+          # default ssh options
+          addKeysToAgent = "no";
+          compression = false;
+          controlPath = "~/.ssh/master-%r@%n:%p";
+          forwardAgent = false;
+          serverAliveCountMax = 3;
+          serverAliveInterval = 0;
+          userKnownHostsFile = "~/.ssh/known_hosts";
+        };
         "github.com github" = {
-          hostname = "github.com";
-          user = "git";
-          identityFile = "~/.ssh/github.pub";
           extraOptions = {
             "PubkeyAuthentication" = "yes";
           };
+          hostname = "github.com";
+          identityFile = "~/.ssh/github.pub";
+          user = "git";
         };
       };
     };
