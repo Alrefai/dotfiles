@@ -168,8 +168,10 @@
       defaults = {
         inherit username;
         system = "aarch64-linux"; # Default system for all VMs
-        extraModules = [];
-        extraSpecialArgs = {};
+        # Defensive defaults: ensure operations always work, even if host
+        # doesn't define these attributes
+        extraModules = []; # Ensures concatenation in modules list succeeds
+        extraSpecialArgs = {}; # Ensures merge in specialArgs succeeds
       };
 
       # Host configurations - easy to add new hosts
@@ -212,8 +214,10 @@
       defaults = {
         inherit username;
         system = "aarch64-darwin"; # Most common for modern Macs
-        extraModules = [];
-        extraSpecialArgs = {};
+        # Defensive defaults: ensure operations always work, even if host
+        # doesn't define these attributes
+        extraModules = []; # Ensures concatenation in modules list succeeds
+        extraSpecialArgs = {}; # Ensures merge in specialArgs succeeds
       };
 
       # Host configurations - easy to add new hosts
