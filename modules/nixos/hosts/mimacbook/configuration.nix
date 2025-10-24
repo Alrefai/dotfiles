@@ -121,6 +121,7 @@
     # Allow insecure Broadcom WiFi driver (needed for this hardware)
     permittedInsecurePackages = [
       "broadcom-sta-6.30.223.271-57-6.12.41"
+      "broadcom-sta-6.30.223.271-57-6.12.52"
     ];
   };
 
@@ -170,11 +171,9 @@
     # };
 
     # Lock the screen when lid is closed.
-    logind = {
-      lidSwitch = "lock";
-      extraConfig = ''
-        HandlePowerKey=ignore
-      '';
+    logind.settings.Login = {
+      HandleLidSwitch = "lock";
+      HandlePowerKey = "ignore";
     };
 
     # Control the screen brightness when lid is closed.
