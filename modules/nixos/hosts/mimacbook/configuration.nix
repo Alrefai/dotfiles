@@ -13,10 +13,22 @@
     ./hardware-configuration.nix
   ];
 
-  # Bootloader.
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+  # Boot configuration
+  boot = {
+    # Bootloader
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+
+    # Kernel modules - add b43 for secure Broadcom wireless
+    kernelModules = ["b43"];
+
+    # Blacklist insecure wl driver to prevent conflicts
+    blacklistedKernelModules = ["wl"];
+
+    # Override to disable insecure broadcom_sta package
+    extraModulePackages = lib.mkForce [];
   };
 
   networking = {
@@ -116,14 +128,10 @@
   programs.firefox.enable = true;
 
   # Allow unfree packages
-  nixpkgs.config = {
-    allowUnfree = true;
-    # Allow insecure Broadcom WiFi driver (needed for this hardware)
-    permittedInsecurePackages = [
-      "broadcom-sta-6.30.223.271-57-6.12.41"
-      "broadcom-sta-6.30.223.271-57-6.12.52"
-    ];
-  };
+  nixpkgs.config.allowUnfree = true;
+
+  # Enable redistributable firmware for b43 driver
+  hardware.enableRedistributableFirmware = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
