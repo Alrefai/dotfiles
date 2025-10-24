@@ -445,6 +445,12 @@ in {
         '';
     };
 
+    delta = {
+      enable = true;
+      enableGitIntegration = true;
+      options.navigate = true; # use n and N to move between diff sections
+    };
+
     direnv = {
       enable = true;
       nix-direnv.enable = true;
@@ -556,13 +562,18 @@ in {
 
     git = {
       enable = true;
-      userName = "Mohammed Alrefai";
-      userEmail = "mohammed@refam.io";
-      delta = {
-        enable = true;
-        options.navigate = true; # use n and N to move between diff sections
-      };
-      extraConfig = {
+      settings = {
+        user = {
+          name = "Mohammed Alrefai";
+          email = "mohammed@refam.io";
+        };
+        alias = {
+          delete-local-merged = ''
+            !git fetch && git branch --merged \
+            | grep -vE 'master|dev|main|staging' \
+            | xargs git branch -d
+          '';
+        };
         merge.conflictstyle = "diff3";
         diff.colorMoved = "default";
         init.defaultBranch = "main";
@@ -581,13 +592,6 @@ in {
             } = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
           };
         };
-      };
-      aliases = {
-        delete-local-merged = ''
-          !git fetch && git branch --merged \
-          | grep -vE 'master|dev|main|staging' \
-          | xargs git branch -d
-        '';
       };
       ignores = [
         # General
@@ -789,6 +793,7 @@ in {
 
     ssh = {
       enable = true;
+      enableDefaultConfig = false;
       extraConfig = ''
         ConnectTimeout 3
         PubkeyAuthentication no
