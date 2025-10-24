@@ -21,10 +21,7 @@
       efi.canTouchEfiVariables = true;
     };
 
-    # Kernel modules - add b43 for secure Broadcom wireless
-    kernelModules = ["b43"];
-
-    # Blacklist insecure wl driver to prevent conflicts
+    # Blacklist Broadcom wireless drivers (Ethernet-only machine)
     blacklistedKernelModules = ["wl"];
 
     # Override to disable insecure broadcom_sta package
@@ -129,9 +126,6 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  # Enable redistributable firmware for b43 driver
-  hardware.enableRedistributableFirmware = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
