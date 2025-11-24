@@ -48,17 +48,19 @@
 
   environment = {
     # Override the default nix profiles and their order in path.
-    # Enforce the use of nix profiles in `XDG_STATE_HOME` when using
-    # `use-xdg-base-directories`.
-    # This fixes stand-alone home-manager installation.
-    # Also, this will eliminate `~/.nix-profile`
+    # Enforce the use of home manager nix profile in `XDG_STATE_HOME` when
+    # using `use-xdg-base-directories`.
+    #
+    # This fixes:
+    # - stand-alone home-manager installation.
+    # - eliminate `~/.nix-profile`
+    # - multiple versions of nix found in PATH
     #
     # NOTE: `use-xdg-base-directories` must be set to `true`
     # in `/etc/nix/nix.conf`
     profiles = lib.mkForce [
-      "$HOME/.local/state/nix/profile"
-      "/run/current-system/sw"
-      "/nix/var/nix/profiles/default"
+      "$HOME/.local/state/nix/profile" # home manager nix profile
+      "/run/current-system/sw" # darwin nix profile
     ];
     systemPackages = [pkgs.git];
   };
