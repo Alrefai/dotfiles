@@ -778,10 +778,7 @@ in {
     lazygit = {
       enable = true;
       settings = {
-        git.paging = {
-          colorArg = "always";
-          pager = "delta --paging=never";
-        };
+        git.pagers = [{pager = "delta --paging=never";}];
       };
     };
 
