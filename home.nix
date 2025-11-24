@@ -119,7 +119,7 @@ in {
           ;
       }
       ++ [
-        (pkgs.hiPrio mkfifo-wrapper) # GNU-compatible mkfifo wrapper for fzf
+        (lib.hiPrio mkfifo-wrapper) # GNU-compatible mkfifo wrapper for fzf
       ]
       ++ pkgs.lib.lists.optionals pkgs.stdenv.isLinux (builtins.attrValues {
         inherit
