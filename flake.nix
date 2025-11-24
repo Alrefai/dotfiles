@@ -84,7 +84,7 @@
 
     devToolsOverlay = final: prev: {
       devTools = let
-        treefmtEvalPlatform = treefmtFor final.system;
+        treefmtEvalPlatform = treefmtFor final.stdenv.hostPlatform.system;
       in {
         # Make the treefmt command available in the shell using the specified
         # configuration in `./treefmt.nix`.
@@ -127,14 +127,14 @@
     # for `nix fmt`
     formatter = forAllSystems (
       {pkgs}: let
-        treefmtEvalPlatform = treefmtFor pkgs.system;
+        treefmtEvalPlatform = treefmtFor pkgs.stdenv.hostPlatform.system;
       in
         treefmtEvalPlatform.config.build.wrapper
     );
 
     # for `nix flake check`
     checks = forAllSystems ({pkgs}: let
-      treefmtEvalPlatform = treefmtFor pkgs.system;
+      treefmtEvalPlatform = treefmtFor pkgs.stdenv.hostPlatform.system;
     in {
       formatting = treefmtEvalPlatform.config.build.check self;
     });
