@@ -150,6 +150,8 @@
 
           profiles = {
             ${username} = [];
+            "${username}@mimac" = [./modules/home/media.nix];
+            "${username}@mim2macbookair" = [./modules/home/media.nix];
           };
 
           mkHomeConfigProfile = _: profileModules:
