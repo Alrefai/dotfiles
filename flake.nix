@@ -145,18 +145,23 @@
       # given username and system
       mkHomeConfig = username: {pkgs}: {
         # Define the home-manager configuration for the defined user
-        homeConfigurations = {
-          ${username} = home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-            # Pass arguments to the configuration modules
-            extraSpecialArgs = {inherit inputs username;};
-            # List of configuration modules to include
-            modules = [
-              ./home.nix
-              catppuccin.homeModules.catppuccin
-            ];
+        homeConfigurations = let
+          defaults = [./modules/home catppuccin.homeModules.catppuccin];
+
+          profiles = {
+            ${username} = [];
           };
-        };
+
+          mkHomeConfigProfile = _: profileModules:
+            home-manager.lib.homeManagerConfiguration {
+              inherit pkgs;
+              # Merge profile modules with defaults
+              modules = defaults ++ profileModules;
+              # Pass arguments to the configuration modules
+              extraSpecialArgs = {inherit inputs username;};
+            };
+        in
+          nixpkgs.lib.mapAttrs mkHomeConfigProfile profiles;
       };
     in
       # Make configurations for all supported systems for the provided username

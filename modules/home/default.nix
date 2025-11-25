@@ -152,9 +152,9 @@ in {
       # the Nix store. Activating the configuration will then make '~/.screenrc'
       # a symlink to the Nix store copy.
       # ".profile".source = ./dotfiles/profile;
-      ".ssh/allowed_signers".source = ./dotfiles/ssh/allowed_signers;
-      ".ssh/github.pub".source = ./dotfiles/ssh/github.pub;
-      ".local/bin".source = ./bin;
+      ".ssh/allowed_signers".source = ../../dotfiles/ssh/allowed_signers;
+      ".ssh/github.pub".source = ../../dotfiles/ssh/github.pub;
+      ".local/bin".source = ../../bin;
 
       # You can also set the file content immediately.
       # ".gradle/gradle.properties".text = ''
@@ -290,7 +290,7 @@ in {
   xdg = {
     enable = true;
     configFile = {
-      "git/message".source = ./dotfiles/git/message;
+      "git/message".source = ../../dotfiles/git/message;
       "nvim" = {
         source = minvim;
         recursive = true;
@@ -298,7 +298,7 @@ in {
       "tmux/tmux.conf".source = "${mitmux}/.tmux.conf";
       "tmux/tmux.conf.local".source = "${mitmux}/.tmux.conf.local";
       "wezterm" = {
-        source = ./dotfiles/wezterm;
+        source = ../../dotfiles/wezterm;
         recursive = true;
       };
     };
