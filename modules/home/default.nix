@@ -339,6 +339,7 @@ in {
   catppuccin = {
     enable = true;
     accent = "blue";
+    mpv.enable = false;
   };
 
   # Let Home Manager install and manage itself.
