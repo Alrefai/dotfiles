@@ -83,7 +83,7 @@
         macos-fs-animation-duration = 0;
 
         # Colorspace
-        vf = "format=colorlevels=full:colormatrix=auto";
+        # vf = "format=colorlevels=full:colormatrix=auto";
         video-output-levels = "full";
 
         # Debanding
