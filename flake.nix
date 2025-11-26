@@ -229,29 +229,26 @@
 
       # Host configurations - easy to add new hosts
       hosts = {
-        mimacvm = {
-          # Inherits all defaults automatically
+        mimacvm = {};
+
+        mimac = {
+          system = "x86_64-darwin";
+          extraModules = [
+            {
+              homebrew.casks = [
+                "drobo-dashboard"
+                "font-aref-ruqaa"
+                "font-rakkas"
+              ];
+            }
+          ];
+          extraSpecialArgs = {machineRole = "mediaServer";};
         };
 
-        # Example: Intel Mac with custom settings
-        # work-macbook = {
-        #   system = "x86_64-darwin";
-        #   username = "work-user";
-        #   extraModules = [
-        #     ./modules/work-specific.nix
-        #     ./modules/intel-mac.nix
-        #   ];
-        #   extraSpecialArgs = {
-        #     enableWorkTools = true;
-        #   };
-        # };
-
-        # Example: M1 Mac mini with minimal config
-        # mac-mini = {
-        #   extraModules = [
-        #     ./modules/headless.nix
-        #   ];
-        # };
+        mim2macbookair = {
+          extraModules = [{homebrew.casks = ["kindavim" "transmit"];}];
+          extraSpecialArgs = {machineRole = "development";};
+        };
       };
 
       # Helper function to create a Darwin system configuration

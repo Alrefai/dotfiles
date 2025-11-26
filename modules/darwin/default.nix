@@ -5,7 +5,42 @@
   username,
   system,
   ...
-}: {
+} @ args: let
+  roles = {
+    default = {
+      withCommunication = false;
+      withDevTools = false;
+      withGaming = false;
+      withMediaServer = false;
+      withVirtualization = false;
+    };
+    mediaServer = {
+      withCommunication = true;
+      withDevTools = false;
+      withGaming = true;
+      withMediaServer = true;
+      withVirtualization = true;
+    };
+    development = {
+      withCommunication = true;
+      withDevTools = true;
+      withGaming = true;
+      withMediaServer = false;
+      withVirtualization = true;
+    };
+  };
+
+  machineRole = args.machineRole or "default";
+
+  inherit
+    (roles.${machineRole})
+    withCommunication
+    withDevTools
+    withGaming
+    withMediaServer
+    withVirtualization
+    ;
+in {
   # Configure Nix
   nix = {
     channel.enable = false;
@@ -74,11 +109,69 @@
   # Configure Homebrew
   homebrew = {
     enable = true;
-    casks = [
-      "1password"
-      "ghostty"
-      "zen"
-    ];
+    casks =
+      [
+        # Terminals
+        "ghostty"
+        "wezterm"
+
+        # Privacy and security
+        "1password"
+        "adguard"
+        "backblaze"
+
+        # Browsers
+        "arc"
+        "zen"
+
+        # Utilities
+        # "grandperspective"
+        # "kap"
+        "opencore-patcher"
+        "raycast"
+        "resilio-sync"
+        "the-unarchiver"
+
+        # Productivity
+        "obsidian"
+        "taskpaper"
+
+        # Entertainment
+        "plex"
+      ]
+      ++ lib.optionals withDevTools [
+        "antigravity"
+        "cursor"
+        # "figma"
+        "firefox@developer-edition"
+        "font-jetbrains-mono-nerd-font"
+        "google-chrome@dev"
+        "visual-studio-code"
+      ]
+      ++ lib.optionals withVirtualization [
+        # "crystalfetch"
+        (lib.mkIf (system == "aarch64-darwin") "orbstack")
+        "utm"
+        # "vmware-fusion"
+      ]
+      ++ lib.optionals withMediaServer [
+        "font-el-messiri"
+        "filebot"
+        "fujitsu-scansnap-home"
+        "istat-menus"
+        "musicbrainz-picard"
+        "plex-media-server"
+      ]
+      ++ lib.optionals withGaming [
+        "es-de"
+        "sony-ps-remote-play"
+        (lib.mkIf (machineRole == "desktop") "steam")
+      ]
+      ++ lib.optionals withCommunication [
+        "telegram"
+        "zoom"
+      ];
+
     global.autoUpdate = false;
     onActivation = {
       upgrade = true;
@@ -86,10 +179,18 @@
     };
   };
 
-  # Set the hostname
   networking = {
+    applicationFirewall.enable = true;
     hostName = hostname;
     computerName = hostname;
+  };
+
+  # Enable Touch ID and Watch ID for sudo
+  security.pam.services.sudo_local = {
+    enable = true;
+    reattach = true;
+    touchIdAuth = true;
+    watchIdAuth = true;
   };
 
   # Enable Tailscale
@@ -123,7 +224,10 @@
       };
       NSGlobalDomain = {
         _HIHideMenuBar = false;
+        AppleIconAppearanceTheme = "ClearAutomatic";
         AppleInterfaceStyle = "Dark";
+        AppleMeasurementUnits = "Centimeters";
+        AppleTemperatureUnit = "Celsius";
         "com.apple.trackpad.forceClick" = true;
       };
       smb.NetBIOSName = hostname;
