@@ -743,6 +743,7 @@ in {
     ghostty = {
       enable = true;
       package = null;
+      systemd.enable = false;
       settings = {
         # Font configuration
         font-family = "JetBrains Mono";
