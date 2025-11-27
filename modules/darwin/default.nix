@@ -165,7 +165,7 @@ in {
       ++ lib.optionals withGaming [
         "es-de"
         "sony-ps-remote-play"
-        (lib.mkIf (machineRole == "desktop") "steam")
+        (lib.mkIf (machineRole == "mediaServer") "steam")
       ]
       ++ lib.optionals withCommunication [
         "telegram"
