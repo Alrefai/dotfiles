@@ -21,7 +21,7 @@
       withMediaServer = true;
       withVirtualization = true;
     };
-    development = {
+    main = {
       withCommunication = true;
       withDevTools = true;
       withGaming = true;

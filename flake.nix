@@ -120,6 +120,33 @@
 
     # Set the username for all systems
     username = "mohammed";
+
+    # Hosts declaration
+    nixos = {
+      name = "nixos";
+      system = "aarch64-linux";
+      role = "developmentVM";
+    };
+    mimacbook = {
+      name = "mimacbook";
+      system = "x86_64-linux";
+      role = "legacy";
+    };
+    mim2macbookair = {
+      name = "mim2macbookair";
+      system = "aarch64-darwin";
+      role = "main";
+    };
+    mimac = {
+      name = "mimac";
+      system = "x86_64-darwin";
+      role = "mediaServer";
+    };
+    mimacvm = {
+      name = "mimacvm";
+      system = "aarch64-darwin";
+      role = "experimentalVM";
+    };
   in {
     # Schemas tell Nix about the structure of your flake's outputs
     inherit (flake-schemas) schemas;
@@ -150,8 +177,8 @@
 
           profiles = {
             ${username} = [];
-            "${username}@mimac" = [./modules/home/media.nix];
-            "${username}@mim2macbookair" = [./modules/home/media.nix];
+            "${username}@${mimac.name}" = [./modules/home/media.nix];
+            "${username}@${mim2macbookair.name}" = [./modules/home/media.nix];
           };
 
           mkHomeConfigProfile = _: profileModules:
@@ -183,14 +210,14 @@
 
       # Host configurations - easy to add new hosts
       hosts = {
-        nixos = {
+        ${nixos.name} = {
           # Inherits all defaults automatically
           # Uses OrbStack-managed /etc/nixos/configuration.nix
           extraModules = [/etc/nixos/configuration.nix];
         };
 
-        mimacbook = {
-          system = "x86_64-linux";
+        ${mimacbook.name} = {
+          inherit (mimacbook) system;
           extraModules = [./modules/nixos/hosts/mimacbook/configuration.nix];
         };
       };
@@ -229,10 +256,10 @@
 
       # Host configurations - easy to add new hosts
       hosts = {
-        mimacvm = {};
+        ${mimacvm.name} = {};
 
-        mimac = {
-          system = "x86_64-darwin";
+        ${mimac.name} = {
+          inherit (mimac) system;
           extraModules = [
             {
               homebrew.casks = [
@@ -242,12 +269,12 @@
               ];
             }
           ];
-          extraSpecialArgs = {machineRole = "mediaServer";};
+          extraSpecialArgs = {machineRole = mimac.role;};
         };
 
-        mim2macbookair = {
+        ${mim2macbookair.name} = {
           extraModules = [{homebrew.casks = ["kindavim" "transmit"];}];
-          extraSpecialArgs = {machineRole = "development";};
+          extraSpecialArgs = {machineRole = mim2macbookair.role;};
         };
       };
 
