@@ -45,20 +45,7 @@ in {
   # references:
   # https://nix.dev/guides/best-practices#with-scopes
   #
-  nix = {
-    gc.automatic = true;
-    package = pkgs.lixPackageSets.stable.lix;
-    settings = {
-      experimental-features = ["nix-command" "flakes"];
-      use-xdg-base-directories = true;
-      extra-substituters = [
-        "https://midot.cachix.org"
-      ];
-      extra-trusted-public-keys = [
-        "midot.cachix.org-1:QOnnEfGYhNLcqLKOXBNutkKqHpDU3nuNyZBGgeNZXJI="
-      ];
-    };
-  };
+  imports = [../common];
 
   home = {
     # Home Manager needs a bit of information about you and the paths it should

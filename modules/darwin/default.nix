@@ -41,32 +41,11 @@
     withVirtualization
     ;
 in {
+  imports = [../common];
   # Configure Nix
   nix = {
     channel.enable = false;
-    gc = {
-      automatic = true;
-      options = "--delete-older-than 7d";
-    };
     optimise.automatic = true;
-    package = pkgs.lixPackageSets.stable.lix;
-    settings = {
-      # Disable auto-optimise-store because of this issue:
-      # https://github.com/NixOS/nix/issues/7273
-      # "error: cannot link '/nix/store/.tmp-link-xxxxx-xxxxx'
-      # to '/nix/store/.links/xxxx': File exists"
-      auto-optimise-store = false;
-      experimental-features = ["nix-command" "flakes"];
-      substituters = [
-        "https://nix-community.cachix.org"
-      ];
-      extra-trusted-public-keys = [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      ];
-      builders-use-substitutes = true;
-      trusted-users = ["@admin"];
-      use-xdg-base-directories = true;
-    };
   };
 
   # Set the host platform
