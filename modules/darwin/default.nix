@@ -145,6 +145,7 @@ in {
     global.autoUpdate = false;
     onActivation = {
       cleanup = "zap";
+      extraFlags = ["--force"];
     };
   };
 
