@@ -144,7 +144,6 @@ in {
 
     global.autoUpdate = false;
     onActivation = {
-      upgrade = true;
       cleanup = "zap";
     };
   };
