@@ -7,9 +7,7 @@
   # throughout this file
 
   inputs = {
-    flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/*.tar.gz";
-
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
@@ -22,7 +20,7 @@
     };
 
     home-manager = {
-      url = "https://flakehub.com/f/nix-community/home-manager/0.1.0.tar.gz";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -68,7 +66,6 @@
 
   outputs = {
     self,
-    flake-schemas,
     nixpkgs,
     systems,
     nix-darwin,
@@ -148,9 +145,6 @@
       role = "experimentalVM";
     };
   in {
-    # Schemas tell Nix about the structure of your flake's outputs
-    inherit (flake-schemas) schemas;
-
     # for `nix fmt`
     formatter = forAllSystems (
       {pkgs}: let
