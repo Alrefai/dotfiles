@@ -261,13 +261,19 @@
                 "font-aref-ruqaa"
                 "font-rakkas"
               ];
+              networking.knownNetworkServices = ["Ethernet"];
             }
           ];
           extraSpecialArgs = {machineRole = mimac.role;};
         };
 
         ${mim2macbookair.name} = {
-          extraModules = [{homebrew.casks = ["kindavim" "transmit"];}];
+          extraModules = [
+            {
+              homebrew.casks = ["kindavim" "transmit"];
+              networking.knownNetworkServices = ["USB 10/100/1000 LAN"];
+            }
+          ];
           extraSpecialArgs = {machineRole = mim2macbookair.role;};
         };
       };

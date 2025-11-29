@@ -153,6 +153,11 @@ in {
     applicationFirewall.enable = true;
     hostName = hostname;
     computerName = hostname;
+    knownNetworkServices = [
+      "Wi-Fi"
+      "iPhone USB"
+      "Thunderbolt Bridge"
+    ];
   };
 
   # Enable Touch ID and Watch ID for sudo
