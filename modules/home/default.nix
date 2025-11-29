@@ -91,6 +91,7 @@ in {
           ripgrep-all # ripgrep with search in PDFs, E-Books, zip, and more
           rsync # Fast incremental file transfer utility
           tmux
+          unar # Archive unpacker program
           uutils-coreutils-noprefix # Rust coreutils
           uutils-findutils # Rust implementation of findutils
           wget
