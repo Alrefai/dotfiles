@@ -1,6 +1,5 @@
 {username, ...}: {
   homebrew.casks = [
-    "drobo-dashboard"
     "font-aref-ruqaa"
     "font-rakkas"
   ];
