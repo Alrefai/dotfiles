@@ -164,7 +164,10 @@ in {
   };
 
   # Enable Tailscale
-  services.tailscale.enable = true;
+  services.tailscale = {
+    enable = true;
+    overrideLocalDns = true;
+  };
 
   system = {
     # activateSettings -u will reload the settings from the database and apply
