@@ -87,6 +87,7 @@ in {
           perl
           pnpm-shell-completion
           procs # Modern ps with colors
+          q # Modern DNS client that supports UDP, TCP, DoT, DoH, DoQ and ODoH
           ripgrep-all # ripgrep with search in PDFs, E-Books, zip, and more
           tmux
           uutils-coreutils-noprefix # Rust coreutils
