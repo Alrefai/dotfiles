@@ -89,6 +89,7 @@ in {
           procs # Modern ps with colors
           q # Modern DNS client that supports UDP, TCP, DoT, DoH, DoQ and ODoH
           ripgrep-all # ripgrep with search in PDFs, E-Books, zip, and more
+          rsync # Fast incremental file transfer utility
           tmux
           uutils-coreutils-noprefix # Rust coreutils
           uutils-findutils # Rust implementation of findutils
