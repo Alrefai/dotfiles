@@ -254,16 +254,7 @@
 
         ${mimac.name} = {
           inherit (mimac) system;
-          extraModules = [
-            {
-              homebrew.casks = [
-                "drobo-dashboard"
-                "font-aref-ruqaa"
-                "font-rakkas"
-              ];
-              networking.knownNetworkServices = ["Ethernet"];
-            }
-          ];
+          extraModules = [./modules/darwin/hosts/mimac];
           extraSpecialArgs = {machineRole = mimac.role;};
         };
 
