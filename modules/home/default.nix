@@ -78,7 +78,7 @@ in {
           cachix # Cachix CLI
           corepack_latest
           curl
-          dog # Modern DNS client (better than dig)
+          doggo # Modern DNS client (better than dig)
           dua # Disk Usage Analyzer
           marksman # markdown language server
           neovim
