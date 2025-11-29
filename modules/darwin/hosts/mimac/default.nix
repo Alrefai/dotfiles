@@ -1,8 +1,11 @@
 {username, ...}: {
-  homebrew.casks = [
-    "font-aref-ruqaa"
-    "font-rakkas"
-  ];
+  homebrew = {
+    caskArgs.no_quarantine = true; # https://github.com/Homebrew/brew/issues/21090
+    casks = [
+      "font-aref-ruqaa"
+      "font-rakkas"
+    ];
+  };
   networking.knownNetworkServices = ["Ethernet"];
   services.openssh = {
     enable = true;
