@@ -144,7 +144,10 @@ in {
       # ".profile".source = ./dotfiles/profile;
       ".ssh/allowed_signers".source = ../../dotfiles/ssh/allowed_signers;
       ".ssh/github.pub".source = ../../dotfiles/ssh/github.pub;
-      ".local/bin".source = ../../bin;
+      ".local/bin" = {
+        source = ../../bin;
+        recursive = true;
+      };
 
       # You can also set the file content immediately.
       # ".gradle/gradle.properties".text = ''
