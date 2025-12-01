@@ -84,7 +84,7 @@ in {
           nixd # nix language server
           nodejs_latest
           perl
-          pnpm-shell-completion
+          pnpm # Fast, disk space efficient package manager for JavaScript
           procs # Modern ps with colors
           q # Modern DNS client that supports UDP, TCP, DoT, DoH, DoQ and ODoH
           ripgrep-all # ripgrep with search in PDFs, E-Books, zip, and more
