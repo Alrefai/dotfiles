@@ -76,7 +76,6 @@ in {
           _1password-cli
           bottom # Modern top (command: btm)
           cachix # Cachix CLI
-          corepack_latest
           curl
           doggo # Modern DNS client (better than dig)
           dua # Disk Usage Analyzer
