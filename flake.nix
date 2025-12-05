@@ -257,7 +257,10 @@
         ${mimac.name} = {
           inherit (mimac) system;
           extraModules = [./modules/darwin/hosts/mimac];
-          extraSpecialArgs = {machineRole = mimac.role;};
+          extraSpecialArgs = {
+            inherit email;
+            machineRole = mimac.role;
+          };
         };
 
         ${mim2macbookair.name} = {
