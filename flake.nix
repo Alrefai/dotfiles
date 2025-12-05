@@ -115,8 +115,10 @@
     # Partially apply the system list to `forEachSystem` function
     forAllSystems = forEachSystem (import systems);
 
-    # Set the username for all systems
+    # Set my personal data for all systems
     username = "mohammed";
+    name = "Mohammed Alrefai";
+    email = "mohammed@refam.io";
 
     # Hosts declaration
     nixos = {
@@ -181,7 +183,7 @@
               # Merge profile modules with defaults
               modules = defaults ++ profileModules;
               # Pass arguments to the configuration modules
-              extraSpecialArgs = {inherit inputs username;};
+              extraSpecialArgs = {inherit inputs username name email;};
             };
         in
           nixpkgs.lib.mapAttrs mkHomeConfigProfile profiles;

@@ -4,6 +4,8 @@
   pkgs,
   inputs,
   username,
+  name,
+  email,
   ...
 }: let
   inherit
@@ -556,10 +558,7 @@ in {
     git = {
       enable = true;
       settings = {
-        user = {
-          name = "Mohammed Alrefai";
-          email = "mohammed@refam.io";
-        };
+        user = {inherit name email;};
         alias = {
           delete-local-merged = ''
             !git fetch && git branch --merged \
