@@ -423,21 +423,6 @@ in {
               source "${config.xdg.configHome}"/op/plugins.sh
           fi
         '';
-      bashrcExtra =
-        # bash
-        ''
-          # Ghostty shell integration for Bash.
-          # This should be at the top of your bashrc!
-          if [[ $GHOSTTY_RESOURCES_DIR ]]; then
-            builtin source "$GHOSTTY_RESOURCES_DIR/shell-integration/bash/ghostty.bash"
-          fi
-
-          # Create ssh sockets directory with the following code:
-          if [[ ! -d /tmp/ssh-sockets/ ]]; then
-            mkdir -p /tmp/ssh-sockets
-            chmod 700 /tmp/ssh-sockets
-          fi
-        '';
     };
 
     delta = {
@@ -922,12 +907,6 @@ in {
           lib.mkOrder 1000
           # sh
           ''
-            # Ghostty shell integration for ZSH.
-            # This should be at the top of your zshrc!
-            if [[ $GHOSTTY_RESOURCES_DIR ]]; then
-              builtin source "$GHOSTTY_RESOURCES_DIR/shell-integration/zsh/ghostty-integration"
-            fi
-
             # extra options
             setopt auto_list            # auto list choices on ambiguous completion
             setopt auto_menu            # automatically use menu completion
@@ -944,12 +923,6 @@ in {
             if command -v zoxide >/dev/null; then
               function z() { __zoxide_z "$@" }
               function zi() { __zoxide_zi "$@" }
-            fi
-
-            # Create ssh sockets directory with the following code:
-            if [[ ! -d /tmp/ssh-sockets/ ]]; then
-              mkdir -p /tmp/ssh-sockets
-              chmod 700 /tmp/ssh-sockets
             fi
 
             # 1password-cli config:
