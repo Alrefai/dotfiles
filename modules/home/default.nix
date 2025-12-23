@@ -715,9 +715,9 @@ in {
     };
 
     ghostty = {
-      enable = true;
-      package = null;
-      systemd.enable = false;
+      enable = lib.mkDefault true;
+      package = lib.mkIf pkgs.stdenv.isDarwin null;
+      systemd.enable = lib.mkDefault false;
       settings = {
         # Font configuration
         font-family = "JetBrains Mono";
