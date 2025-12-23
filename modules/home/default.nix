@@ -562,11 +562,9 @@ in {
           format = "ssh";
           ssh = {
             allowedSignersFile = "~/.ssh/allowed_signers";
-            ${
-              if pkgs.stdenv.isDarwin
-              then "program"
-              else null
-            } = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
+            program =
+              lib.mkIf pkgs.stdenv.isDarwin
+              "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
           };
         };
       };
@@ -789,6 +787,9 @@ in {
           serverAliveCountMax = 3;
           serverAliveInterval = 0;
           userKnownHostsFile = "~/.ssh/known_hosts";
+          identityAgent = lib.mkIf pkgs.stdenv.isDarwin [
+            "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+          ];
         };
         "github.com github" = {
           extraOptions = {
