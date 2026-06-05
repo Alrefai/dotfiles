@@ -806,34 +806,30 @@ in {
     ssh = {
       enable = true;
       enableDefaultConfig = false;
-      extraConfig = ''
-        ConnectTimeout 3
-        PubkeyAuthentication no
-      '';
       includes = ["~/.ssh/config.d/*.conf"];
-      matchBlocks = {
+      settings = {
         "*" = {
-          controlMaster = "auto";
-          controlPersist = "600";
-          hashKnownHosts = true;
-          identitiesOnly = true;
+          ControlMaster = "auto";
+          ControlPersist = "600";
+          HashKnownHosts = true;
+          IdentitiesOnly = true;
+          ConnectTimeout = 3;
+          PubkeyAuthentication = "no";
 
           # default ssh options
-          addKeysToAgent = "no";
-          compression = false;
-          controlPath = "~/.ssh/master-%r@%n:%p";
-          forwardAgent = false;
-          serverAliveCountMax = 3;
-          serverAliveInterval = 0;
-          userKnownHostsFile = "~/.ssh/known_hosts";
+          AddKeysToAgent = "no";
+          Compression = false;
+          ControlPath = "~/.ssh/master-%r@%n:%p";
+          ForwardAgent = false;
+          ServerAliveCountMax = 3;
+          ServerAliveInterval = 0;
+          UserKnownHostsFile = "~/.ssh/known_hosts";
         };
-        "github.com github" = {
-          extraOptions = {
-            "PubkeyAuthentication" = "yes";
-          };
-          hostname = "github.com";
-          identityFile = "~/.ssh/github.pub";
-          user = "git";
+        "github.com github" = lib.hm.dag.entryBefore ["*"] {
+          PubkeyAuthentication = "yes";
+          HostName = "github.com";
+          IdentityFile = "~/.ssh/github.pub";
+          User = "git";
         };
       };
     };
