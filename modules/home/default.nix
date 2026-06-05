@@ -181,9 +181,6 @@ in {
       # LANG = "en_US.UTF-8";
       # LC_ALL = "en_US.UTF-8";
 
-      # Custom excutable programs
-      XDG_BIN_HOME = "$HOME/.local/bin";
-
       # Less
       PAGER = "less";
       LESSHISTFILE = "${config.xdg.stateHome}/less/history";
