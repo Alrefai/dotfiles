@@ -874,6 +874,7 @@ in {
           show_symlink = true;
         };
       };
+      shellWrapperName = "yy";
       plugins = {
         chmod = "${yazi-plugins}/chmod.yazi";
         full-border = "${yazi-plugins}/full-border.yazi";
