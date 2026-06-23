@@ -333,6 +333,7 @@ in {
   catppuccin = {
     enable = true;
     accent = "blue";
+    hyprland.enable = false;
     mpv.enable = false;
   };
 

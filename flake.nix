@@ -26,6 +26,16 @@
 
     catppuccin.url = "github:catppuccin/nix";
 
+    caelestia-shell = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     #*** Non-flake source code ***#
     # forked from nvim-lua/kickstart.nvim
     minvim = {
@@ -169,12 +179,30 @@
       mkHomeConfig = username: {pkgs}: {
         # Define the home-manager configuration for the defined user
         homeConfigurations = let
-          defaults = [./modules/home catppuccin.homeModules.catppuccin];
+          defaults = [
+            ./modules/home
+            catppuccin.homeModules.catppuccin
+          ];
 
           profiles = {
-            ${username} = [];
+            ${username} = [{programs.ghostty.enable = false;}];
             "${username}@${mimac.name}" = [./modules/home/media.nix];
             "${username}@${mim2macbookair.name}" = [./modules/home/media.nix];
+            "${username}@gameros" = [
+              ./modules/home/media.nix
+              ./modules/quickshells/caelestia.nix
+              {
+                programs = {
+                  ghostty.systemd.enable = true;
+                  git.settings.gpg.ssh.program = "${
+                    nixpkgs.lib.getExe' pkgs._1password-gui "op-ssh-sign"
+                  }";
+                  # ssh.matchBlocks."*".identityAgent = [
+                  #   "~/.1password/agent.sock"
+                  # ];
+                };
+              }
+            ];
           };
 
           mkHomeConfigProfile = _: profileModules:

@@ -15,12 +15,6 @@
 
   # Boot configuration
   boot = {
-    # Bootloader
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-
     # Blacklist Broadcom wireless drivers (Ethernet-only machine)
     blacklistedKernelModules = ["wl"];
 

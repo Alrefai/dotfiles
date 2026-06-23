@@ -11,7 +11,4 @@ _: {
     channel.enable = false;
     optimise.automatic = true;
   };
-
-  # Limit the number of generations to keep
-  boot.loader.systemd-boot.configurationLimit = 5;
 }

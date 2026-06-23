@@ -12,7 +12,7 @@ return {
 	audible_bell = "Disabled",
 	native_macos_fullscreen_mode = true,
 	adjust_window_size_when_changing_font_size = false,
-	window_decorations = "RESIZE",
+	window_decorations = "NONE",
 	font = wezterm.font_with_fallback({
 		-- "Monaspace Neon",
 		-- "Monaspace Argon",

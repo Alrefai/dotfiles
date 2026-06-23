@@ -1,11 +1,11 @@
-{pkgs, ...}: {
-  home.packages = builtins.attrValues {
-    inherit
-      (pkgs)
-      ffmpeg-full
-      moltenvk
-      ;
-  };
+{
+  lib,
+  pkgs,
+  ...
+}: {
+  home.packages =
+    [pkgs.ffmpeg-full]
+    ++ lib.optionals pkgs.stdenv.isDarwin [pkgs.moltenvk];
 
   programs = {
     aria2 = {
@@ -59,47 +59,65 @@
         "Shift+LEFT" = "frame-back-step";
         a = "cycle audio";
         s = "cycle sub";
+        "1" = "set window-scale 0.5;set geometry 99%:99%";
+        "2" = "set window-scale 1;set geometry 99%:99%";
+        "3" = "set window-scale 1.5;set geometry 99%:99%";
+        "4" = "set window-scale 2;set geometry 99%:99%";
       };
-      config = {
-        # Default profile
-        vo = "gpu-next";
-        gpu-api = "vulkan";
-        hwdec = "auto";
-        vulkan-async-compute = true;
-        vulkan-async-transfer = true;
-        vd-lavc-dr = true;
-        hr-seek-framedrop = true;
-        reset-on-next-file = "audio-delay,mute,pause,speed,sub-delay,video-aspect-override,video-pan-x,video-pan-y,video-rotate,video-zoom,volume";
-        alang = "jpn,jp,eng,en,enUS,en-US";
-        slang = "ara,ar,arME,enm,eng,en,enUS,en-US";
+      config =
+        {
+          # Default profile
+          vo = "gpu-next,gpu,";
+          gpu-api = "vulkan,opengl,";
+          # see: https://github.com/mpv-player/mpv/issues/12946
+          # gpu-context = lib.mkIf pkgs.stdenv.isLinux "x11vk";
+          # gpu-context = lib.mkIf pkgs.stdenv.isLinux (
+          #   if config.wayland.windowManager.hyprland.enable
+          #   then "waylandvk"
+          #   else "x11vk"
+          # );
+          hwdec = "auto";
+          vulkan-async-compute = true;
+          vulkan-async-transfer = true;
+          vd-lavc-dr = true;
+          hr-seek-framedrop = true;
+          reset-on-next-file = "audio-delay,mute,pause,speed,sub-delay,video-aspect-override,video-pan-x,video-pan-y,video-rotate,video-zoom,volume";
+          alang = "jpn,jp,eng,en,enUS,en-US";
+          slang = "ara,ar,arME,enm,eng,en,enUS,en-US";
 
-        # UI
-        autofit = "50%";
-        border = false;
-        term-osd-bar = true;
-        cursor-autohide = 1000;
-        macos-title-bar-appearance = "vibrantDark";
-        macos-title-bar-material = "popover";
-        macos-fs-animation-duration = 0;
+          # UI
+          autofit = "50%";
+          border = false;
+          term-osd-bar = true;
+          cursor-autohide = 1000;
+          force-window = "yes";
+          geometry = "99%:99%";
+          autofit-larger = "90%x90%";
+          autofit-smaller = "20%x20%";
 
-        # Colorspace
-        # vf = "format=colorlevels=full:colormatrix=auto";
-        video-output-levels = "full";
+          # Colorspace
+          # vf = "format=colorlevels=full:colormatrix=auto";
+          video-output-levels = "full";
 
-        # Debanding
-        deband = true;
-        deband-iterations = 4;
-        deband-threshold = 30;
-        deband-grain = 5;
+          # Debanding
+          deband = true;
+          deband-iterations = 4;
+          deband-threshold = 30;
+          deband-grain = 5;
 
-        # Motion Interpolation
-        video-sync = "display-resample";
-        interpolation = true;
-        tscale = "oversample";
+          # Motion Interpolation
+          video-sync = "display-resample";
+          interpolation = true;
+          tscale = "oversample";
 
-        # Anti-Ringing
-        scale-antiring = 0.6;
-      };
+          # Anti-Ringing
+          scale-antiring = 0.6;
+        }
+        // lib.optionalAttrs pkgs.stdenv.isDarwin {
+          macos-title-bar-appearance = "vibrantDark";
+          macos-title-bar-material = "popover";
+          macos-fs-animation-duration = 0;
+        };
       profiles = {
         big-cache = {
           cache = true;

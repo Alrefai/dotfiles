@@ -123,45 +123,45 @@
       '';
   };
   # services.hyprpolkitagent.enable = true;
-  # wayland.windowManager.hyprland = {
-  #   enable = true;
-  #   # set the Hyprland and XDPH packages to null to use the ones from the NixOS module
-  #   package = null;
-  #   portalPackage = null;
-  #   extraConfig = ''
-  #     $hypr = ~/.config/hypr
-  #     $hl = $hypr/hyprland
-  #     $cConf = ~/.config/caelestia
-  #
-  #     # Variables (colours + other vars)
-  #     exec = cp -L --no-preserve=mode --update=none $hypr/scheme/default.conf $hypr/scheme/current.conf
-  #     source = $hypr/scheme/current.conf
-  #     source = $hypr/variables.conf
-  #
-  #     # User variables
-  #     exec = mkdir -p $cConf && touch -a $cConf/hypr-vars.conf
-  #     source = $cConf/hypr-vars.conf
-  #
-  #     # Default monitor conf
-  #     monitor = , preferred, auto, 1
-  #     monitor = desc: Apple Computer Inc iMac 67C635F20AC39, preferred, 0x0, 1.5
-  #
-  #     # Configs
-  #     source = $hl/env.conf
-  #     source = $hl/general.conf
-  #     source = $hl/input.conf
-  #     source = $hl/misc.conf
-  #     source = $hl/animations.conf
-  #     source = $hl/decoration.conf
-  #     source = $hl/group.conf
-  #     source = $hl/execs.conf
-  #     source = $hl/rules.conf
-  #     source = $hl/gestures.conf
-  #     source = $hl/keybinds.conf
-  #
-  #     # User configs
-  #     exec = mkdir -p $cConf && touch -a $cConf/hypr-user.conf
-  #     source = $cConf/hypr-user.conf
-  #   '';
-  # };
+  wayland.windowManager.hyprland = {
+    enable = true;
+    # set the Hyprland and XDPH packages to null to use the ones from the NixOS module
+    package = null;
+    portalPackage = null;
+    extraConfig = ''
+      $hypr = ~/.config/hypr
+      $hl = $hypr/hyprland
+      $cConf = ~/.config/caelestia
+
+      # Variables (colours + other vars)
+      exec = cp -L --no-preserve=mode --update=none $hypr/scheme/default.conf $hypr/scheme/current.conf
+      source = $hypr/scheme/current.conf
+      source = $hypr/variables.conf
+
+      # User variables
+      exec = mkdir -p $cConf && touch -a $cConf/hypr-vars.conf
+      source = $cConf/hypr-vars.conf
+
+      # Default monitor conf
+      monitor = , preferred, auto, 1
+      monitor = desc: Apple Computer Inc iMac 67C635F20AC39, preferred, 0x0, 1.5
+
+      # Configs
+      source = $hl/env.conf
+      source = $hl/general.conf
+      source = $hl/input.conf
+      source = $hl/misc.conf
+      source = $hl/animations.conf
+      source = $hl/decoration.conf
+      source = $hl/group.conf
+      source = $hl/execs.conf
+      source = $hl/rules.conf
+      source = $hl/gestures.conf
+      source = $hl/keybinds.conf
+
+      # User configs
+      exec = mkdir -p $cConf && touch -a $cConf/hypr-user.conf
+      source = $cConf/hypr-user.conf
+    '';
+  };
 }
