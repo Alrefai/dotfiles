@@ -8,10 +8,16 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-26_05-darwin.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
 
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-darwin-x86_64 = {
+      url = "github:nix-darwin/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs-26_05-darwin";
     };
 
     treefmt-nix = {
@@ -67,16 +73,26 @@
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-26_05-darwin,
     systems,
     nix-darwin,
+    nix-darwin-x86_64,
     treefmt-nix,
     home-manager,
     catppuccin,
     ...
   } @ inputs: let
     # Eval the treefmt modules from ./treefmt.nix
-    treefmtFor = system:
-      treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system}
+    treefmtFor = system: let
+      nixpkgsSource =
+        if system == "x86_64-darwin"
+        then nixpkgs-26_05-darwin
+        else nixpkgs;
+    in
+      treefmt-nix.lib.evalModule (import nixpkgsSource {
+        inherit system;
+        config.allowDeprecatedx86_64Darwin = true;
+      })
       ./treefmt.nix;
 
     devToolsOverlay = final: prev: {
@@ -101,16 +117,23 @@
 
     # A higher-order helper function that generates system-specific outputs
     forEachSystem = supportedSystems: generateConfig:
-      nixpkgs.lib.genAttrs supportedSystems (
-        system:
-          generateConfig {
-            pkgs = import nixpkgs {
-              inherit system;
-              config.allowUnfree = true;
-              overlays = [devToolsOverlay];
+      nixpkgs.lib.genAttrs supportedSystems (system: let
+        nixpkgsSource =
+          if system == "x86_64-darwin"
+          then nixpkgs-26_05-darwin
+          else nixpkgs;
+      in
+        generateConfig {
+          pkgs = import nixpkgsSource {
+            inherit system;
+            config = {
+              allowUnfree = true;
+              allowDeprecatedx86_64Darwin =
+                nixpkgs.lib.mkIf (system == "x86_64-darwin") true;
             };
-          }
-      );
+            overlays = [devToolsOverlay];
+          };
+        });
 
     # Partially apply the system list to `forEachSystem` function
     forAllSystems = forEachSystem (import systems);
@@ -278,8 +301,12 @@
       mkDarwinHost = hostname: hostConfig: let
         # Merge host config with defaults
         config = defaults // hostConfig // {inherit hostname;};
+        nix-darwinSource =
+          if config.system == "x86_64-darwin"
+          then nix-darwin-x86_64
+          else nix-darwin;
       in
-        nix-darwin.lib.darwinSystem {
+        nix-darwinSource.lib.darwinSystem {
           specialArgs =
             {
               inherit (config) hostname username system;

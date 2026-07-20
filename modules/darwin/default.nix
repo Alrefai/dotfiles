@@ -49,7 +49,10 @@ in {
   };
 
   # Set the host platform
-  nixpkgs.hostPlatform = system;
+  nixpkgs = {
+    hostPlatform = system;
+    config.allowDeprecatedx86_64Darwin = true;
+  };
 
   environment = {
     # Override the default nix profiles and their order in path.
