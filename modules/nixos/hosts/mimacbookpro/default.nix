@@ -6,6 +6,7 @@
   ...
 }: {
   imports = [
+    ./croc.nix
     ./disk.nix
     ./hardware.nix
     ./plex.nix
