@@ -1,17 +1,29 @@
-# Common NixOS configuration shared across all hosts
-_: {
+# Common NixOS configuration shared across all hosts and VMs
+{
+  config,
+  lib,
+  pkgs,
+  system,
+  ...
+}: {
   imports = [
-    ../../common
-    ./users.nix
     ./packages.nix
-    ./services.nix
+    ./tailscale.nix
+    ./users.nix
+    ./virtualisation.nix
   ];
 
-  nix = {
-    channel.enable = false;
-    optimise.automatic = true;
-  };
+  # Use latest kernel.
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # Limit the number of generations to keep
-  boot.loader.systemd-boot.configurationLimit = 5;
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  networking.resolvconf.enable = lib.mkIf config.services.tailscale
+    .enable false;
+
+  nixpkgs.hostPlatform = system;
+
+  # Set your time zone.
+  time.timeZone = "Asia/Riyadh";
 }

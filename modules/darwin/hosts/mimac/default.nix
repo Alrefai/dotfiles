@@ -28,7 +28,7 @@
     #! These public keys are for my machine only.
     #! If you fork this repo, replace them with your own keys.
     #! Keys are applied only when the git email matches my identity.
-    keys = lib.mkIf (email == "mohammed@refam.io") [
+    keys = lib.mkIf (email == "mohammed" + "@" + "refam.io") [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAz09SftQ86+tx7dvrS6+EKVTcsRCyDyK/zn81C1tHIH mohammed@1password"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIONVn/zRfjdUhGIjE9wLNq7tKqOJztSwCwVTJhxcZ+dx miphonex@shortcuts"
       "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMnZQEthxvpozo9q9w9Mt5u/MaxZXuR5kImVrjmcUv/T4KxuvQ0A6Ku9hx7UF0JaoTW7qmbyaqZFkU0dF9uHEwE= miphonex@blink"

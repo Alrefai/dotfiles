@@ -1,12 +1,26 @@
 # Common system packages and programs
-{pkgs, ...}: {
-  programs.nix-ld = {
-    enable = true;
-    libraries = [pkgs.glibc];
+{
+  lib,
+  pkgs,
+  ...
+}: {
+  programs = {
+    nix-ld = {
+      enable = true;
+      libraries = [pkgs.glibc];
+    };
+    zsh.enable = true;
   };
 
-  # Common development tools
-  environment.systemPackages = [
-    pkgs.podman-compose
-  ];
+  environment = {
+    systemPackages = map lib.lowPrio (builtins.attrValues {
+      inherit
+        (pkgs)
+        curl
+        gitMinimal
+        neovim
+        ;
+    });
+    variables.EDITOR = "nvim";
+  };
 }

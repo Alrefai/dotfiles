@@ -42,11 +42,6 @@
     ;
 in {
   imports = [../common];
-  # Configure Nix
-  nix = {
-    channel.enable = false;
-    optimise.automatic = true;
-  };
 
   # Set the host platform
   nixpkgs = {

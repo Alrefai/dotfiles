@@ -1,12 +1,16 @@
 # User configuration
 {
+  config,
+  lib,
   pkgs,
   username,
   ...
 }: {
   users = {
-    defaultUserShell = pkgs.zsh;
-    extraUsers.${username} = {
+    defaultUserShell = lib.mkIf config.programs.zsh.enable pkgs.zsh;
+    users.${username} = {
+      description = lib.strings.toSentenceCase username;
+      extraGroups = ["wheel"]; # Enable ‘sudo’ for the user.
       subUidRanges = [
         {
           startUid = 100000;
@@ -20,8 +24,6 @@
         }
       ];
     };
+    mutableUsers = lib.mkDefault false;
   };
-
-  # Enable zsh
-  programs.zsh.enable = true;
 }

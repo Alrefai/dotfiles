@@ -20,6 +20,18 @@
       inputs.nixpkgs.follows = "nixpkgs-26_05-darwin";
     };
 
+    nixos-hardware = {
+      url = "github:nixos/nixos-hardware";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    preservation.url = "github:nix-community/preservation";
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -77,6 +89,9 @@
     systems,
     nix-darwin,
     nix-darwin-x86_64,
+    nixos-hardware,
+    disko,
+    preservation,
     treefmt-nix,
     home-manager,
     catppuccin,
@@ -141,19 +156,9 @@
     # Set my personal data for all systems
     username = "mohammed";
     name = "Mohammed Alrefai";
-    email = "mohammed@refam.io";
+    email = "mohammed" + "@" + "refam.io";
 
     # Hosts declaration
-    nixos = {
-      name = "nixos";
-      system = "aarch64-linux";
-      role = "developmentVM";
-    };
-    mimacbook = {
-      name = "mimacbook";
-      system = "x86_64-linux";
-      role = "legacy";
-    };
     mim2macbookair = {
       name = "mim2macbookair";
       system = "aarch64-darwin";
@@ -217,45 +222,51 @@
 
     #*** nixos configurations ***#
     nixosConfigurations = let
-      # Default values that can be overridden per-host
-      defaults = {
-        inherit username;
-        system = "aarch64-linux"; # Default system for all VMs
-        # Defensive defaults: ensure operations always work, even if host
-        # doesn't define these attributes
-        extraModules = []; # Ensures concatenation in modules list succeeds
-        extraSpecialArgs = {}; # Ensures merge in specialArgs succeeds
-      };
-
-      # Host configurations - easy to add new hosts
       hosts = {
-        ${nixos.name} = {
-          # Inherits all defaults automatically
+        nixos = {
+          system = "aarch64-linux";
+          role = "developmentVM";
+          isVM = true;
           # Uses OrbStack-managed /etc/nixos/configuration.nix
           extraModules = [/etc/nixos/configuration.nix];
         };
-
-        ${mimacbook.name} = {
-          inherit (mimacbook) system;
-          extraModules = [./modules/nixos/hosts/mimacbook/configuration.nix];
+        mimacbookpro = {
+          username = "nimda";
+          system = "x86_64-linux";
+          hardware = "apple-macbook-pro-8-1";
+          role = "nixos-server";
+          ethernetPCI = "pci-0000:02:00.0";
+          gateway = "192.168.86.1";
+          ip = "192.168.86.200";
+          swap = "16G";
+          device =
+            "/dev/disk/by-id/"
+            # Main disk only.
+            # Additional disks are configured in the host's directory
+            + "ata-Samsung_SSD_850_EVO_250GB_S21NNSAFC77623K";
         };
       };
 
       # Helper function to create a NixOS system configuration
-      mkNixOSHost = hostname: hostConfig: let
-        # Merge host config with defaults
-        config = defaults // hostConfig // {inherit hostname;};
-      in
+      mkNixOSHost = hostname: {extraModules ? [], ...} @ args:
         nixpkgs.lib.nixosSystem {
-          inherit (config) system;
-
           specialArgs =
-            {
-              inherit (config) hostname username;
-            }
-            // config.extraSpecialArgs;
+            args
+            // {
+              inherit hostname email;
+              username = args.username or username;
+            };
 
-          modules = [./modules/nixos/common] ++ config.extraModules;
+          modules =
+            [./modules/common ./modules/nixos/common]
+            ++ extraModules
+            ++ nixpkgs.lib.optionals (!args.isVM or false) [
+              (nixos-hardware.nixosModules.${args.hardware} or {})
+              disko.nixosModules.disko
+              preservation.nixosModules.default
+              ./modules/nixos/hosts/common
+              ./modules/nixos/hosts/${hostname}
+            ];
         };
     in
       # Generate configurations for all hosts
