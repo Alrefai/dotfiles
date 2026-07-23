@@ -8,11 +8,14 @@
   imports = [
     ./disk.nix
     ./hardware.nix
+    ./plex.nix
+    ./smb.nix
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "b43-firmware"
+      "plexmediaserver"
     ];
 
   environment.systemPackages = builtins.attrValues {
@@ -22,6 +25,8 @@
       yazi
       ;
   };
+
+  services.tailscale.serve.enable = true;
 
   users.users.${username}.openssh.authorizedKeys = {
     #! WARNING:
