@@ -43,4 +43,20 @@ _: {
       };
     };
   };
+
+  systemd.services.screen-off = {
+    description = "Turn off screen when lid is closed after boot";
+    enableStrictShellChecks = true;
+    requires = ["acpid.service"];
+    serviceConfig.Type = "oneshot";
+    script =
+      # bash
+      ''
+        if grep -qF 'close' /proc/acpi/button/lid/LID0/state; then
+          # Set brightness to zero
+          echo 0 > /sys/class/backlight/acpi_video0/brightness
+        fi
+      '';
+    wantedBy = ["multi-user.target"];
+  };
 }
