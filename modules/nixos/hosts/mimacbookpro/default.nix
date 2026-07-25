@@ -28,6 +28,7 @@
   };
 
   services.tailscale.serve.enable = true;
+  services.tlp.enable = false;
 
   users.users.${username}.openssh.authorizedKeys = {
     #! WARNING:
