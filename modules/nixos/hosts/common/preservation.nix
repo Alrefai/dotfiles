@@ -32,6 +32,10 @@ _: {
           inInitrd = true;
         }
         {
+          file = "/var/lib/systemd/credential.secret";
+          mode = "0400";
+        }
+        {
           file = "/var/lib/systemd/random-seed";
           how = "symlink";
           inInitrd = true;

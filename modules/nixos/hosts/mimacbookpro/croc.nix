@@ -36,10 +36,22 @@ in {
     # released on service deactivation. They are immutable during the service
     # runtime.
     #
+    # Get new encrypted credential with:
+    #
+    # ```
+    # sudo systemd-creds encrypt -pH --name=croc-pass - - <<<"$CROC_PASS"
+    # ```
+    #
     # ---
     # refs:
     # - https://systemd.io/CREDENTIALS/
-    LoadCredential = ["croc-pass:/persistent/secrets/croc/pass"];
+    SetCredentialEncrypted = ''
+      croc-pass: \
+        Whxqht+dQJax1aZeCGLxmiAAAAABAAAADAAAABAAAACwIaN/ca/tP4COlWcAAAAA/mbJQ \
+        58oHN5Dye9q135x8nIw2HVQr1AgKDk9nWEgkY1y+HPczEZxoh8BWVX0CJtXc+M+DkEWNN \
+        xS5hnhZTM9H5MdxGG/UM2BnFVpH2K9VBCbKPU66Xlew3vg4+pj8ohfyDGSFfGEWI6X3iy \
+        QY9sVzcA=
+    '';
     # %d resolves to the service’s credential directory.
     Environment = "CROC_PASS=%d/croc-pass";
 
