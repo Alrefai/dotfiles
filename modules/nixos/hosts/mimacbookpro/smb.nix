@@ -13,12 +13,12 @@
       uid = config.users.users.${username}.uid or 1000;
       gid = config.users.users.plex.group or 1;
     in [
-      "_netdev,noauto,nofail"
+      "_netdev,noauto,nofail,lazytime"
+      "esize=16384,handlecache,locallease,nostrictsync"
       "credentials=/persistent/secrets/smb/mimac"
       "file_mode=0440,dir_mode=0550,ro"
       "uid=${toString uid},gid=${toString gid}"
       "x-systemd.automount"
-      "x-systemd.device-timeout=5"
       "x-systemd.idle-timeout=60"
       "x-systemd.mount-timeout=5"
     ];
