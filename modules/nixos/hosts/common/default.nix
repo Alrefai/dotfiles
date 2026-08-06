@@ -59,6 +59,9 @@
   #   );
   # };
 
+  # Enable 'sudo' with SSH key
+  security.pam.sshAgentAuth.enable = true;
+
   systemd = {
     sleep.settings.Sleep = lib.mkDefault {
       AllowSuspend = "no";
