@@ -244,6 +244,7 @@
             # Main disk only.
             # Additional disks are configured in the host's directory
             + "ata-Samsung_SSD_850_EVO_250GB_S21NNSAFC77623K";
+          dataDisksMountpointSuffix = "data"; # without leading index
         };
       };
 

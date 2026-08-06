@@ -10,6 +10,7 @@
     ./disk.nix
     ./hardware.nix
     ./plex.nix
+    ./rustfs.nix
     ./smb.nix
   ];
 
