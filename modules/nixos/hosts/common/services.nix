@@ -1,14 +1,15 @@
 _: {
   services = {
+    /**
+    Control the screen brightness when lid is closed.
+
+    ---
+    refs:
+    - https://wiki.archlinux.org/title/Acpid
+    */
     acpid = {
       enable = true;
 
-      # Control the screen brightness when lid is closed.
-      #
-      # ---
-      # references:
-      # - https://www.reddit.com/r/NixOS/comments/14qa7d8/comment/jqo1cpw/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-      # - https://github.com/waxlamp/nixos-config/blob/f8aecac4eb6e145f32d3c10f3842da18c217dd34/machines/kahless/configuration.nix#L171-L194
       lidEventCommands =
         # bash
         ''
@@ -20,6 +21,24 @@ _: {
             echo 15 > /sys/class/backlight/acpi_video0/brightness
           fi
         '';
+    };
+
+    /**
+    Hide agetty printed issue and "login:" prompt line from the console.
+
+    ---
+    refs:
+    - https://wiki.archlinux.org/title/Getty#Virtual_console
+    - https://wiki.archlinux.org/title/Silent_boot#agetty
+    */
+    getty = {
+      extraArgs = [
+        "--skip-login"
+        "--nonewline"
+        "--noissue"
+        "--noreset"
+        "--noclear"
+      ];
     };
 
     openssh = {

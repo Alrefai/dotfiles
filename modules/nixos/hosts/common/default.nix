@@ -26,6 +26,23 @@
       };
       efi.canTouchEfiVariables = true;
     };
+    /**
+    Limit the verbosity of the system to a strict minimum and hide any kernel
+    messages from the console.
+
+    ---
+    refs:
+    - https://wiki.archlinux.org/title/Silent_boot
+    */
+    kernel.sysctl = {
+      "kernel.printk" = "3 3 3 3";
+    };
+    kernelParams = [
+      "quiet"
+      "loglevel=3"
+      "systemd.show_status=auto"
+      "rd.udev.log_level=3"
+    ];
   };
 
   # Configure console keymap
