@@ -41,6 +41,22 @@ _: {
       ];
     };
 
+    /**
+    Silence systemd-logind.service warning messages:
+    `Requested suspend operation not supported, ignoring.`
+
+    ---
+    refs:
+    - https://www.man7.org/linux/man-pages/man8/systemd-logind.service.8.html
+    - https://www.man7.org/linux/man-pages/man5/logind.conf.5.html
+    */
+    logind.settings.Login = {
+      HandleLidSwitch = "ignore";
+      HandleSuspendKey = "ignore";
+      HandleHibernateKey = "ignore";
+      HandleSuspendKeyLongPress = "ignore";
+    };
+
     openssh = {
       enable = true;
       hostKeys = [
