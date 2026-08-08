@@ -1,5 +1,6 @@
 {
   device,
+  lib,
   swap,
   ...
 }: {
@@ -9,16 +10,17 @@
   };
 
   disko.devices = {
-    disk.main = {
-      type = "disk";
+    disk.main = rec {
       inherit device;
+      type = "disk";
+      destroy = false;
       content = {
         type = "gpt";
         partitions = {
           ESP = {
             size = "1G";
             type = "EF00";
-            label = "esp";
+            label = "ESP"; # EFI System Partition
             content = {
               type = "filesystem";
               format = "vfat";
@@ -28,16 +30,26 @@
           };
           LUKS = {
             size = "100%";
-            label = "nixos";
+            label = "GNU-Linux";
             content = {
               type = "luks";
-              name = "crypted--system";
+              name = "crypted-system";
               passwordFile = "/tmp/luks.key"; # Password for initial encryption
               settings.allowDiscards = true; # TRIM through LUKS (SSDs)
-              extraOpenArgs = ["--tries 5"];
+              extraFormatArgs = ["--label" "LUKS-NixOS"];
+              extraOpenArgs = ["--tries" "5"];
               content = {
                 type = "btrfs";
-                extraArgs = ["-f"];
+                /**
+                WARNING:
+                The `-f` flag will force format the disk even if
+                `destory = false;`. To avoid this, `-f` flag must be set
+                conditionally.
+
+                */
+                extraArgs =
+                  ["-L" "NixOS"]
+                  ++ lib.optionals destroy ["-f"];
                 subvolumes = {
                   "/log" = {
                     mountpoint = "/var/log";
