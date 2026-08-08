@@ -51,6 +51,10 @@
                   ["-L" "NixOS"]
                   ++ lib.optionals destroy ["-f"];
                 subvolumes = {
+                  "/cache" = {
+                    mountpoint = "/var/cache";
+                    mountOptions = ["compress=zstd" "noatime"];
+                  };
                   "/log" = {
                     mountpoint = "/var/log";
                     mountOptions = ["compress=zstd" "noatime"];
