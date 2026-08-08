@@ -14,7 +14,6 @@ refs:
   config,
   dataDisksMountpointSuffix,
   lib,
-  pkgs,
   ...
 }: let
   disks = [
@@ -93,9 +92,7 @@ refs:
             For metadata-heavy workloads (which object stores often are),
             increasing the log buffer (`logbsize`) can improve throughput.
             */
-            "lazytime,noatime,noauto,nofail"
-            "logbsize=256k"
-
+            "lazytime,noatime,noauto,nofail,logbsize=256k"
             # Infinity timout for unlocking LUKS; will timeout with device
             "x-systemd.device-timeout=0"
             "x-systemd.requires-mounts-for=/boot"
@@ -123,7 +120,7 @@ in {
 
         */
         "none"
-        "noauto,nofail,x-systemd.device-timeout=5"
+        "luks,noauto,nofail,x-systemd.device-timeout=10"
       ];
 
     crypttab = lib.pipe config.disko.devices.disk [
