@@ -25,6 +25,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    deploy-rs.url = "github:serokell/deploy-rs";
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -90,6 +92,7 @@
     nix-darwin,
     nix-darwin-x86_64,
     nixos-hardware,
+    deploy-rs,
     disko,
     preservation,
     treefmt-nix,
@@ -109,6 +112,20 @@
         config.allowDeprecatedx86_64Darwin = true;
       })
       ./treefmt.nix;
+
+    /**
+    refs:
+    - https://github.com/serokell/deploy-rs#overall-usage
+    - https://github.com/serokell/deploy-rs/issues/163#issuecomment-2991603313
+    */
+    deploy-rsOverlay = final: prev: let
+      defaultOverlays = deploy-rs.overlays.default final prev;
+    in {
+      deploy-rs = {
+        inherit (prev) deploy-rs;
+        inherit (defaultOverlays.deploy-rs) lib;
+      };
+    };
 
     devToolsOverlay = final: prev: {
       devTools = let
@@ -146,7 +163,7 @@
               allowDeprecatedx86_64Darwin =
                 nixpkgs.lib.mkIf (system == "x86_64-darwin") true;
             };
-            overlays = [devToolsOverlay];
+            overlays = [deploy-rsOverlay devToolsOverlay];
           };
         });
 
@@ -186,9 +203,61 @@
     # for `nix flake check`
     checks = forAllSystems ({pkgs}: let
       treefmtEvalPlatform = treefmtFor pkgs.stdenv.hostPlatform.system;
-    in {
-      formatting = treefmtEvalPlatform.config.build.check self;
+    in
+      {
+        formatting = treefmtEvalPlatform.config.build.check self;
+      }
+      // pkgs.deploy-rs.lib.deployChecks self.deploy);
+
+    packages = forAllSystems ({pkgs}: {
+      inherit (pkgs.deploy-rs) deploy-rs;
     });
+
+    apps = forAllSystems ({pkgs}: {
+      deploy = {
+        type = "app";
+        program = nixpkgs.lib.getExe (pkgs.writeShellApplication {
+          name = "deploy";
+          runtimeInputs = builtins.attrValues {
+            inherit (pkgs.deploy-rs) deploy-rs;
+            inherit (pkgs) git;
+          };
+          text = ''
+            read -r BRANCH < <(git branch --show-current)
+            read -r COMMIT < <(git rev-parse --short HEAD)
+            read -r TIMESTAMP < <(date '+%Y.%m.%dT%H:%M')
+
+            exec env NIXOS_LABEL="build_$BRANCH:$COMMIT:$TIMESTAMP" deploy "$@"
+          '';
+        });
+      };
+    });
+
+    deploy = let
+      activate = forAllSystems ({pkgs}: pkgs.deploy-rs.lib.activate);
+      getHostConfig = hostname: rec {
+        hostConfig = self.nixosConfigurations.${hostname};
+        system = hostConfig.config.nixpkgs.hostPlatform.system;
+      };
+    in {
+      activationTimeout = 600;
+      confirmTimeout = 60;
+      fastConnection = true;
+      sshOpts = ["-o" "SendEnv=NIXOS_LABEL"];
+      user = "root";
+      nodes = {
+        mimacbookpro = rec {
+          hostname = "mimacbookpro";
+          profiles.system = let
+            inherit (getHostConfig hostname) hostConfig system;
+            username = hostConfig.config.users.users.nimda.name;
+          in {
+            path = activate.${system}.nixos hostConfig;
+            sshUser = username;
+          };
+        };
+      };
+    };
 
     #*** home-manager configurations ***#
     legacyPackages = let

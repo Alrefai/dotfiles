@@ -26,6 +26,8 @@ in {
         auto-optimise-store = false;
         builders-use-substitutes = true;
         experimental-features = ["nix-command" "flakes"];
+        # TODO: Remove this when deploy-rs is fixed
+        deprecated-features = ["broken-string-escape"];
         substituters = [
           "https://nix-community.cachix.org"
           "https://midot.cachix.org"
