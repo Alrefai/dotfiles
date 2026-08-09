@@ -101,17 +101,8 @@
     ...
   } @ inputs: let
     # Eval the treefmt modules from ./treefmt.nix
-    treefmtFor = system: let
-      nixpkgsSource =
-        if system == "x86_64-darwin"
-        then nixpkgs-26_05-darwin
-        else nixpkgs;
-    in
-      treefmt-nix.lib.evalModule (import nixpkgsSource {
-        inherit system;
-        config.allowDeprecatedx86_64Darwin = true;
-      })
-      ./treefmt.nix;
+    treefmtEval = pkgs: (treefmt-nix.lib.evalModule pkgs ./treefmt.nix)
+      .config.build;
 
     /**
     refs:
@@ -129,15 +120,15 @@
 
     devToolsOverlay = final: prev: {
       devTools = let
-        treefmtEvalPlatform = treefmtFor final.stdenv.hostPlatform.system;
+        treefmtEvalPlatform = treefmtEval final;
       in {
         # Make the treefmt command available in the shell using the specified
         # configuration in `./treefmt.nix`.
-        treefmt = treefmtEvalPlatform.config.build.wrapper;
+        treefmt = treefmtEvalPlatform.wrapper;
         # Get access to the individual programs from treefmt, which could be
         # useful to provide them to your IDE or editor.
         inherit
-          (treefmtEvalPlatform.config.build.programs)
+          (treefmtEvalPlatform.programs)
           alejandra # nix formatter
           dprint # code formatter
           shellcheck # sh linter
@@ -193,20 +184,11 @@
     };
   in {
     # for `nix fmt`
-    formatter = forAllSystems (
-      {pkgs}: let
-        treefmtEvalPlatform = treefmtFor pkgs.stdenv.hostPlatform.system;
-      in
-        treefmtEvalPlatform.config.build.wrapper
-    );
+    formatter = forAllSystems ({pkgs}: (treefmtEval pkgs).wrapper);
 
     # for `nix flake check`
-    checks = forAllSystems ({pkgs}: let
-      treefmtEvalPlatform = treefmtFor pkgs.stdenv.hostPlatform.system;
-    in
-      {
-        formatting = treefmtEvalPlatform.config.build.check self;
-      }
+    checks = forAllSystems ({pkgs}:
+      {formatting = (treefmtEval pkgs).check self;}
       // pkgs.deploy-rs.lib.deployChecks self.deploy);
 
     packages = forAllSystems ({pkgs}: {
