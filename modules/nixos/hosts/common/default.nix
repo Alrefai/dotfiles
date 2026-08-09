@@ -3,7 +3,6 @@
   lib,
   modulesPath,
   username,
-  # pkgs,
   ...
 }: {
   imports = [
@@ -48,16 +47,6 @@
 
   # Configure console keymap
   console.keyMap = "uk";
-
-  # Requires `--impure` flag with `nixos-rebuild switch` (for debugging only)
-  # system.nixos = {
-  #   label = lib.readFile (
-  #     pkgs.runCommandLocal "timestamp" {env.when = builtins.currentTime;} ''
-  #       read -r timestamp < <(date -ud @$when -d '+3 hours' +%Y-%m-%dT%H:%M)
-  #       echo -n $timestamp >$out
-  #     ''
-  #   );
-  # };
 
   # Enable 'sudo' with SSH key
   security.pam.sshAgentAuth.enable = true;
