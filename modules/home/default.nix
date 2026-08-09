@@ -491,50 +491,72 @@ in {
 
     fzf = rec {
       enable = true;
-      changeDirWidgetCommand =
-        # bash
-        ''
-          fd --type d --color always --follow --hidden --no-require-git \
-            --exclude 'Library/' \
-            --exclude '.cache/' \
-            --exclude '.git/'
-        '';
-      changeDirWidgetOptions = [
-        "--preview 'eza --icons --color always --tree --level 3 {} | head -200'"
-      ];
+      changeDirWidget = {
+        command = builtins.concatStringsSep " " [
+          "fd"
+          "--type"
+          "d"
+          "--color"
+          "always"
+          "--follow"
+          "--hidden"
+          "--no-require-git"
+          "--exclude"
+          "'Library/'"
+          "--exclude"
+          "'.cache/'"
+          "--exclude"
+          "'.git/'"
+        ];
+        options = [
+          "--preview"
+          "'eza --icons --color always --tree --level 3 {} | head -200'"
+        ];
+      };
       colors = {
         bg = pkgs.lib.mkForce "-1";
         fg = pkgs.lib.mkForce "-1";
         "bg+" = pkgs.lib.mkForce "-1";
       };
-      defaultCommand =
-        # bash
-        ''
-          fd --type f \
-            --color always \
-            --follow \
-            --hidden \
-            --no-require-git \
-            -E '.git/'
-        '';
+      defaultCommand = builtins.concatStringsSep " " [
+        "fd"
+        "--type"
+        "f"
+        "--color"
+        "always"
+        "--follow"
+        "--hidden"
+        "--no-require-git"
+        "-E"
+        "'.git/'"
+      ];
       defaultOptions = [
-        "--bind J:down,K:up,ctrl-a:select-all,ctrl-d:deselect-all,ctrl-t:toggle-all"
+        "--bind"
+        "J:down,K:up,ctrl-a:select-all,ctrl-d:deselect-all,ctrl-t:toggle-all"
         "--no-height"
         "--border"
         "--ansi"
-        "--tmux bottom,40%"
+        "--tmux"
+        "bottom,40%"
       ];
-      fileWidgetCommand = defaultCommand;
-      fileWidgetOptions = [
-        "--preview 'bat --color always --style numbers --line-range :500 {}'"
-      ];
-      historyWidgetOptions = [
-        "--preview 'echo {}'"
-        "--preview-window down:3:wrap"
-        "--bind '?:toggle-preview'"
+      fileWidget = {
+        command = defaultCommand;
+        options = [
+          "--preview"
+          "'bat --color always --style numbers --line-range :500 {}'"
+        ];
+      };
+      historyWidget.options = [
+        "--preview"
+        "'echo {}'"
+        "--preview-window"
+        "down:3:wrap"
+        "--bind"
+        "'?:toggle-preview'"
         "--sort"
         "--exact"
-        "--height '~14'"
+        "--height"
+        "'~14'"
       ];
     };
 
