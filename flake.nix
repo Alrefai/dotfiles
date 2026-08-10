@@ -138,9 +138,9 @@
       };
     };
 
-    # A higher-order helper function that generates system-specific outputs
-    forEachSystem = supportedSystems: generateConfig:
-      nixpkgs.lib.genAttrs supportedSystems (system: let
+    # A higher-order helper function that generates system-specific pkgs
+    forAllSystems = generateConfig:
+      nixpkgs.lib.genAttrs (import systems) (system: let
         nixpkgsSource =
           if system == "x86_64-darwin"
           then nixpkgs-26_05-darwin
@@ -151,15 +151,12 @@
             inherit system;
             config = {
               allowUnfree = true;
-              allowDeprecatedx86_64Darwin =
-                nixpkgs.lib.mkIf (system == "x86_64-darwin") true;
+              allowDeprecatedx86_64Darwin = nixpkgs.lib
+                .mkIf (system == "x86_64-darwin") true;
             };
             overlays = [deploy-rsOverlay devToolsOverlay];
           };
         });
-
-    # Partially apply the system list to `forEachSystem` function
-    forAllSystems = forEachSystem (import systems);
 
     # Set my personal data for all systems
     username = "mohammed";
