@@ -92,51 +92,17 @@
     nix-darwin,
     nix-darwin-x86_64,
     nixos-hardware,
-    deploy-rs,
     disko,
     preservation,
-    treefmt-nix,
     home-manager,
     catppuccin,
     ...
   } @ inputs: let
     # Eval the treefmt modules from ./treefmt.nix
-    treefmtEval = pkgs: (treefmt-nix.lib.evalModule pkgs ./treefmt.nix)
+    treefmtEval = pkgs: (inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix)
       .config.build;
 
-    /**
-    refs:
-    - https://github.com/serokell/deploy-rs#overall-usage
-    - https://github.com/serokell/deploy-rs/issues/163#issuecomment-2991603313
-    */
-    deploy-rsOverlay = final: prev: let
-      defaultOverlays = deploy-rs.overlays.default final prev;
-    in {
-      deploy-rs = {
-        inherit (prev) deploy-rs;
-        inherit (defaultOverlays.deploy-rs) lib;
-      };
-    };
-
-    devToolsOverlay = final: prev: {
-      devTools = let
-        treefmtEvalPlatform = treefmtEval final;
-      in {
-        # Make the treefmt command available in the shell using the specified
-        # configuration in `./treefmt.nix`.
-        treefmt = treefmtEvalPlatform.wrapper;
-        # Get access to the individual programs from treefmt, which could be
-        # useful to provide them to your IDE or editor.
-        inherit
-          (treefmtEvalPlatform.programs)
-          alejandra # nix formatter
-          dprint # code formatter
-          shellcheck # sh linter
-          shfmt # sh formatter
-          statix # nix linter
-          ;
-      };
-    };
+    overlays = [(import ./modules/overlays (inputs // {inherit treefmtEval;}))];
 
     # A higher-order helper function that generates system-specific pkgs
     forAllSystems = generateConfig:
@@ -148,13 +114,12 @@
       in
         generateConfig {
           pkgs = import nixpkgsSource {
-            inherit system;
+            inherit overlays system;
             config = {
               allowUnfree = true;
               allowDeprecatedx86_64Darwin = nixpkgs.lib
                 .mkIf (system == "x86_64-darwin") true;
             };
-            overlays = [deploy-rsOverlay devToolsOverlay];
           };
         });
 
