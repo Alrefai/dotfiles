@@ -98,6 +98,8 @@
     catppuccin,
     ...
   } @ inputs: let
+    lib = import ./lib {inherit (nixpkgs) lib;};
+
     # Eval the treefmt modules from ./treefmt.nix
     treefmtEval = pkgs: (inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix)
       .config.build;
@@ -149,33 +151,18 @@
     formatter = forAllSystems ({pkgs}: (treefmtEval pkgs).wrapper);
 
     # for `nix flake check`
-    checks = forAllSystems ({pkgs}:
-      {formatting = (treefmtEval pkgs).check self;}
-      // pkgs.deploy-rs.lib.deployChecks self.deploy);
+    checks = forAllSystems ({pkgs}: (
+      pkgs.deploy-rs.lib.deployChecks self.deploy
+      // {formatting = (treefmtEval pkgs).check self;}
+    ));
 
     packages = forAllSystems ({pkgs}: {
       inherit (pkgs.deploy-rs) deploy-rs;
     });
 
-    apps = forAllSystems ({pkgs}: {
-      deploy = {
-        type = "app";
-        program = nixpkgs.lib.getExe (pkgs.writeShellApplication {
-          name = "deploy";
-          runtimeInputs = builtins.attrValues {
-            inherit (pkgs.deploy-rs) deploy-rs;
-            inherit (pkgs) git;
-          };
-          text = ''
-            read -r BRANCH < <(git branch --show-current)
-            read -r COMMIT < <(git rev-parse --short HEAD)
-            read -r TIMESTAMP < <(date '+%Y.%m.%dT%H:%M')
-
-            exec env NIXOS_LABEL="build_$BRANCH:$COMMIT:$TIMESTAMP" deploy "$@"
-          '';
-        });
-      };
-    });
+    apps = forAllSystems ({pkgs}: (
+      lib.importModules ./modules/apps {inherit pkgs;}
+    ));
 
     deploy = let
       activate = forAllSystems ({pkgs}: pkgs.deploy-rs.lib.activate);
