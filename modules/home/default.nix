@@ -815,7 +815,7 @@ in {
     lazygit = {
       enable = true;
       settings = {
-        git.pagers = [{pager = "delta --paging=never";}];
+        git.diffRenderers = [{command = "delta --paging=never";}];
       };
     };
 
