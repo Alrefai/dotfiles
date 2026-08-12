@@ -3,7 +3,7 @@
   treefmtEval,
   ...
 }: final: prev: let
-  defaultOverlays = deploy-rs.overlays.default final prev;
+  deploy-rsDefaultOverlays = deploy-rs.overlays.default final prev;
   treefmtEvalPlatform = treefmtEval final;
 in {
   /**
@@ -13,7 +13,7 @@ in {
   */
   deploy-rs = {
     inherit (prev) deploy-rs;
-    inherit (defaultOverlays.deploy-rs) lib;
+    inherit (deploy-rsDefaultOverlays.deploy-rs) lib;
   };
 
   devTools = {
