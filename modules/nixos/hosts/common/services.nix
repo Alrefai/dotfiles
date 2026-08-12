@@ -16,6 +16,12 @@ _: {
           if grep -qF 'close' /proc/acpi/button/lid/LID0/state; then
             # Set brightness to zero
             echo 0 > /sys/class/backlight/acpi_video0/brightness
+
+            # Lock tty1 session
+            xargs -r loginctl terminate-session < <(
+              awk '$7 == "tty1" { print $1 }' \
+                < <(loginctl list-sessions --no-legend)
+            )
           else
             # Reset the brightness
             echo 15 > /sys/class/backlight/acpi_video0/brightness
