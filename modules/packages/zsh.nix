@@ -1,8 +1,26 @@
 {
+  ez-compinit,
   pkgs,
   wrappers,
   ...
 }: let
+  # Dependencies (including ez-compinit)
+  inherit
+    (pkgs)
+    atuin
+    bat
+    eza
+    fzf
+    nix-zsh-completions
+    ripgrep
+    starship
+    zoxide
+    zsh-completions
+    ;
+
+  # Helpers
+  inherit (pkgs.lib) attrValues concatStringsSep getExe' makeBinPath;
+
   zsh = wrappers.wrapperModules.zsh.apply {
     inherit pkgs;
     settings = {
@@ -61,7 +79,7 @@
         lsa = "ls -a";
         ll = "eza -lho --git --git-repos";
         l = "ll -a";
-        lt = pkgs.lib.concatStringsSep " " [
+        lt = concatStringsSep " " [
           "eza"
           "-lahoTL"
           "3"
@@ -73,7 +91,7 @@
           "--color"
           "always"
         ];
-        tree = pkgs.lib.concatStringsSep " " [
+        tree = concatStringsSep " " [
           "eza"
           "-lahoT"
           "--group-directories-first"
@@ -86,22 +104,35 @@
         ];
       };
 
-      integrations = {
-        fzf.enable = true;
-        atuin.enable = true;
-        starship.enable = true;
-        zoxide = {
-          enable = true;
-          flags = ["--no-cmd"];
-        };
-      };
-
       completion = {
         enable = true;
+        init =
+          # sh
+          ''
+            # See available completion styles with 'compstyle -l'
+            zstyle ':plugin:ez-compinit' 'compstyle' 'zshzoo'
+
+            typeset -U path cdpath fpath manpath
+            for profile in ''${(z)NIX_PROFILES}; do
+              fpath+=(
+                $profile/share/zsh/site-functions
+                $profile/share/zsh/$ZSH_VERSION/functions
+                $profile/share/zsh/vendor-completions
+              )
+            done
+
+            fpath+=(
+              ${nix-zsh-completions}/share/zsh/site-functions
+              ${zsh-completions}/share/zsh/site-functions
+            )
+
+            # Load ez-compinit
+            source ${ez-compinit}/ez-compinit.plugin.zsh
+          '';
         extraCompletions = true;
-        colors = true;
+        colors = false;
         caseInsensitive = true;
-        fuzzySearch = true;
+        fuzzySearch = false;
       };
 
       autoSuggestions.enable = true;
@@ -110,7 +141,7 @@
         append = false;
         expanded = false;
         expireDupsFirst = true;
-        file = "\${XDG_DATA_HOME:-$HOME/.local/share}/zsh/history";
+        file = "\${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history";
         findNoDups = false;
         ignoreAllDups = false;
         ignoreDups = true;
@@ -120,11 +151,35 @@
         share = true;
         size = 600; # Number of history lines to keep
       };
+
+      env = let
+        runTimePkgs = attrValues {
+          inherit atuin eza bat fzf ripgrep starship zoxide;
+        };
+        extraPaths = makeBinPath runTimePkgs;
+      in {PATH = "$PATH:${extraPaths}";}; # Prioritize system paths
     };
 
     extraRC =
       #sh
       ''
+        if [[ $TERM != "dumb" ]]; then
+          eval "$(${getExe' starship "starship"} init zsh)"
+        fi
+
+        eval "$(${getExe' zoxide "zoxide"} init zsh --no-cmd)"
+        function z() { __zoxide_z "$@" }
+        function zi() { __zoxide_zi "$@" }
+
+
+        if [[ $options[zle] = on ]]; then
+          eval "$(${getExe' atuin "atuin"} init zsh)"
+          FZF_CTRL_R_COMMAND= source <(${getExe' fzf "fzf"} --zsh)
+        fi
+
+        # Make sure history file exists
+        mkdir -p "$(dirname "$HISTFILE")"
+
         # Use viins keymap as the default
         bindkey -v
 
@@ -140,16 +195,13 @@
         setopt globdots             # Show hidden files and folders
         setopt complete_aliases     # enable completion for aliased commands
 
-        # Manually define z function for zoxide
-        if command -v zoxide >/dev/null; then
-          function z() { __zoxide_z "$@" }
-          function zi() { __zoxide_zi "$@" }
-        fi
-
         alias -g -- G='| grep -i'
         alias -g -- HELP='--help | bat --plain --language help'
         alias -g -- RG='| rg -i'
 
+        source ${pkgs.zsh-syntax-highlighting
+          + "/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"}
+        ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
       '';
   };
 in {

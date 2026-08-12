@@ -2,16 +2,12 @@
   deploy-rs,
   lib,
   treefmtEval,
-  wrappers,
   ...
-}: final: prev: let
+} @ inputs: final: prev: let
   deploy-rsDefaultOverlays = deploy-rs.overlays.default final prev;
   treefmtEvalPlatform = treefmtEval final;
 in
-  lib.importModules ../packages {
-    pkgs = final;
-    inherit wrappers;
-  }
+  lib.importModules ../packages (inputs // {pkgs = final;})
   // {
     /**
     refs:

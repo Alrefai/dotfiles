@@ -9,7 +9,7 @@
       enable = true;
       libraries = [pkgs.glibc];
     };
-    zsh.enable = true;
+    zsh.enable = lib.mkDefault true;
   };
 
   environment = {

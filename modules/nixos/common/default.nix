@@ -2,6 +2,7 @@
 {
   config,
   lib,
+  overlays,
   pkgs,
   system,
   ...
@@ -22,7 +23,10 @@
   networking.resolvconf.enable = lib.mkIf config.services.tailscale
     .enable false;
 
-  nixpkgs.hostPlatform = system;
+  nixpkgs = {
+    inherit overlays;
+    hostPlatform = system;
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Riyadh";

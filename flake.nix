@@ -59,6 +59,10 @@
       url = "github:alrefai/mitmux/config";
       flake = false;
     };
+    ez-compinit = {
+      url = "github:mattmc3/ez-compinit";
+      flake = false;
+    };
     # tmux plugin: sessionx
     tmux-sessionx = {
       url = "github:omerxx/tmux-sessionx";
@@ -259,7 +263,7 @@
           specialArgs =
             args
             // {
-              inherit hostname email;
+              inherit hostname email overlays;
               username = args.username or username;
             };
 

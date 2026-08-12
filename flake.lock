@@ -58,6 +58,22 @@
         "type": "github"
       }
     },
+    "ez-compinit": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1768139378,
+        "narHash": "sha256-j/HF2hwBHvNNQpXSyEswCLZIPk8Ee+goB8fC3FALqgo=",
+        "owner": "mattmc3",
+        "repo": "ez-compinit",
+        "rev": "5c9b6da88a463573e26e6846ff164026640ef2f6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mattmc3",
+        "repo": "ez-compinit",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -287,6 +303,7 @@
         "catppuccin": "catppuccin",
         "deploy-rs": "deploy-rs",
         "disko": "disko",
+        "ez-compinit": "ez-compinit",
         "home-manager": "home-manager",
         "minvim": "minvim",
         "mitmux": "mitmux",

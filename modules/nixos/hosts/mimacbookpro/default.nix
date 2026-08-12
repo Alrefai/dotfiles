@@ -20,13 +20,15 @@
       "plexmediaserver"
     ];
 
-  environment.systemPackages = builtins.attrValues {
-    inherit
-      (pkgs)
-      bottom
-      yazi
-      ;
-  };
+  environment.systemPackages =
+    builtins.attrValues {
+      inherit
+        (pkgs)
+        bottom
+        yazi
+        ;
+    }
+    ++ [(lib.hiPrio pkgs.wrappers.zsh)];
 
   services = {
     tailscale.serve.enable = true;
