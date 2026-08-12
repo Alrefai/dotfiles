@@ -2,6 +2,7 @@
 {
   lib,
   modulesPath,
+  pkgs,
   username,
   ...
 }: {
@@ -44,7 +45,16 @@
   };
 
   # Configure console keymap
-  console.keyMap = "uk";
+  console.keyMap = pkgs.writeText "mac-iso-arabic.map" ''
+    include "${pkgs.kbd}/share/keymaps/i386/qwerty/uk.map.gz"
+
+    keycode  3 = two        at
+    keycode  4 = three      numbersign
+    keycode 40 = apostrophe quotedbl
+    keycode 41 = section    plusminus
+    keycode 43 = backslash  bar
+    keycode 86 = grave      asciitilde
+  '';
 
   # Enable 'sudo' with SSH key
   security.pam.sshAgentAuth.enable = true;
