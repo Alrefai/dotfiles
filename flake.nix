@@ -46,6 +46,8 @@
 
     catppuccin.url = "github:catppuccin/nix";
 
+    wrappers.url = "github:lassulus/wrappers";
+
     #*** Non-flake source code ***#
     # forked from nvim-lua/kickstart.nvim
     minvim = {
@@ -104,7 +106,9 @@
     treefmtEval = pkgs: (inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix)
       .config.build;
 
-    overlays = [(import ./modules/overlays (inputs // {inherit treefmtEval;}))];
+    overlays = [
+      (import ./modules/overlays (inputs // {inherit lib treefmtEval;}))
+    ];
 
     # A higher-order helper function that generates system-specific pkgs
     forAllSystems = generateConfig:
@@ -158,6 +162,7 @@
 
     packages = forAllSystems ({pkgs}: {
       inherit (pkgs.deploy-rs) deploy-rs;
+      inherit (pkgs.wrappers) zsh;
     });
 
     apps = forAllSystems ({pkgs}: (
