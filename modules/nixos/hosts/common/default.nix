@@ -53,6 +53,7 @@
     keycode 40 = apostrophe quotedbl
     keycode 41 = section    plusminus
     keycode 43 = backslash  bar
+    keycode 58 = Control
     keycode 86 = grave      asciitilde
   '';
 
