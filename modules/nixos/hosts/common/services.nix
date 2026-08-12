@@ -19,7 +19,7 @@ _: {
 
             # Lock tty1 session
             xargs -r loginctl terminate-session < <(
-              awk '$7 == "tty1" { print $1 }' \
+              /run/current-system/sw/bin/awk '$7 == "tty1" { print $1 }' \
                 < <(loginctl list-sessions --no-legend)
             )
           else
