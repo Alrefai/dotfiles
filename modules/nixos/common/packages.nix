@@ -20,6 +20,7 @@
         gitMinimal
         neovim
         ;
+      inherit (pkgs.ghostty) terminfo;
     });
     variables.EDITOR = "nvim";
   };
