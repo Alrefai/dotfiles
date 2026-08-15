@@ -205,5 +205,5 @@
       '';
   };
 in {
-  wrappers.zsh = zsh.wrapper;
+  zsh = zsh.wrapper;
 }
