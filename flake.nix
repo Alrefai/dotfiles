@@ -164,10 +164,10 @@
       // {formatting = (treefmtEval pkgs).check self;}
     ));
 
-    packages = forAllSystems ({pkgs}: {
-      inherit (pkgs.deploy-rs) deploy-rs;
-      inherit (pkgs.wrappers) zsh;
-    });
+    packages = forAllSystems ({pkgs}: (
+      pkgs.wrappers
+      // {inherit (pkgs.deploy-rs) deploy-rs;}
+    ));
 
     apps = forAllSystems ({pkgs}: (
       lib.importModules ./modules/apps {inherit pkgs;}

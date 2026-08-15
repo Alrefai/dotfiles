@@ -5,6 +5,7 @@
   ...
 }: let
   # Dependencies (including ez-compinit)
+  inherit (pkgs.wrappers) starship;
   inherit
     (pkgs)
     atuin
@@ -13,7 +14,6 @@
     fzf
     nix-zsh-completions
     ripgrep
-    starship
     zoxide
     zsh-completions
     ;
