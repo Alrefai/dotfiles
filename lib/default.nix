@@ -1,16 +1,17 @@
 {lib, ...} @ inputs: let
   importModules = dir: args: let
-    inherit (lib) foldl' hasSuffix pipe;
+    inherit (lib) attrNames filter foldl' hasSuffix pipe readDir removeSuffix;
 
-    modules = pipe (builtins.readDir dir) [
-      builtins.attrNames
-      (builtins.filter (hasSuffix ".nix"))
-      (builtins.filter (name: name != "default.nix"))
+    modules = pipe (readDir dir) [
+      attrNames
+      (filter (hasSuffix ".nix"))
+      (filter (name: name != "default.nix"))
+      (map (removeSuffix ".nix"))
     ];
 
-    importModule = name: import (dir + "/${name}") args;
+    importModule = name: {${name} = import (dir + "/${name}.nix") args;};
   in
-    foldl' (modules: name: modules // importModule name) {} modules;
+    foldl' (acc: name: acc // importModule name) {} modules;
 
   helpers = importModules ./. (inputs // {inherit lib;});
 in

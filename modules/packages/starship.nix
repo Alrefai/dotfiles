@@ -56,6 +56,5 @@
       };
     };
   };
-in {
-  starship = starship.wrapper;
-}
+in
+  starship.wrapper

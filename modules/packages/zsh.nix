@@ -204,6 +204,5 @@
         ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
       '';
   };
-in {
-  zsh = zsh.wrapper;
-}
+in
+  zsh.wrapper
