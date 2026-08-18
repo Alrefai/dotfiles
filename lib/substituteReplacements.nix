@@ -23,7 +23,7 @@
     option =
       if withFail
       then "--replace-fail"
-      else "--replace";
+      else "--replace-quiet";
   in "${option} '${from}' '${to}'";
 in
   assert assertMsg (isBool withFail) ''
