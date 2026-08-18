@@ -9,11 +9,7 @@
     themeList = ["bat"];
   };
 
-  replacements = [
-    ["#1e1e2e" "#000000"]
-    ["#181825" "#010101"]
-    ["#11111b" "#020202"]
-  ];
+  replacements = import ../themes/catppuccin-mocha-oled.nix {inherit pkgs;};
 
   oledTheme = pkgs.runCommand "catppuccin-mocha-oled" {} ''
     substitute "${catppuccin}/bat/Catppuccin Mocha.tmTheme" "$out" \
