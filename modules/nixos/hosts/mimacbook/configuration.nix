@@ -107,18 +107,6 @@
       "getty@tty1".enable = false;
       "autovt@tty1".enable = false;
     };
-
-    # Keep the system awake
-    #
-    # ---
-    # references:
-    # - https://discourse.nixos.org/t/prevent-laptop-from-suspending-when-lid-is-closed-if-on-ac/12630/6
-    sleep.extraConfig = ''
-      AllowSuspend=no
-      AllowHibernation=no
-      AllowHybridSleep=no
-      AllowSuspendThenHibernate=no
-    '';
   };
 
   # Install firefox.
