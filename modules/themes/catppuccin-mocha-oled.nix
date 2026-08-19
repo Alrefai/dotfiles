@@ -1,11 +1,15 @@
-{pkgs, ...}: let
+{
+  lib, # My own lib; use `pkgs.lib` for upstream
+  pkgs,
+  ...
+}: let
   inherit
     (pkgs.lib)
-    readFile
-    pipe
     fromJSON
     getAttrFromPath
     mapAttrs
+    pipe
+    readFile
     ;
 
   catppuccin = pkgs.catppuccin.override {themeList = ["palette"];};
@@ -22,8 +26,5 @@
     mantle = "010101";
     crust = "020202";
   };
-in [
-  [mocha.base oled.mocha.base]
-  [mocha.mantle oled.mocha.mantle]
-  [mocha.crust oled.mocha.crust]
-]
+in
+  lib.mkReplacements mocha oled.mocha
