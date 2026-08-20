@@ -4,7 +4,7 @@
   wrappers,
   ...
 }: let
-  inherit (pkgs.lib) mkDefault mkOption;
+  inherit (pkgs.lib) importTOML mkDefault mkOption;
 
   catppuccin = pkgs.catppuccin.override {
     variant = "mocha";
@@ -77,7 +77,7 @@
           sort_order = "Descending";
         };
       }
-      // pkgs.lib.fromTOML (pkgs.lib.readFile "${oledTheme}");
+      // importTOML "${oledTheme}";
   };
 in
   bottom.wrapper

@@ -41,7 +41,7 @@
           zsh_indicator = "";
         };
       }
-      // pkgs.lib.fromTOML (pkgs.lib.readFile "${oledTheme}");
+      // pkgs.lib.importTOML "${oledTheme}";
   };
 in
   starship.wrapper
