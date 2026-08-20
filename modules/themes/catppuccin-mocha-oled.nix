@@ -22,9 +22,9 @@
   ];
 
   oled.mocha = {
-    base = "000000";
-    mantle = "010101";
-    crust = "020202";
+    base = "#000000";
+    mantle = "#010101";
+    crust = "#020202";
   };
 in
   lib.mkReplacements mocha oled.mocha
