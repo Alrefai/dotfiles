@@ -2,7 +2,7 @@
   withFail ? false,
   replacements,
 }: let
-  inherit (lib) all assertMsg concatStringsSep elemAt isBool length pipe;
+  inherit (lib) all assertMsg concatMapStringsSep head isBool last length;
 
   example = ''
     Example:
@@ -18,8 +18,8 @@
   '';
 
   replace = pair: let
-    from = elemAt pair 0;
-    to = elemAt pair 1;
+    from = head pair;
+    to = last pair;
     option =
       if withFail
       then "--replace-fail"
@@ -39,4 +39,4 @@ in
 
     ${example}
   '';
-    pipe replacements [(map replace) (concatStringsSep " ")]
+    concatMapStringsSep " " replace replacements
