@@ -338,6 +338,7 @@ in {
     enable = true;
     autoEnable = true;
     accent = "blue";
+    cache.enable = true;
     mpv.enable = false;
     sources = inputs.catppuccin.packages.${system}.overrideScope (
       final: prev: {
