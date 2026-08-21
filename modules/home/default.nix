@@ -99,6 +99,7 @@ in {
           xh # Friendly and fast tool for sending HTTP requests
           yq-go #! required for tmux-nerd-font-window-name plugin
           ;
+        inherit (pkgs.luaPackages) tree-sitter-cli;
         inherit
           (pkgs.devTools)
           # custom pkgs from treefmt.nix
