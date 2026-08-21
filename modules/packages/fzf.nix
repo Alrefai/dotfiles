@@ -148,32 +148,34 @@
         inherit lib pkgs;
       };
     in {
-      FZF_DEFAULT_OPTS_FILE = toString (pkgs.runCommand "fzf.rc" {} ''
-        # Normalize the source colors to lowercase
-        sed 's/[A-F]/\L&/g' \
-          "${catppuccin}/themes/catppuccin-fzf-mocha.rc" > "$out"
+      FZF_DEFAULT_OPTS_FILE = toString (pkgs.runCommand "fzf.rc" {
+          nativeBuildInputs = [pkgs.gnused];
+        } ''
+          # Normalize the source colors to lowercase
+          sed 's/[A-F]/\L&/g' \
+            "${catppuccin}/themes/catppuccin-fzf-mocha.rc" > "$out"
 
-        substitute "$out" "$out" \
-          ${lib.substituteReplacements {inherit replacements;}}
+          substitute "$out" "$out" \
+            ${lib.substituteReplacements {inherit replacements;}}
 
-        cat >> "$out" <<'EOF'
-        --style=full
-        --border
-        --input-label=' Input '
-        --header-label=' File Metadata '
-        --preview='${pkgs.lib.getExe preview} {}'
-        --preview-window=hidden
-        --bind='ctrl-w:change-preview-window(up|right|)'
-        --bind=ctrl-v:change-multi
-        --bind=ctrl-a:select-all,ctrl-d:deselect-all,ctrl-t:toggle-all
-        --bind='result:transform-list-label:${listLabel}'
-        --bind='focus:transform-preview-label:${previewLabel} {}'
-        --bind='focus:+transform-header:${header} {}'
-        --no-height
-        --tmux=center,80%,border-native
-        --ansi
-        EOF
-      '');
+          cat >> "$out" <<'EOF'
+          --style=full
+          --border
+          --input-label=' Input '
+          --header-label=' File Metadata '
+          --preview='${pkgs.lib.getExe preview} {}'
+          --preview-window=hidden
+          --bind='ctrl-w:change-preview-window(up|right|)'
+          --bind=ctrl-v:change-multi
+          --bind=ctrl-a:select-all,ctrl-d:deselect-all,ctrl-t:toggle-all
+          --bind='result:transform-list-label:${listLabel}'
+          --bind='focus:transform-preview-label:${previewLabel} {}'
+          --bind='focus:+transform-header:${header} {}'
+          --no-height
+          --tmux=center,80%,border-native
+          --ansi
+          EOF
+        '');
     };
   };
 in
