@@ -10,8 +10,8 @@
     filterAttrs
     mapAttrs
     mapAttrsToList
+    mkDefault
     mkOption
-    mkPackageOption
     optionals
     types
     ;
@@ -22,8 +22,6 @@
     - github.com/nix-community/home-manager/blob/master/modules/programs/fzf.nix
     */
     options = {
-      basePackage = mkPackageOption config.pkgs "fzf" {};
-
       colors = mkOption {
         type = types.attrsOf types.str;
         default = {};
@@ -61,24 +59,6 @@
           Extra command line options given to fzf by default.
         '';
       };
-
-      extraEnv = mkOption {
-        type = types.attrsOf types.str;
-        default = {};
-        example = {
-          FZF_DEFAULT_OPTS_FILE = toString (pkgs.writeText "fzf.rc" ''
-            --style=full
-            --border
-            --input-label=' Input '
-            --preview='${pkgs.lib.getExe pkgs.bat} -n --color always -- {}'
-            --preview-window=hidden
-            --bind='ctrl-w:change-preview-window(up|right|)'
-          '');
-        };
-        description = ''
-          Additional environment variables to set for fzf.
-        '';
-      };
     };
 
     config = let
@@ -93,8 +73,8 @@
           ];
       };
     in {
-      package = config.basePackage;
-      env = mapAttrs (_: toString) fzfEnvVars // config.extraEnv;
+      package = mkDefault config.pkgs.fzf;
+      env = mapAttrs (_: toString) fzfEnvVars;
     };
   });
 
@@ -124,7 +104,7 @@
       "'.git/'"
       "2>/dev/null"
     ];
-    extraEnv = let
+    env = let
       catppuccin = pkgs.catppuccinSources.fzf;
 
       header = pkgs.writeShellScript "fzf-header" ''
