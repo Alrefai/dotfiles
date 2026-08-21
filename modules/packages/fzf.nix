@@ -1,4 +1,5 @@
 {
+  lib, # My own lib; use `pkgs.lib` for upstream
   pkgs,
   wrappers,
   ...
@@ -124,6 +125,8 @@
       "2>/dev/null"
     ];
     extraEnv = let
+      catppuccin = pkgs.catppuccinSources.fzf;
+
       header = pkgs.writeShellScript "fzf-header" ''
         awk '{NF=7}1' < <(
           ls -l --dereference --si --time-style '+%Y-%m-%d %H:%M' \
@@ -160,8 +163,20 @@
       previewLabel = pkgs.writeShellScript "fzf-transform-preview-label" ''
         [[ -n $1 ]] && printf ' Previewing [%s] ' "$1"
       '';
+
+      replacements = import ../themes/catppuccin-mocha-oled.nix {
+        inherit lib pkgs;
+      };
     in {
-      FZF_DEFAULT_OPTS_FILE = toString (pkgs.writeText "fzf.rc" ''
+      FZF_DEFAULT_OPTS_FILE = toString (pkgs.runCommand "fzf.rc" {} ''
+        # Normalize the source colors to lowercase
+        sed 's/[A-F]/\L&/g' \
+          "${catppuccin}/themes/catppuccin-fzf-mocha.rc" > "$out"
+
+        substitute "$out" "$out" \
+          ${lib.substituteReplacements {inherit replacements;}}
+
+        cat >> "$out" <<'EOF'
         --style=full
         --border
         --input-label=' Input '
@@ -177,13 +192,7 @@
         --no-height
         --tmux=center,80%,border-native
         --ansi
-        # Colors were taken from previously generated home-managaer catppuccin
-        # fzf oled mocha theme.
-        --color=bg+:#313244,bg:#000000,spinner:#F5E0DC,hl:#F38BA8
-        --color=fg:#CDD6F4,header:#F38BA8,info:#CBA6F7,pointer:#F5E0DC
-        --color=marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8
-        --color=selected-bg:#45475A
-        --color=border:#6C7086,label:#CDD6F4
+        EOF
       '');
     };
   };
