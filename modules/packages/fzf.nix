@@ -116,7 +116,7 @@
 
       preview = pkgs.writeShellApplication {
         name = "fzf-preview";
-        runtimeInputs = [pkgs.bat pkgs.file];
+        runtimeInputs = [pkgs.wrappers.bat pkgs.file];
         text = ''
           read -r type < <(file --brief --dereference --mime -- "$1")
 
