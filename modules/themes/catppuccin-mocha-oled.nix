@@ -5,18 +5,14 @@
 }: let
   inherit
     (pkgs.lib)
-    fromJSON
     getAttrFromPath
+    importJSON
     mapAttrs
     pipe
-    readFile
     ;
 
-  catppuccin = pkgs.catppuccin.override {themeList = ["palette"];};
-
-  mocha = pipe "${catppuccin}/palette/palette.json" [
-    readFile
-    fromJSON
+  mocha = pipe "${pkgs.catppuccinSources.palette}/palette.json" [
+    importJSON
     (getAttrFromPath ["mocha" "colors"])
     (mapAttrs (_: {hex, ...}: hex))
   ];

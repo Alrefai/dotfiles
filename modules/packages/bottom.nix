@@ -6,15 +6,12 @@
 }: let
   inherit (pkgs.lib) importTOML mkDefault mkOption;
 
-  catppuccin = pkgs.catppuccin.override {
-    variant = "mocha";
-    themeList = ["bottom"];
-  };
+  catppuccin = pkgs.catppuccinSources.bottom;
 
   replacements = import ../themes/catppuccin-mocha-oled.nix {inherit lib pkgs;};
 
   oledTheme = pkgs.runCommand "bottom-catppuccin-mocha-oled" {} ''
-    substitute "${catppuccin}/bottom/mocha.toml" "$out" \
+    substitute "${catppuccin}/themes/mocha.toml" "$out" \
       ${lib.substituteReplacements {inherit replacements;}}
   '';
 

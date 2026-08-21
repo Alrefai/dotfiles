@@ -4,15 +4,12 @@
   wrappers,
   ...
 }: let
-  catppuccin = pkgs.catppuccin.override {
-    variant = "mocha";
-    themeList = ["bat"];
-  };
+  catppuccin = pkgs.catppuccinSources.bat;
 
   replacements = import ../themes/catppuccin-mocha-oled.nix {inherit lib pkgs;};
 
   oledTheme = pkgs.runCommand "bat-catppuccin-mocha-oled" {} ''
-    substitute "${catppuccin}/bat/Catppuccin Mocha.tmTheme" "$out" \
+    substitute "${catppuccin}/themes/Catppuccin Mocha.tmTheme" "$out" \
       ${lib.substituteReplacements {inherit replacements;}}
   '';
 

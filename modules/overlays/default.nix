@@ -1,4 +1,5 @@
 {
+  catppuccin,
   deploy-rs,
   lib,
   treefmtEval,
@@ -36,6 +37,9 @@ in {
       statix # nix linter
       ;
   };
+
+  catppuccinSources = catppuccin.packages.${final.stdenv.hostPlatform.system}
+    .sources;
 
   wrappers = lib.importModules ../packages (inputs // {pkgs = final;});
 }
