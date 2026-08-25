@@ -123,20 +123,6 @@ in {
           ;
       });
 
-    activation = {
-      restoreNeovimPlugins =
-        lib.hm.dag.entryAfter ["writeBoundary"]
-        # bash
-        ''
-          if [[ -d "${config.xdg.configHome}/nvim" ]]; then
-            PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
-            PATH="/nix/var/nix/profiles/default/bin:$PATH"
-            PATH="${config.xdg.stateHome}/nix/profile/bin:$PATH"
-            NVIM_APPNAME=nvim run --silence nvim --headless "+Lazy! restore" +qa
-          fi
-        '';
-    };
-
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
     # plain files is through 'home.file'.
     file = {
