@@ -71,7 +71,16 @@ in {
         "/run/current-system/sw" # nixos and darwin nix profile
       ]
     );
-    systemPackages = [pkgs.git];
+    systemPackages = map lib.lowPrio (builtins.attrValues {
+      inherit
+        (pkgs)
+        curl
+        gitMinimal
+        neovim
+        ;
+      inherit (pkgs.ghostty) terminfo;
+      inherit (pkgs.wrappers) bottom;
+    });
   };
 
   users.users.${username}.shell = pkgs.zsh;
