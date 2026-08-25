@@ -76,7 +76,6 @@ in {
         inherit
           (pkgs)
           _1password-cli
-          bottom # Modern top (command: btm)
           cachix # Cachix CLI
           curl
           doggo # Modern DNS client (better than dig)

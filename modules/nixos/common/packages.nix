@@ -21,6 +21,7 @@
         neovim
         ;
       inherit (pkgs.ghostty) terminfo;
+      inherit (pkgs.wrappers) bottom;
     });
     variables.EDITOR = "nvim";
   };

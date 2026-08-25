@@ -22,11 +22,7 @@
 
   environment.systemPackages =
     builtins.attrValues {
-      inherit
-        (pkgs)
-        bottom
-        yazi
-        ;
+      inherit (pkgs) yazi;
     }
     ++ [(lib.hiPrio pkgs.wrappers.zsh)];
 
