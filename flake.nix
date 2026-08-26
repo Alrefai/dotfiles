@@ -1,22 +1,52 @@
 {
-  description = "Home Manager configuration of mohammed";
+  description = ''
+    Multi-platform Nix configuration with home-manager (standalone), nix-darwin,
+    and NixOS support
+  '';
+  # FORK: To use this configuration, replace "mohammed" with your username
+  # throughout this file
 
   inputs = {
-    flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/*.tar.gz";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-26_05-darwin.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
 
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
+    nix-darwin-x86_64 = {
+      url = "github:nix-darwin/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs-26_05-darwin";
+    };
+
+    nixos-hardware = {
+      url = "github:nixos/nixos-hardware";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    deploy-rs.url = "github:serokell/deploy-rs";
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    preservation.url = "github:nix-community/preservation";
+
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     home-manager = {
-      url = "https://flakehub.com/f/nix-community/home-manager/0.1.0.tar.gz";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    catppuccin.url = "https://flakehub.com/f/catppuccin/nix/1.0.*.tar.gz";
+    catppuccin.url = "github:catppuccin/nix";
+
+    wrappers.url = "github:lassulus/wrappers";
 
     #*** Non-flake source code ***#
     # forked from nvim-lua/kickstart.nvim
@@ -27,6 +57,25 @@
     # forked from gpakosz/.tmux
     mitmux = {
       url = "github:alrefai/mitmux/config";
+      flake = false;
+    };
+    ez-compinit = {
+      url = "github:mattmc3/ez-compinit";
+      flake = false;
+    };
+    # tmux plugin: sessionx
+    tmux-sessionx = {
+      url = "github:omerxx/tmux-sessionx";
+      flake = false;
+    };
+    # tmux plugin: nerd-font-window-name
+    tmux-window-name = {
+      url = "github:joshmedeski/tmux-nerd-font-window-name";
+      flake = false;
+    };
+    # tmux plugin: network-bandwidth
+    tmux-network-bandwidth = {
+      url = "github:alrefai/tmux-network-bandwidth";
       flake = false;
     };
     # yazi plugins
@@ -42,71 +91,253 @@
   };
 
   outputs = {
-    flake-schemas,
+    self,
     nixpkgs,
-    lix-module,
+    nixpkgs-26_05-darwin,
+    systems,
+    nix-darwin,
+    nix-darwin-x86_64,
+    nixos-hardware,
+    disko,
+    preservation,
     home-manager,
     catppuccin,
     ...
   } @ inputs: let
-    # A higher-order helper function that generates system-specific
-    # outputs
-    forEachSystem = supportedSystems: generateConfig:
-      nixpkgs.lib.genAttrs supportedSystems (
-        system:
-          generateConfig {
-            pkgs = import nixpkgs {
-              inherit system;
-              config.allowUnfree = true;
-            };
-          }
-      );
+    lib = import ./lib {inherit (nixpkgs) lib;};
 
-    # A higher-order function to generate home-manager configurations for
-    # given username and system
-    generateHomeConfigurations = username: {pkgs}: {
-      # Define the home-manager configuration for the defined user
-      homeConfigurations = {
-        ${username} = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          # Pass arguments to the configuration modules
-          extraSpecialArgs = {inherit inputs username;};
-          # List of configuration modules to include
-          modules = [
-            ./home.nix
-            catppuccin.homeManagerModules.catppuccin
-          ];
+    # Eval the treefmt modules from ./treefmt.nix
+    treefmtEval = pkgs: (inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix)
+      .config.build;
+
+    overlays = [
+      (import ./modules/overlays (inputs // {inherit lib treefmtEval;}))
+    ];
+
+    # A higher-order helper function that generates system-specific pkgs
+    forAllSystems = generateConfig:
+      nixpkgs.lib.genAttrs (import systems) (system: let
+        nixpkgsSource =
+          if system == "x86_64-darwin"
+          then nixpkgs-26_05-darwin
+          else nixpkgs;
+      in
+        generateConfig {
+          pkgs = import nixpkgsSource {
+            inherit overlays system;
+            config = {
+              allowUnfree = true;
+              allowDeprecatedx86_64Darwin = nixpkgs.lib
+                .mkIf (system == "x86_64-darwin") true;
+            };
+          };
+        });
+
+    # Set my personal data for all systems
+    username = "mohammed";
+    name = "Mohammed Alrefai";
+    email = "mohammed" + "@" + "refam.io";
+
+    # Hosts declaration
+    mim2macbookair = {
+      name = "mim2macbookair";
+      system = "aarch64-darwin";
+      role = "main";
+    };
+    mimac = {
+      name = "mimac";
+      system = "x86_64-darwin";
+      role = "mediaServer";
+    };
+    mimacvm = {
+      name = "mimacvm";
+      system = "aarch64-darwin";
+      role = "experimentalVM";
+    };
+  in {
+    # for `nix fmt`
+    formatter = forAllSystems ({pkgs}: (treefmtEval pkgs).wrapper);
+
+    # for `nix flake check`
+    checks = forAllSystems ({pkgs}: (
+      pkgs.deploy-rs.lib.deployChecks self.deploy
+      // {formatting = (treefmtEval pkgs).check self;}
+    ));
+
+    packages = forAllSystems ({pkgs}: (
+      pkgs.wrappers
+      // {inherit (pkgs.deploy-rs) deploy-rs;}
+    ));
+
+    apps = forAllSystems ({pkgs}: (
+      lib.importModules ./modules/apps {inherit pkgs;}
+    ));
+
+    deploy = let
+      activate = forAllSystems ({pkgs}: pkgs.deploy-rs.lib.activate);
+      getHostConfig = hostname: rec {
+        hostConfig = self.nixosConfigurations.${hostname};
+        system = hostConfig.config.nixpkgs.hostPlatform.system;
+      };
+    in {
+      activationTimeout = 600;
+      confirmTimeout = 60;
+      fastConnection = true;
+      sshOpts = ["-o" "SendEnv=NIXOS_LABEL"];
+      user = "root";
+      nodes = {
+        mimacbookpro = rec {
+          hostname = "mimacbookpro";
+          profiles.system = let
+            inherit (getHostConfig hostname) hostConfig system;
+            username = hostConfig.config.users.users.nimda.name;
+          in {
+            path = activate.${system}.nixos hostConfig;
+            sshUser = username;
+          };
         };
       };
     };
 
-    # List of supported systems/architectures
-    allSystems = [
-      "aarch64-darwin"
-      "x86_64-darwin"
-      "aarch64-linux"
-      "x86_64-linux"
-    ];
-
-    # Partially apply the system list to `forEachSystem` function
-    forAllSystems = forEachSystem allSystems;
-
-    # Apply the configuration generator to all supported systems
-    # for the provided username
-    homeConfigsForAllSystems = forAllSystems (
-      generateHomeConfigurations "mohammed"
-    );
-  in {
-    # Schemas tell Nix about the structure of your flake's outputs
-    inherit (flake-schemas) schemas;
-
     #*** home-manager configurations ***#
-    legacyPackages = homeConfigsForAllSystems;
+    legacyPackages = let
+      # A higher-order function to generate home-manager configurations for
+      # given username and system
+      mkHomeConfig = username: {pkgs}: {
+        # Define the home-manager configuration for the defined user
+        homeConfigurations = let
+          defaults = [./modules/home catppuccin.homeModules.catppuccin];
+
+          profiles = {
+            ${username} = [];
+            "${username}@${mimac.name}" = [./modules/home/media.nix];
+            "${username}@${mim2macbookair.name}" = [./modules/home/media.nix];
+          };
+
+          mkHomeConfigProfile = _: profileModules:
+            home-manager.lib.homeManagerConfiguration {
+              inherit pkgs;
+              # Merge profile modules with defaults
+              modules = defaults ++ profileModules;
+              # Pass arguments to the configuration modules
+              extraSpecialArgs = {inherit inputs username name email;};
+            };
+        in
+          nixpkgs.lib.mapAttrs mkHomeConfigProfile profiles;
+      };
+    in
+      # Make configurations for all supported systems for the provided username
+      forAllSystems (mkHomeConfig username);
 
     #*** nixos configurations ***#
-    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      system = "aarch64-linux";
-      modules = [./configuration.nix lix-module.nixosModules.default];
-    };
+    nixosConfigurations = let
+      hosts = {
+        nixos = {
+          system = "aarch64-linux";
+          role = "developmentVM";
+          isVM = true;
+          # Uses OrbStack-managed /etc/nixos/configuration.nix
+          extraModules = [/etc/nixos/configuration.nix];
+        };
+        mimacbookpro = {
+          username = "nimda";
+          system = "x86_64-linux";
+          hardware = "apple-macbook-pro-8-1";
+          role = "nixos-server";
+          ethernetPCI = "pci-0000:02:00.0";
+          gateway = "192.168.86.1";
+          ip = "192.168.86.200";
+          swap = "16G";
+          device =
+            "/dev/disk/by-id/"
+            # Main disk only.
+            # Additional disks are configured in the host's directory
+            + "ata-Samsung_SSD_850_EVO_250GB_S21NNSAFC77623K";
+          dataDisksMountpointSuffix = "data"; # without leading index
+        };
+      };
+
+      # Helper function to create a NixOS system configuration
+      mkNixOSHost = hostname: {extraModules ? [], ...} @ args:
+        nixpkgs.lib.nixosSystem {
+          specialArgs =
+            args
+            // {
+              inherit hostname email overlays;
+              username = args.username or username;
+            };
+
+          modules =
+            [./modules/common ./modules/nixos/common]
+            ++ extraModules
+            ++ nixpkgs.lib.optionals (!args.isVM or false) [
+              (nixos-hardware.nixosModules.${args.hardware} or {})
+              disko.nixosModules.disko
+              preservation.nixosModules.default
+              ./modules/nixos/hosts/common
+              ./modules/nixos/hosts/${hostname}
+            ];
+        };
+    in
+      # Generate configurations for all hosts
+      nixpkgs.lib.mapAttrs mkNixOSHost hosts;
+
+    #*** macos configurations ***#
+    darwinConfigurations = let
+      # Default values that can be overridden per-host
+      defaults = {
+        inherit username;
+        system = "aarch64-darwin"; # Most common for modern Macs
+        # Defensive defaults: ensure operations always work, even if host
+        # doesn't define these attributes
+        extraModules = []; # Ensures concatenation in modules list succeeds
+        extraSpecialArgs = {}; # Ensures merge in specialArgs succeeds
+      };
+
+      # Host configurations - easy to add new hosts
+      hosts = {
+        ${mimacvm.name} = {};
+
+        ${mimac.name} = {
+          inherit (mimac) system;
+          extraModules = [./modules/darwin/hosts/mimac];
+          extraSpecialArgs = {
+            inherit email;
+            machineRole = mimac.role;
+          };
+        };
+
+        ${mim2macbookair.name} = {
+          extraModules = [
+            {
+              homebrew.casks = ["kindavim" "transmit"];
+              networking.knownNetworkServices = ["USB 10/100/1000 LAN"];
+            }
+          ];
+          extraSpecialArgs = {machineRole = mim2macbookair.role;};
+        };
+      };
+
+      # Helper function to create a Darwin system configuration
+      mkDarwinHost = hostname: hostConfig: let
+        # Merge host config with defaults
+        config = defaults // hostConfig // {inherit hostname;};
+        nix-darwinSource =
+          if config.system == "x86_64-darwin"
+          then nix-darwin-x86_64
+          else nix-darwin;
+      in
+        nix-darwinSource.lib.darwinSystem {
+          specialArgs =
+            {
+              inherit (config) hostname username system;
+            }
+            // config.extraSpecialArgs;
+
+          modules = [./modules/darwin] ++ config.extraModules;
+        };
+    in
+      # Generate configurations for all hosts
+      nixpkgs.lib.mapAttrs mkDarwinHost hosts;
   };
 }

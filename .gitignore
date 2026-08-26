@@ -9,3 +9,7 @@
 # devcontainer
 *.devcontainer
 
+# Nix build results
+result
+result-*
+
