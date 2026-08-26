@@ -1,19 +1,9 @@
 {
-  lib, # My own lib; use `pkgs.lib` for upstream
   pkgs,
   wrappers,
   ...
 }: let
   inherit (pkgs.lib) importTOML mkDefault mkOption;
-
-  catppuccin = pkgs.catppuccinSources.bottom;
-
-  replacements = import ../themes/catppuccin-mocha-oled.nix {inherit lib pkgs;};
-
-  oledTheme = pkgs.runCommand "bottom-catppuccin-mocha-oled" {} ''
-    substitute "${catppuccin}/themes/mocha.toml" "$out" \
-      ${lib.substituteReplacements {inherit replacements;}}
-  '';
 
   module = wrappers.lib.wrapModule ({
     config,
@@ -74,7 +64,7 @@
           sort_order = "Descending";
         };
       }
-      // importTOML "${oledTheme}";
+      // importTOML (pkgs.catppuccinSources.bottom + "/mocha.toml");
   };
 in
   bottom.wrapper

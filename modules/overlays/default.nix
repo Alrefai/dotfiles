@@ -4,21 +4,47 @@
   lib,
   treefmtEval,
   ...
-} @ inputs: final: prev: let
-  deploy-rsDefaultOverlays = deploy-rs.overlays.default final prev;
-  treefmtEvalPlatform = treefmtEval final;
-in {
+} @ inputs: final: prev: {
+  catppuccinSources = catppuccin.packages.${final.stdenv.hostPlatform.system}
+    .overrideScope (_: oldAttrs: let
+    oled.mocha = {
+      base = "000000";
+      mantle = "010101";
+      crust = "020202";
+    };
+  in {
+    whiskers = final.symlinkJoin {
+      name = "whiskers-wrapped";
+
+      paths = [oldAttrs.whiskers];
+      nativeBuildInputs = [final.makeBinaryWrapper];
+
+      postBuild = ''
+        wrapProgram $out/bin/whiskers \
+          --add-flag ${
+          final.lib.escapeShellArg "--color-overrides=${builtins.toJSON oled}"
+        }
+      '';
+
+      meta.mainProgram = "whiskers";
+    };
+  });
+
   /**
   refs:
   - https://github.com/serokell/deploy-rs#overall-usage
   - https://github.com/serokell/deploy-rs/issues/163#issuecomment-2991603313
   */
-  deploy-rs = {
+  deploy-rs = let
+    deploy-rsDefaultOverlays = deploy-rs.overlays.default final prev;
+  in {
     inherit (prev) deploy-rs;
     inherit (deploy-rsDefaultOverlays.deploy-rs) lib;
   };
 
-  devTools = {
+  devTools = let
+    treefmtEvalPlatform = treefmtEval final;
+  in {
     /**
     Make the treefmt command available in the shell using the specified
     configuration in `./treefmt.nix`.
@@ -37,9 +63,6 @@ in {
       statix # nix linter
       ;
   };
-
-  catppuccinSources = catppuccin.packages.${final.stdenv.hostPlatform.system}
-    .sources;
 
   wrappers = lib.importModules ../packages (inputs // {pkgs = final;});
 }

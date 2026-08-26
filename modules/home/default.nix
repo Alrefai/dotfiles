@@ -313,36 +313,13 @@ in {
   };
 
   # Enable Catppucin for all available programs.
-  catppuccin = let
-    inherit (pkgs.stdenv.hostPlatform) system;
-    oled.mocha = {
-      base = "000000";
-      mantle = "010101";
-      crust = "020202";
-    };
-  in {
+  catppuccin = {
     enable = true;
     autoEnable = true;
     accent = "blue";
     cache.enable = true;
     mpv.enable = false;
-    sources = inputs.catppuccin.packages.${system}.overrideScope (
-      final: prev: {
-        whiskers = pkgs.symlinkJoin {
-          name = "whiskers-wrapped";
-
-          paths = [prev.whiskers];
-          nativeBuildInputs = [pkgs.makeBinaryWrapper];
-
-          postBuild = ''
-            wrapProgram $out/bin/whiskers \
-              --add-flag ${lib.escapeShellArg "--color-overrides=${builtins.toJSON oled}"}
-          '';
-
-          meta.mainProgram = "whiskers";
-        };
-      }
-    );
+    sources = pkgs.catppuccinSources;
   };
 
   # Let Home Manager install and manage itself.

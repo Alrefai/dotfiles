@@ -4,12 +4,12 @@
   wrappers,
   ...
 }: let
-  catppuccin = pkgs.catppuccinSources.bat;
+  catppuccin = pkgs.catppuccinSources.bat + "/Catppuccin Mocha.tmTheme";
 
   replacements = import ../themes/catppuccin-mocha-oled.nix {inherit lib pkgs;};
 
   oledTheme = pkgs.runCommand "bat-catppuccin-mocha-oled" {} ''
-    substitute "${catppuccin}/themes/Catppuccin Mocha.tmTheme" "$out" \
+    substitute "${catppuccin}" "$out" \
       ${lib.substituteReplacements {inherit replacements;}}
   '';
 
@@ -29,7 +29,7 @@
       }
       {
         name = "themes/Catppuccin Mocha.tmTheme";
-        path = "${oledTheme}";
+        path = oledTheme;
       }
     ]);
   });

@@ -1,18 +1,8 @@
 {
-  lib, # My own lib; use `pkgs.lib` for upstream
   pkgs,
   wrappers,
   ...
 }: let
-  catppuccin = pkgs.catppuccinSources.starship;
-
-  replacements = import ../themes/catppuccin-mocha-oled.nix {inherit lib pkgs;};
-
-  oledTheme = pkgs.runCommand "starship-catppuccin-mocha-oled" {} ''
-    substitute "${catppuccin}/themes/mocha.toml" "$out" \
-      ${lib.substituteReplacements {inherit replacements;}}
-  '';
-
   starship = wrappers.wrapperModules.starship.apply {
     inherit pkgs;
     settings =
@@ -38,7 +28,7 @@
           zsh_indicator = "";
         };
       }
-      // pkgs.lib.importTOML "${oledTheme}";
+      // pkgs.lib.importTOML (pkgs.catppuccinSources.starship + "/mocha.toml");
   };
 in
   starship.wrapper
