@@ -1,7 +1,7 @@
 /**
 # Pinned version of Plex Media Server
 
-Version's SHA-1 Checksum: 02011c3275c67c0c73e170031187972d421b9fc9
+Version's SHA-1 Checksum: 3c6a6b6e348f373bd9eaeaaaa533b8cf1ade5212
 
 Verfiy hash with:
 
@@ -24,12 +24,12 @@ refs:
   plexOverlay = final: prev: {
     plex = prev.plex.override {
       plexRaw = prev.plexRaw.overrideAttrs rec {
-        version = "1.43.3.10861-07dfddaeb";
+        version = "1.43.3.10896-cb3ebc72d";
         src = final.fetchurl {
           url =
             "https://downloads.plex.tv/plex-media-server-new/${version}/"
             + "debian/plexmediaserver_${version}_amd64.deb";
-          hash = "sha256-s8OpELTLfdincYQZawp76rsZx5AQXMR6+algH/Ev0zI=";
+          hash = "sha256-qgnyZt3PQI4Qz3ulYbbkVObhCbqUFjlraWW9THnzcUk=";
         };
       };
     };
