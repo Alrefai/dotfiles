@@ -63,6 +63,10 @@
       url = "github:mattmc3/ez-compinit";
       flake = false;
     };
+    tpm = {
+      url = "github:tmux-plugins/tpm";
+      flake = false;
+    };
     # tmux plugin: sessionx
     tmux-sessionx = {
       url = "github:omerxx/tmux-sessionx";
