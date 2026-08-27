@@ -76,10 +76,9 @@ in {
         (pkgs)
         curl
         gitMinimal
-        neovim
         ;
       inherit (pkgs.ghostty) terminfo;
-      inherit (pkgs.wrappers) bottom;
+      inherit (pkgs.wrappers) bottom neovim;
     });
   };
 
