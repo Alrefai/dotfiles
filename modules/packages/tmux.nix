@@ -27,7 +27,6 @@ wrappers.lib.wrapPackage {
     plugins = {
       inherit
         (pkgs.tmuxPlugins)
-        cpu
         yank
         copycat
         resurrect
@@ -47,7 +46,16 @@ wrappers.lib.wrapPackage {
     TMUX_CONF = mitmux + "/.tmux.conf";
 
     TMUX_CONF_LOCAL = toString (pkgs.runCommand "tmux.conf.local" {} ''
-      grep -vF 'TMUX_PLUGIN_MANAGER_PATH' "${mitmux}/.tmux.conf.local" > "$out"
+      grep -vF \
+        -e 'TMUX_PLUGIN_MANAGER_PATH' \
+        -e 'tmux-plugins/tmux-cpu' \
+        -e '@cpu_percentage_format' \
+        -e '@ram_percentage_format' \
+        "${mitmux}/.tmux.conf.local" > "$out"
+
+      PATTERN='  #{cpu_icon}#{cpu_percentage}  #{ram_icon}#{ram_percentage}'
+
+      substitute "$out" "$out" --replace-fail "$PATTERN" ""
     '');
 
     TMUX_PLUGIN_MANAGER_PATH = toString (pkgs.linkFarm "tmux-plugins-dir" (
