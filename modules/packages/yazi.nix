@@ -1,16 +1,16 @@
 {
   pkgs,
-  starship-yazi,
   wrappers,
-  yazi-plugins,
   ...
 }: let
-  plugins = pkgs.linkFarm "yazi-plugins" {
-    "chmod.yazi" = yazi-plugins + "/chmod.yazi";
-    "full-border.yazi" = yazi-plugins + "/full-border.yazi";
-    "toggle-pane.yazi" = yazi-plugins + "/toggle-pane.yazi";
-    "starship.yazi" = starship-yazi;
-  };
+  mkLinkFarm = pkgs.lib.mapAttrsToList (name: path: {
+    name = name + ".yazi";
+    inherit path;
+  });
+
+  plugins = pkgs.linkFarm "yazi-plugins" (mkLinkFarm {
+    inherit (pkgs.yaziPlugins) chmod full-border toggle-pane starship;
+  });
 
   catppuccinBat = pkgs.catppuccinSources.bat + "/Catppuccin Mocha.tmTheme";
 
@@ -18,10 +18,8 @@
     .yazi + "/mocha/catppuccin-mocha-blue.toml";
 
   yaziTheme = pkgs.runCommand "yazi-catppuccin-mocha-blue-oled.toml" {} ''
-    substitute "${catppuccinYazi}" "$out" \
-      --replace-fail \
-        "~/.config/yazi/Catppuccin-mocha.tmTheme" \
-        "${catppuccinBat}"
+    substitute "${catppuccinYazi}" "$out" --replace-fail \
+      "~/.config/yazi/Catppuccin-mocha.tmTheme" "${catppuccinBat}"
   '';
 
   yazi = wrappers.wrapperModules.yazi.apply {

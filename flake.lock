@@ -313,31 +313,13 @@
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-26_05-darwin": "nixpkgs-26_05-darwin",
         "preservation": "preservation",
-        "starship-yazi": "starship-yazi",
         "systems": "systems_2",
         "tmux-network-bandwidth": "tmux-network-bandwidth",
         "tmux-sessionx": "tmux-sessionx",
         "tmux-window-name": "tmux-window-name",
         "tpm": "tpm",
         "treefmt-nix": "treefmt-nix",
-        "wrappers": "wrappers",
-        "yazi-plugins": "yazi-plugins"
-      }
-    },
-    "starship-yazi": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1786993461,
-        "narHash": "sha256-Jvoc/7YaOOppu8K2lJaVgiuBIyanRHHjEA6ZvnrFtiQ=",
-        "owner": "Rolv-Apneseth",
-        "repo": "starship.yazi",
-        "rev": "ea92cf49380466f07231c952b409831e6afd2156",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Rolv-Apneseth",
-        "repo": "starship.yazi",
-        "type": "github"
+        "wrappers": "wrappers"
       }
     },
     "systems": {
@@ -486,22 +468,6 @@
       "original": {
         "owner": "lassulus",
         "repo": "wrappers",
-        "type": "github"
-      }
-    },
-    "yazi-plugins": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1787644597,
-        "narHash": "sha256-mWT0yF2iG9+gYEuNiffpM93POlBqY+QKdFh5jSAxYls=",
-        "owner": "yazi-rs",
-        "repo": "plugins",
-        "rev": "c591a36e7263e95497715d525e9c46c2f0a880ac",
-        "type": "github"
-      },
-      "original": {
-        "owner": "yazi-rs",
-        "repo": "plugins",
         "type": "github"
       }
     }

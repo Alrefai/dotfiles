@@ -82,16 +82,6 @@
       url = "github:alrefai/tmux-network-bandwidth";
       flake = false;
     };
-    # yazi plugins
-    yazi-plugins = {
-      url = "github:yazi-rs/plugins";
-      flake = false;
-    };
-    # starship prompt yazi plugin
-    starship-yazi = {
-      url = "github:Rolv-Apneseth/starship.yazi";
-      flake = false;
-    };
   };
 
   outputs = {

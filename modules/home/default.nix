@@ -15,8 +15,6 @@
     tmux-sessionx
     tmux-window-name
     tmux-network-bandwidth
-    yazi-plugins
-    starship-yazi
     ;
 
   # GNU-compatible mkfifo wrapper for fzf compatibility
@@ -862,22 +860,20 @@ in {
       };
       shellWrapperName = "yy";
       plugins = {
-        chmod = "${yazi-plugins}/chmod.yazi";
-        full-border = "${yazi-plugins}/full-border.yazi";
-        toggle-pane = "${yazi-plugins}/toggle-pane.yazi";
-        starship = starship-yazi;
+        inherit (pkgs.yaziPlugins) chmod toggle-pane;
+        full-border = {
+          package = pkgs.yaziPlugins.full-border;
+          setup = true;
+          settings = {
+            # Available border options: `ui.Border.PLAIN`, `ui.Border.ROUNDED`
+            type = lib.mkLuaInline "ui.Border.ROUNDED";
+          };
+        };
+        starship = {
+          package = pkgs.yaziPlugins.starship;
+          setup = true;
+        };
       };
-
-      initLua =
-        # lua
-        ''
-          require("full-border"):setup {
-            -- Available values: ui.Border.PLAIN, ui.Border.ROUNDED
-            type = ui.Border.ROUNDED,
-          }
-
-          require("starship"):setup()
-        '';
 
       keymap = {
         mgr.prepend_keymap = [
