@@ -22,8 +22,7 @@
 
   environment.systemPackages =
     builtins.attrValues {
-      inherit (pkgs) yazi;
-      inherit (pkgs.wrappers) tmux;
+      inherit (pkgs.wrappers) yazi tmux;
     }
     ++ [(lib.hiPrio pkgs.wrappers.zsh)];
 
