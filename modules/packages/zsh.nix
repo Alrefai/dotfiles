@@ -74,20 +74,20 @@
         # eza
         ls = "eza -1";
         lsa = "ls -a";
-        ll = "eza -lho";
+        ll = "eza -lo";
         l = "ll -a";
         lt = concatStringsSep " " [
           "eza"
-          "-lahoTL"
+          "-laoTL"
           "3"
           "-I"
-          "'.git$'"
+          ".git"
         ];
         tree = concatStringsSep " " [
           "eza"
-          "-lahoT"
+          "-laoT"
           "-I"
-          "'.git$'"
+          ".git"
         ];
       };
 

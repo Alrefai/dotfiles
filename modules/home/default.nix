@@ -248,10 +248,21 @@ in {
       # eza = "eza --group-directories-first --git-ignore -F auto --icons auto";
       ls = "eza -1";
       lsa = "ls -a";
-      ll = "eza -lho --git --git-repos";
+      ll = "eza -lo";
       l = "ll -a";
-      lt = "eza -lahoTL 3 --group-directories-first --icons --git-repos-no-status -I '.git$' --color always";
-      tree = "eza -lahoT --group-directories-first --icons --git-repos-no-status -I '.git$' --color always";
+      lt = pkgs.lib.concatStringsSep " " [
+        "eza"
+        "-laoTL"
+        "3"
+        "-I"
+        ".git"
+      ];
+      tree = pkgs.lib.concatStringsSep " " [
+        "eza"
+        "-laoT"
+        "-I"
+        ".git"
+      ];
 
       # fix lazygit delta pager truecolor in tmux
       lazygit = "TERM=screen-256color lazygit";
@@ -441,6 +452,7 @@ in {
       git = true;
       icons = "auto";
       extraOptions = [
+        "--git-repos"
         "--group-directories-first"
         "--header"
       ];
