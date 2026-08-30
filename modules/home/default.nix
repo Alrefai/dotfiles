@@ -514,18 +514,7 @@ in {
           "'bat --color always --style numbers --line-range :500 {}'"
         ];
       };
-      historyWidget.options = [
-        "--preview"
-        "'echo {}'"
-        "--preview-window"
-        "down:3:wrap"
-        "--bind"
-        "'?:toggle-preview'"
-        "--sort"
-        "--exact"
-        "--height"
-        "'~14'"
-      ];
+      historyWidget.command = "";
     };
 
     gh = {
