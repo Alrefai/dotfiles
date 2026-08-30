@@ -52,7 +52,7 @@ in {
     # manage.
     inherit username;
     homeDirectory =
-      if pkgs.stdenv.isDarwin
+      if pkgs.stdenv.hostPlatform.isDarwin
       then "/Users/${username}"
       else "/home/${username}";
 
@@ -110,15 +110,9 @@ in {
       ++ [
         (lib.hiPrio mkfifo-wrapper) # GNU-compatible mkfifo wrapper for fzf
       ]
-      ++ pkgs.lib.lists.optionals pkgs.stdenv.isLinux (builtins.attrValues {
-        inherit
-          (pkgs)
-          gcc
-          gnumake
-          oniux
-          unzip
-          ;
-      });
+      ++ pkgs.lib.lists.optionals pkgs.stdenv.hostPlatform.isLinux (
+        builtins.attrValues {inherit (pkgs) gcc gnumake oniux unzip;}
+      );
 
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
     # plain files is through 'home.file'.
@@ -596,7 +590,7 @@ in {
           ssh = {
             allowedSignersFile = "~/.ssh/allowed_signers";
             ${
-              if pkgs.stdenv.isDarwin
+              if pkgs.stdenv.hostPlatform.isDarwin
               then "program"
               else null
             } = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
