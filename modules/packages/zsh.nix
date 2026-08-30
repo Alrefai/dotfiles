@@ -5,11 +5,10 @@
   ...
 }: let
   # Dependencies (including ez-compinit)
-  inherit (pkgs.wrappers) bat fzf starship;
+  inherit (pkgs.wrappers) eza bat fzf starship;
   inherit
     (pkgs)
     atuin
-    eza
     nix-zsh-completions
     ripgrep
     zoxide
@@ -75,30 +74,20 @@
         # eza
         ls = "eza -1";
         lsa = "ls -a";
-        ll = "eza -lho --git --git-repos";
+        ll = "eza -lho";
         l = "ll -a";
         lt = concatStringsSep " " [
           "eza"
           "-lahoTL"
           "3"
-          "--group-directories-first"
-          "--icons"
-          "--git-repos-no-status"
           "-I"
           "'.git$'"
-          "--color"
-          "always"
         ];
         tree = concatStringsSep " " [
           "eza"
           "-lahoT"
-          "--group-directories-first"
-          "--icons"
-          "--git-repos-no-status"
           "-I"
           "'.git$'"
-          "--color"
-          "always"
         ];
       };
 
