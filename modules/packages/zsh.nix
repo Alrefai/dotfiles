@@ -21,6 +21,13 @@
   zsh = wrappers.wrapperModules.zsh.apply {
     inherit pkgs;
     settings = {
+      env = {
+        XDG_CACHE_HOME = "$HOME/.cache";
+        XDG_CONFIG_HOME = "$HOME/.config";
+        XDG_DATA_HOME = "$HOME/.local/share";
+        XDG_STATE_HOME = "$HOME/.local/state";
+        LESSHISTFILE = "$XDG_STATE_HOME/less/history";
+      };
       shellAliases = {
         # bat --plain for unformatted cat
         catp = "bat -P";
