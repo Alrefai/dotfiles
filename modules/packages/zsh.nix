@@ -16,7 +16,7 @@
     ;
 
   # Helpers
-  inherit (pkgs.lib) attrValues concatStringsSep getExe' makeBinPath;
+  inherit (pkgs.lib) attrValues concatStringsSep getExe';
 
   zsh = wrappers.wrapperModules.zsh.apply {
     inherit pkgs;
@@ -116,7 +116,7 @@
             # Load ez-compinit
             source ${ez-compinit}/ez-compinit.plugin.zsh
           '';
-        extraCompletions = true;
+        extraCompletions = false;
         colors = false;
         caseInsensitive = true;
         fuzzySearch = false;
@@ -138,14 +138,12 @@
         share = true;
         size = 600; # Number of history lines to keep
       };
-
-      env = let
-        runTimePkgs = attrValues {
-          inherit atuin eza bat fzf ripgrep starship zoxide;
-        };
-        extraPaths = makeBinPath runTimePkgs;
-      in {PATH = "$PATH:${extraPaths}";}; # Prioritize system paths
     };
+
+    extraPackages = pkgs.lib.mkForce (attrValues {
+      inherit atuin eza bat fzf ripgrep starship zoxide;
+      inherit (pkgs) zsh;
+    });
 
     extraRC =
       #sh
@@ -164,7 +162,7 @@
           FZF_CTRL_R_COMMAND= source <(${getExe' fzf "fzf"} --zsh)
         fi
 
-        # Make sure history file exists
+        # Make sure history file's parent directory exists
         mkdir -p "$(dirname "$HISTFILE")"
 
         # Use viins keymap as the default
