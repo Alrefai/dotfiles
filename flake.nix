@@ -214,7 +214,7 @@
               # Merge profile modules with defaults
               modules = defaults ++ profileModules;
               # Pass arguments to the configuration modules
-              extraSpecialArgs = {inherit inputs username name email;};
+              extraSpecialArgs = inputs // {inherit username name email;};
             };
         in
           nixpkgs.lib.mapAttrs mkHomeConfigProfile profiles;

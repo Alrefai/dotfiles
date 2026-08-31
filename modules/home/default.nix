@@ -2,21 +2,16 @@
   config,
   lib,
   pkgs,
-  inputs,
   username,
   name,
   email,
+  minvim,
+  mitmux,
+  tmux-sessionx,
+  tmux-window-name,
+  tmux-network-bandwidth,
   ...
 }: let
-  inherit
-    (inputs)
-    minvim
-    mitmux
-    tmux-sessionx
-    tmux-window-name
-    tmux-network-bandwidth
-    ;
-
   # GNU-compatible mkfifo wrapper for fzf compatibility
   mkfifo-wrapper = pkgs.writeShellScriptBin "mkfifo" ''
     #!/usr/bin/env bash
