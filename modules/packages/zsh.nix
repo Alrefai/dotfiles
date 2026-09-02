@@ -16,18 +16,30 @@
     ;
 
   # Helpers
-  inherit (pkgs.lib) attrValues concatStringsSep getExe';
+  inherit (pkgs.lib) attrValues concatStringsSep getExe' makeBinPath;
+
+  env = {
+    XDG_CACHE_HOME = "$HOME/.cache";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_STATE_HOME = "$HOME/.local/state";
+    LESSHISTFILE = "$HOME/.local/state/less/history";
+    SHELL = getExe' pkgs.zsh "zsh";
+  };
 
   zsh = wrappers.wrapperModules.zsh.apply {
     inherit pkgs;
+    inherit env;
+
     settings = {
-      env = {
-        XDG_CACHE_HOME = "$HOME/.cache";
-        XDG_CONFIG_HOME = "$HOME/.config";
-        XDG_DATA_HOME = "$HOME/.local/share";
-        XDG_STATE_HOME = "$HOME/.local/state";
-        LESSHISTFILE = "$XDG_STATE_HOME/less/history";
-      };
+      env = let
+        runTimePkgs = attrValues {
+          inherit atuin eza bat fzf ripgrep starship zoxide;
+        };
+        extraPaths = makeBinPath runTimePkgs;
+      in
+        env // {PATH = "${extraPaths}:$PATH";}; # Prioritize wrappers paths
+
       shellAliases = {
         # bat --plain for unformatted cat
         catp = "bat -P";
@@ -147,10 +159,7 @@
       };
     };
 
-    extraPackages = pkgs.lib.mkForce (attrValues {
-      inherit atuin eza bat fzf ripgrep starship zoxide;
-      inherit (pkgs) zsh;
-    });
+    extraPackages = pkgs.lib.mkForce [pkgs.zsh];
 
     extraRC =
       #sh
