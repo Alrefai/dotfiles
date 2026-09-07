@@ -5,10 +5,9 @@
   ...
 }: let
   # Dependencies (including ez-compinit)
-  inherit (pkgs.wrappers) eza bat fzf starship;
+  inherit (pkgs.wrappers) atuin eza bat fzf starship;
   inherit
     (pkgs)
-    atuin
     nix-zsh-completions
     ripgrep
     zoxide
@@ -130,6 +129,7 @@
             fpath+=(
               ${nix-zsh-completions}/share/zsh/site-functions
               ${zsh-completions}/share/zsh/site-functions
+              ${atuin}/share/zsh/site-functions
             )
 
             # Load ez-compinit
