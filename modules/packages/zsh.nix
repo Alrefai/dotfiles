@@ -15,7 +15,14 @@
     ;
 
   # Helpers
-  inherit (pkgs.lib) attrValues concatStringsSep getExe' makeBinPath;
+  inherit
+    (pkgs.lib)
+    concatStringsSep
+    concatMapStringsSep
+    getExe'
+    makeBinPath
+    remove
+    ;
 
   env = {
     XDG_CACHE_HOME = "$HOME/.cache";
@@ -30,14 +37,19 @@
     inherit pkgs;
     inherit env;
 
-    settings = {
-      env = let
-        runTimePkgs = attrValues {
-          inherit atuin eza bat fzf ripgrep starship zoxide;
-        };
-        extraPaths = makeBinPath runTimePkgs;
-      in
-        env // {PATH = "${extraPaths}:$PATH";}; # Prioritize wrappers paths
+    settings = let
+      runTimePkgs = [
+        atuin
+        bat
+        eza
+        fzf
+        ripgrep
+        starship
+        zoxide
+      ];
+      extraPaths = makeBinPath runTimePkgs;
+    in {
+      env = env // {PATH = "${extraPaths}:$PATH";}; # Prioritize wrappers paths
 
       shellAliases = {
         # bat --plain for unformatted cat
@@ -109,7 +121,12 @@
         ];
       };
 
-      completion = {
+      completion = let
+        extraSiteFunctions =
+          concatMapStringsSep "\n  "
+          (pkg: pkg + "/share/zsh/site-functions")
+          (remove fzf runTimePkgs ++ [nix-zsh-completions zsh-completions]);
+      in {
         enable = true;
         init =
           # sh
@@ -127,9 +144,7 @@
             done
 
             fpath+=(
-              ${nix-zsh-completions}/share/zsh/site-functions
-              ${zsh-completions}/share/zsh/site-functions
-              ${atuin}/share/zsh/site-functions
+              ${extraSiteFunctions}
             )
 
             # Load ez-compinit
