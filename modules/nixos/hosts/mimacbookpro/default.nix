@@ -12,12 +12,14 @@
     ./plex.nix
     ./rustfs.nix
     ./smb.nix
+    ./vault.nix
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "b43-firmware"
       "plexmediaserver"
+      "vault"
     ];
 
   environment.systemPackages =
