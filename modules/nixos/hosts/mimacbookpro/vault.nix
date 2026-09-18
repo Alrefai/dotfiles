@@ -18,6 +18,9 @@ in {
         cluster_addr = "http://${address}:${toString (port + 1)}"
         disable_mlock = true
       '';
+      listenerExtraConfig = ''
+        tls_min_version = "tls13"
+      '';
       storageBackend = "raft";
       storageConfig = ''
         node_id = "vault01"
@@ -26,25 +29,33 @@ in {
     };
   };
 
-  systemd.services.tailscale-serve-vault = {
-    description = "Serve Vault endpoint with Tailscale";
+  systemd.services = {
+    vault.serviceConfig = {
+      CapabilityBoundingSet = "cap_syslog cap_ipc_lock";
+      LimitMEMLOCK = "infinity";
+      SecureBits = "keep-caps";
+    };
 
-    after = [
-      "tailscaled-autoconnect.service"
-      "tailscaled-set.service"
-      "tailscale-serve.service"
-    ];
-    requires = ["tailscaled.service" "vault.service"];
-    wantedBy = ["multi-user.target"];
+    tailscale-serve-vault = {
+      description = "Serve Vault endpoint with Tailscale";
 
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = [
-        ''
-          ${pkgs.lib.getExe config.services.tailscale.package} serve \
-            --service=svc:vault --https=443 ${toString port}
-        ''
+      after = [
+        "tailscaled-autoconnect.service"
+        "tailscaled-set.service"
+        "tailscale-serve.service"
       ];
+      requires = ["tailscaled.service" "vault.service"];
+      wantedBy = ["multi-user.target"];
+
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = [
+          ''
+            ${pkgs.lib.getExe config.services.tailscale.package} serve \
+              --service=svc:vault --https=443 ${toString port}
+          ''
+        ];
+      };
     };
   };
 }
