@@ -26,6 +26,7 @@ in {
         auto-optimise-store = false;
         builders-use-substitutes = true;
         experimental-features = ["nix-command" "flakes"];
+        commit-lockfile-summary = "build(flake): update";
         substituters = [
           "https://nix-community.cachix.org"
           "https://midot.cachix.org"
